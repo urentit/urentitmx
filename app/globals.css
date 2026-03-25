@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────
+   Variables de marca U Rent It
+───────────────────────────────────────── */
+:root {
+  /* Colores */
+  --c-black:       #0a0a0a;
+  --c-black-sec:   #111111;
+  --c-black-light: #1c1c1c;
+  --c-gold:        #e1be4a;
+  --c-gold-light:  #f0d878;
+  --c-gold-dark:   #b8962e;
+  --c-white:       #fafafa;
+  --c-gray-light:  #f0f0f0;
+  --c-gray-text:   #888888;
+
+  /* Tipografía */
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-sans:    var(--font-inter), system-ui, sans-serif;
+
+  /* Transiciones */
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─────────────────────────────────────────
+   Reset y base
+───────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-black text-white font-sans;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* Grain texture — premium depth */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-size: 300px 300px;
+    opacity: 0.038;
+    mix-blend-mode: overlay;
+  }
+
+  /* Selección de texto */
+  ::selection {
+    background: rgba(225, 190, 74, 0.25);
+    color: #fafafa;
+  }
+
+  /* Scrollbar personalizada */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(225, 190, 74, 0.4);
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--c-gold);
+  }
+
+  /* Focus visible accesible */
+  :focus-visible {
+    outline: 2px solid var(--c-gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Tipografía base */
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  h4, h5, h6 {
+    font-family: var(--font-sans);
+    line-height: 1.3;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+/* ─────────────────────────────────────────
+   Componentes reutilizables
+───────────────────────────────────────── */
+@layer components {
+  .container-site {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .gold-text {
+    color: var(--c-gold);
+  }
+
+  .gold-underline {
+    @apply relative inline-block;
+  }
+  .gold-underline::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-12 h-0.5 bg-gold;
+  }
+
+  .glass {
+    background: rgba(10, 10, 10, 0.72);
+    backdrop-filter: blur(16px) saturate(1.2);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    border: 1px solid rgba(225, 190, 74, 0.18);
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:border-gold/40 hover:shadow-gold;
+  }
+
+  /* Gold decorative rule */
+  .gold-rule {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .gold-rule::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--c-gold);
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  /* Section label overline style */
+  .section-overline {
+    @apply font-sans text-xs tracking-[0.2em] uppercase text-gold/70 font-medium;
+  }
+}
+
+/* ─────────────────────────────────────────
+   Animaciones de marquee (marcas)
+───────────────────────────────────────── */
+@layer utilities {
+  .animate-marquee {
+    animation: marquee 35s linear infinite;
+  }
+  .animate-marquee-reverse {
+    animation: marquee-reverse 35s linear infinite;
+  }
+  .pause-on-hover:hover .animate-marquee,
+  .pause-on-hover:hover .animate-marquee-reverse {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes marquee-reverse {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* ─────────────────────────────────────────
+   Reduced motion — accesibilidad
+───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Stop marquee animations */
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none !important;
+  }
+
+  /* Hide grain texture (can cause motion perception) */
+  body::after {
+    display: none;
+  }
+}

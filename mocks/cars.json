@@ -1,0 +1,227 @@
+{
+  "valor-medio": {
+    "name": "Valor medio",
+    "items": [
+      {
+        "name": "Sentra",
+        "slug": "sentra",
+        "brand": "Nissan"
+      },
+      {
+        "name": "Sienna Hybrid",
+        "slug": "sienna-hybrid",
+        "brand": "Toyota"
+      },
+      {
+        "name": "Prius",
+        "slug": "prius",
+        "brand": "Toyota"
+      },
+      {
+        "name": "Teramont",
+        "slug": "teramont",
+        "brand": "Volkswagen"
+      },
+      {
+        "name": "Tiguan",
+        "slug": "tiguan",
+        "brand": "Volkswagen"
+      },
+      {
+        "name": "Seltos",
+        "slug": "seltos",
+        "brand": "KIA"
+      },
+      {
+        "name": "Sportage",
+        "slug": "sportage",
+        "brand": "KIA"
+      },
+      {
+        "name": "Odissey",
+        "slug": "odissey",
+        "brand": "Honda"
+      }
+    ]
+  },
+  "lujo": {
+    "name": "Lujo",
+    "items": [
+      {
+        "slug": "suburban",
+        "name": "Suburban",
+        "brand": "Chevrolet"
+      },
+      {
+        "slug": "range-rover-velar",
+        "name": "Range Rover Velar",
+        "brand": "Land Rover"
+      },
+      {
+        "slug": "model-x",
+        "name": "Model X",
+        "brand": "Tesla"
+      },
+      {
+        "slug": "model-y",
+        "name": "Model Y",
+        "brand": "Tesla"
+      },
+      {
+        "slug": "q5",
+        "name": "Q5",
+        "brand": "Audi"
+      },
+      {
+        "slug": "grand-cherokee",
+        "name": "Grand Cherokee",
+        "brand": "Jeep"
+      },
+      {
+        "slug": "cooper",
+        "name": "Cooper",
+        "brand": "Mini"
+      },
+      {
+        "slug": "cayman",
+        "name": "Cayman",
+        "brand": "Porsche"
+      }
+    ]
+  },
+  "utilitarios": {
+    "name": "Utilitarios",
+    "items": [
+      {
+        "name": "Aveo",
+        "slug": "aveo",
+        "brand": "Chevrolet"
+      },
+      {
+        "name": "March",
+        "slug": "march",
+        "brand": "Nissan"
+      },
+      {
+        "name": "Mobi",
+        "slug": "mobi",
+        "brand": "Fiat"
+      },
+      {
+        "name": "Vento",
+        "slug": "vento",
+        "brand": "Volkswagen"
+      }
+    ]
+  },
+  "carga": {
+    "name": "Carga",
+    "items": [
+      {
+        "name": "NP300",
+        "slug": "np300",
+        "brand": "Nissan"
+      },
+      {
+        "name": "Hilux",
+        "slug": "hilux",
+        "brand": "Toyota"
+      },
+      {
+        "name": "Hiace",
+        "slug": "hiace",
+        "brand": "Toyota"
+      },
+      {
+        "name": "Transit",
+        "slug": "transit",
+        "brand": "Ford"
+      },
+      {
+        "name": "Crafter",
+        "slug": "crafter",
+        "brand": "Volkswagen"
+      },
+      {
+        "name": "Promaster",
+        "slug": "promaster",
+        "brand": "RAM"
+      },
+      {
+        "name": "Elf 300",
+        "slug": "elf-300",
+        "brand": "Isuzu"
+      },
+      {
+        "name": "Prostar",
+        "slug": "prostar",
+        "brand": "International"
+      }
+    ]
+  },
+  "motos": {
+    "name": "Motos",
+    "items": [
+      {
+        "name": "V4S Red Travel",
+        "slug": "v4s-red-travel",
+        "brand": "Ducati"
+      },
+      {
+        "name": "Street Scrambler",
+        "slug": "street-scrambler",
+        "brand": "Triumph"
+      }
+    ]
+  },
+  "equipamiento-especial": {
+    "name": "Equipamiento especial",
+    "items": [
+      {
+        "name": "1828 P",
+        "slug": "1828-p",
+        "brand": "Hino"
+      },
+      {
+        "name": "Elf 800K",
+        "slug": "elf-800k",
+        "brand": "Isuzu"
+      },
+      {
+        "name": "Partner",
+        "slug": "partner",
+        "brand": "Peugeot"
+      },
+      {
+        "name": "Prostar",
+        "slug": "prostar",
+        "brand": "International"
+      }
+    ]
+  },
+  "blindados": {
+    "name": "Blindados",
+    "items": [
+      {
+        "name": "Suburban",
+        "slug": "suburban",
+        "brand": "Chevrolet"
+      },
+      {
+        "name": "Navigator",
+        "slug": "navigator",
+        "brand": "Lincoln"
+      },
+      {
+        "name": "Grand Cherokee",
+        "slug": "grand-cherokee",
+        "brand": "Jeep"
+      },
+      {
+        "name": "Escalade",
+        "slug": "escalade",
+        "brand": "Cadillac"
+      }
+    ]
+  }
+}

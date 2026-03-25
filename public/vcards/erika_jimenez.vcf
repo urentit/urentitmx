@@ -1,0 +1,18 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Erika Jiménez
+N:Jiménez;Erika;;;
+item1.EMAIL;TYPE=INTERNET:asist@urentit.mx
+item1.X-ABLabel:
+item2.TEL:55 3413 0852
+item2.X-ABLabel:
+item3.TEL:525518062633
+item3.X-ABLabel:
+item4.ADR:;;;;;;México;México
+item4.X-ABLabel:AV. PARQUE CHAPULTEPEC 56
+ORG:U RENT IT
+TITLE:U RENT IT
+item5.URL:https\://urentit.mx/
+item5.X-ABLabel:urentit.mx
+CATEGORIES:Imported on 4/10,myContacts
+END:VCARD

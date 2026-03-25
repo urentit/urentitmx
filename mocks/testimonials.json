@@ -1,0 +1,26 @@
+[
+  {
+    "img": "/img/testimonials/demo-resena-1.jpg",
+    "author": "Eduardo R.",
+    "rate": 5,
+    "quote": "La atención y el servicio pronto y oportuno, definitivamente regresaré por otro auto."
+  },
+  {
+    "img": "/img/testimonials/demo-resena-2.jpg",
+    "author": "Arturo H.",
+    "rate": 5,
+    "quote": "Las rentas son accesibles, tienen disponibilidad para acudir a donde sea necesario, quedé satisfecho con toda la ayuda que se me brindó."
+  },
+  {
+    "img": "/img/testimonials/demo-resena-3.jpg",
+    "author": "Carla E.",
+    "rate": 5,
+    "quote": "Ofrecen distintas alternativas, los planes son acorde con lo que estaba buscando. Los recomiendo ampliamente."
+  },
+  {
+    "img": "/img/testimonials/demo-resena-4.jpg",
+    "author": "Moisés T.",
+    "rate": 5,
+    "quote": "Los recomiendo de todo a todo, atención, rapidez y el coche que estuve buscando, con ellos lo conseguí."
+  }
+]

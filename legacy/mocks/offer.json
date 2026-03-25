@@ -1,0 +1,47 @@
+[
+  {
+    "icon": "planes-flexibles.svg",
+    "label": "Planes flexibles",
+    "description": "Elige el plazo que mejor se adapte a tus necesidades operativas y de flujo de efectivo."
+  },
+  {
+    "icon": "no-descapitalizar.svg",
+    "label": "Sin descapitalizar",
+    "description": "Obtén los vehículos que necesitas sin realizar grandes inversiones iniciales."
+  },
+  {
+    "icon": "deduccion-fiscal.svg",
+    "label": "Deducción fiscal",
+    "description": "Todos los pagos son deducibles, optimizando tu carga tributaria."
+  },
+  {
+    "icon": "mantenimiento.svg",
+    "label": "Mantenimiento incluido",
+    "description": "Nos encargamos del servicio preventivo para que no te preocupes por tiempos muertos."
+  },
+  {
+    "icon": "vehiculo-sustituto.svg",
+    "label": "Seguro Premium",
+    "description": "Protección real para tu flota."
+  },
+  {
+    "icon": "gestion-operativa.svg",
+    "label": "Gestión operativa",
+    "description": "Nos encargamos de verificaciones, GPS, documentación y más."
+  },
+  {
+    "icon": "seguro.svg",
+    "label": "Seguro a valor factura",
+    "description": "Cobertura amplia por hasta 2 años con valor factura garantizado."
+  },
+  {
+    "icon": "tramites.svg",
+    "label": "Trámites simplificados",
+    "description": "Nosotros gestionamos toda la documentación para que tú te concentres en tu negocio."
+  },
+  {
+    "icon": "cumplimiento.svg",
+    "label": "Cumplimiento garantizado",
+    "description": "Cumplimos con todos los requisitos fiscales, operativos y legales."
+  }
+]

@@ -1,0 +1,50 @@
+{
+  "block-1": [
+    {
+      "question": "¿Cuál es el procedimiento para arrendar un vehículo? ",
+      "answer": "Da click en nuestra sección COTIZA AHORA en donde se te harán una serie de preguntas clave, dale ENVIAR y de inmediato un ejecutivo se pondrá en contacto contigo."
+    },
+    {
+      "question": "¿Cómo funciona el arrendamiento que ofrecen?",
+      "answer": "Incluimos en cómodas rentas mensuales el vehículo de tu elección, seguros, trámites y servicios varios."
+    },
+    {
+      "question": "¿Puedo arrendar cualquier marca?",
+      "answer": "Trabajamos con cualquier tipo de vehículo ya sea para uso particular, utilitarios, blindados, carga, carga con caja seca, caja refrigerada o congelación e incluso con lanchas, ATV y montacargas."
+    },
+    {
+      "question": "¿Ofrecen arrendamiento para las diferentes aplicaciones de Uber, Didi, Beat, etc.?",
+      "answer": "No ofrecemos este tipo de Arrendamiento."
+    },
+    {
+      "question": "¿Ofrecen arrendamiento a seminuevos?",
+      "answer": "Sí, arrendamos vehículos hasta 4 modelos de antigüedad y con un máximo de 68,000 kms."
+    },
+    {
+      "question": "¿Se maneja algún tipo de tasa?",
+      "answer": "Nuestro producto no tiene tasa, considerando que es Arrendamiento y no un crédito."
+    }
+  ],
+  "block-2": [
+    {
+      "question": "¿Ustedes tramitan las placas?",
+      "answer": "Tramitamos placas en CDMX, EDOMEX, Morelos, Puebla, Hidalgo, Aguascalientes y resto de la República."
+    },
+    {
+      "question": "¿Cuentan con arrendamiento 30, 60 y 90 días?",
+      "answer": "No, nuestro servicio únicamente maneja plazos a 36 y 48 meses."
+    },
+    {
+      "question": "¿Tipos de arrendamiento?",
+      "answer": "Contamos con arrendamiento para personas físicas con actividad empresarial y personas morales."
+    },
+    {
+      "question": "¿Tienen servicio de arrendamiento de flotillas?",
+      "answer": "Sí, contamos con atención especializada para clientes flotilleros."
+    },
+    {
+      "question": "Durante el arrendamiento, ¿cuáles son las garantías que se tienen en caso de tener un percance?",
+      "answer": "Tu vehículo esta asegurado ampliamente durante toda la vigencia del contrato, para tu seguridad y tranquilidad."
+    }
+  ]
+}

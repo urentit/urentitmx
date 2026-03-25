@@ -1,0 +1,43 @@
+[
+  {
+    "label": "Servicio a la medida",
+    "desc": "Diseñamos planes de arrendamiento que se ajustan a las necesidades operativas y fiscales de tu empresa.",
+    "tooltip": null,
+    "slug": "financiero"
+  },
+  {
+    "label": "Administración de flotilla",
+    "desc": "Incluye gestión de mantenimientos, seguros y trámites — sin complicaciones.",
+    "tooltip": null,
+    "slug": "operativo"
+  },
+  {
+    "label": "Valor residual con 3 opciones",
+    "desc": "Flexibilidad al final del contrato: compra, renovación o devolución de la unidad.",
+    "tooltip": null,
+    "slug": "financiero"
+  },
+  {
+    "label": "Seguro premium",
+    "desc": "Cobertura amplia con atención preferente y deducible competitivo.",
+    "tooltip": [
+      "Cobertura valor factura x 2 años",
+      "Deducibles mas bajos",
+      "Mayor cobertura por RC",
+      "Tarifa preferencial"
+    ],
+    "slug": "confianza"
+  },
+  {
+    "label": "Gestoría y trámites",
+    "desc": "Nos encargamos de placas, refrendos, tenencia y verificaciones por ti.",
+    "tooltip": null,
+    "slug": "legal"
+  },
+  {
+    "label": "Impulso a socios comerciales",
+    "desc": "Ofrecemos esquemas que permiten a nuestros aliados escalar sus operaciones.",
+    "tooltip": null,
+    "slug": "comercial"
+  }
+]

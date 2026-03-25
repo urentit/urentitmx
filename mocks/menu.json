@@ -1,0 +1,22 @@
+[
+  {
+    "title": "¿Quiénes somos?",
+    "hash": "quienes-somos"
+  },
+  {
+    "title": "Vehículos que arrendamos",
+    "hash": "vehiculos-ejemplo"
+  },
+  {
+    "title": "Marcas",
+    "hash": "marcas-disponibles"
+  },
+  {
+    "title": "Reseñas",
+    "hash": "opiniones-clientes"
+  },
+  {
+    "title": "FAQ'S",
+    "hash": "preguntas-frecuentes"
+  }
+]
