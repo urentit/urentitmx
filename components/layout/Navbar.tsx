@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { label: '¿Quiénes somos?', hash: 'quienes-somos' },
   { label: 'Vehículos', hash: 'vehiculos-ejemplo' },
   { label: 'Marcas', hash: 'marcas-disponibles' },
+  { label: 'Referidos', hash: 'referidos' },
   { label: 'Reseñas', hash: 'opiniones-clientes' },
   { label: "FAQ'S", hash: 'preguntas-frecuentes' },
 ]
@@ -130,6 +131,14 @@ export function Navbar() {
           {/* Desktop CTAs */}
           <div className="hidden lg:flex items-center gap-3">
             <ButtonLink
+              href="/referidos"
+              variant="ghost"
+              size="sm"
+              aria-label="Abrir formulario de referidos"
+            >
+              Referidos
+            </ButtonLink>
+            <ButtonLink
               href={WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
@@ -212,6 +221,14 @@ export function Navbar() {
 
               {/* Mobile CTAs */}
               <div className="px-6 pb-8 flex flex-col gap-3">
+                <ButtonLink
+                  href="/referidos"
+                  variant="ghost"
+                  size="md"
+                  className="w-full justify-center"
+                >
+                  Formulario de referidos
+                </ButtonLink>
                 <ButtonLink
                   href={WHATSAPP}
                   target="_blank"

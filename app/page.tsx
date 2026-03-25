@@ -5,6 +5,7 @@ import { ValueProposition } from '@/components/sections/ValueProposition'
 import { CarsGallery } from '@/components/sections/CarsGallery'
 import { Brands } from '@/components/sections/Brands'
 import { Features } from '@/components/sections/Features'
+import { ReferralTeaser } from '@/components/sections/ReferralTeaser'
 import { ContactForm } from '@/components/sections/ContactForm'
 import { Testimonials } from '@/components/sections/Testimonials'
 import { FAQs } from '@/components/sections/FAQs'
@@ -56,6 +57,7 @@ export default function HomePage() {
       <CarsGallery />
       <Brands />
       <Features />
+      <ReferralTeaser />
       <ContactForm />
       <Testimonials />
       <FAQs />
