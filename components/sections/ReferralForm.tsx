@@ -67,7 +67,7 @@ const inputBase =
 export function ReferralForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle')
-  const shareUrl = 'https://urentit.mx/referidos'
+  const shareUrl = 'https://referidos.urentit.mx/referidos'
 
   const {
     register,

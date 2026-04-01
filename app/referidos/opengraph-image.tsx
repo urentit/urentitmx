@@ -68,7 +68,7 @@ export default function Image() {
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <div style={{ fontSize: 28, color: 'rgba(255,255,255,0.68)' }}>urentit.mx/referidos</div>
+              <div style={{ fontSize: 28, color: 'rgba(255,255,255,0.68)' }}>referidos.urentit.mx/referidos</div>
               <div style={{ fontSize: 22, color: 'rgba(255,255,255,0.48)' }}>
                 Beneficio sujeto a firma de contrato y operación formalizada
               </div>

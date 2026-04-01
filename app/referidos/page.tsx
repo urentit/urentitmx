@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   description:
     'Refiere a una persona o empresa a U Rent It. Si firma contrato, podrás recibir hasta una renta mensual sin costo en tu contrato vigente.',
   alternates: {
-    canonical: 'https://urentit.mx/referidos',
+    canonical: 'https://referidos.urentit.mx/referidos',
   },
   openGraph: {
     title: 'Referidos U Rent It',
     description:
       'Refiere a una persona o empresa. Si firma contrato con U Rent It, podrás recibir hasta una renta mensual sin costo.',
-    url: 'https://urentit.mx/referidos',
+    url: 'https://referidos.urentit.mx/referidos',
     images: [
       {
         url: '/img/referidos/miniatura-referidos-og.jpg',
