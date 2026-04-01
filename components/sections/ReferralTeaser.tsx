@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowUpRight, Gift, Share2, ShieldCheck } from 'lucide-react'
@@ -99,22 +100,15 @@ export function ReferralTeaser() {
                 </div>
               </div>
 
-              <div className="overflow-hidden rounded-[1.35rem] border border-white/10 bg-[radial-gradient(circle_at_top_right,_rgba(225,190,74,0.24),_transparent_35%),linear-gradient(145deg,#151515_0%,#090909_100%)] p-7">
-                <div className="mb-10 inline-flex rounded-full border border-gold/20 bg-black/30 px-4 py-2 text-xs uppercase tracking-[0.28em] text-gold/80">
-                  U Rent It Referidos
-                </div>
-                <h3 className="max-w-lg text-3xl font-bold leading-tight text-white">
-                  Refiere a alguien y recibe hasta una renta mensual sin costo.
-                </h3>
-                <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/60">
-                  El beneficio se aplica una vez que la persona o empresa referida firma
-                  contrato y la operación queda formalizada con U Rent It.
-                </p>
-                <div className="mt-8 flex items-center justify-between border-t border-white/10 pt-5">
-                  <div className="text-sm text-white/70">urentit.mx/referidos</div>
-                  <div className="rounded-full bg-gold px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-black">
-                    Compartir
-                  </div>
+              <div className="overflow-hidden rounded-[1.35rem] border border-white/10 bg-black">
+                <div className="relative aspect-[1200/630] w-full">
+                  <Image
+                    src="/img/referidos/miniatura-referidos-og.jpg"
+                    alt="Miniatura del programa de referidos U Rent It"
+                    fill
+                    className="object-cover object-center"
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                  />
                 </div>
               </div>
             </div>
