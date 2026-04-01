@@ -4,14 +4,14 @@ import { ReferralForm } from '@/components/sections/ReferralForm'
 export const metadata: Metadata = {
   title: 'Referidos',
   description:
-    'Comparte el programa de referidos de U Rent It y registra en un solo formulario tus datos y los de la persona recomendada.',
+    'Refiere a una persona o empresa a U Rent It. Si firma contrato, podrás recibir hasta una renta mensual sin costo en tu contrato vigente.',
   alternates: {
     canonical: 'https://urentit.mx/referidos',
   },
   openGraph: {
     title: 'Referidos U Rent It',
     description:
-      'Comparte el formulario de referidos de U Rent It y registra fácilmente a la persona que recomiendas.',
+      'Refiere a una persona o empresa. Si firma contrato con U Rent It, podrás recibir hasta una renta mensual sin costo.',
     url: 'https://urentit.mx/referidos',
     images: [
       {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Referidos U Rent It',
     description:
-      'Página compartible para registrar referidos y compartir el programa de U Rent It.',
+      'Refiere a una persona o empresa y obtén hasta una renta mensual sin costo si la operación se formaliza.',
     images: ['/referidos/opengraph-image'],
   },
 }

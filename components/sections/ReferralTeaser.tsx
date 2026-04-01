@@ -6,9 +6,9 @@ import { ArrowUpRight, Gift, Share2, ShieldCheck } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 
 const perks = [
-  'Comparte tu enlace o el formulario directo con tu red',
-  'Registra referidos en menos de 2 minutos',
-  'Proceso claro con términos y seguimiento comercial',
+  'Refiere a una persona o empresa desde un formulario simple',
+  'Si el referido firma contrato, puedes recibir hasta una renta mensual sin costo',
+  'El beneficio se aplica cuando la operación referida queda formalizada',
 ]
 
 export function ReferralTeaser() {
@@ -29,20 +29,20 @@ export function ReferralTeaser() {
           >
             <Badge className="mb-5">Programa de referidos</Badge>
             <h2 className="mb-5 font-display text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl">
-              Recomienda a alguien y abre la puerta a una{' '}
-              <span className="text-gold italic">nueva oportunidad comercial</span>
+              En U Rent It queremos reconocer{' '}
+              <span className="text-gold italic">tu confianza</span>
             </h2>
             <p className="mb-8 max-w-2xl text-base leading-relaxed text-white/60 md:text-lg">
-              Creamos una subsección dedicada para que puedas compartir el programa
-              de referidos con una miniatura atractiva y un formulario claro para
-              capturar tus datos y los de la persona recomendada.
+              Si nos refieres a una persona o empresa y esa persona firma contrato con
+              nosotros, podrás recibir hasta una renta mensual sin costo en tu contrato
+              vigente. Tu recomendación puede convertirse en un ahorro real para ti.
             </p>
 
             <div className="mb-9 grid gap-4 sm:grid-cols-3">
               {[
-                { icon: Gift, label: 'Campaña activa' },
-                { icon: Share2, label: 'Página compartible' },
-                { icon: ShieldCheck, label: 'Aviso y consentimiento' },
+                { icon: Gift, label: 'Hasta una renta sin costo' },
+                { icon: Share2, label: 'Página lista para compartir' },
+                { icon: ShieldCheck, label: 'Beneficio al formalizar la operación' },
               ].map((item) => (
                 <div
                   key={item.label}
@@ -103,12 +103,12 @@ export function ReferralTeaser() {
                 <div className="mb-10 inline-flex rounded-full border border-gold/20 bg-black/30 px-4 py-2 text-xs uppercase tracking-[0.28em] text-gold/80">
                   U Rent It Referidos
                 </div>
-                <h3 className="max-w-md text-3xl font-bold leading-tight text-white">
-                  Recomienda a alguien y comparte beneficios del programa de referidos.
+                <h3 className="max-w-lg text-3xl font-bold leading-tight text-white">
+                  Refiere a alguien y recibe hasta una renta mensual sin costo.
                 </h3>
                 <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/60">
-                  Envía tus datos, registra a tu referido y deja que el equipo de U Rent It
-                  continúe el proceso comercial.
+                  El beneficio se aplica una vez que la persona o empresa referida firma
+                  contrato y la operación queda formalizada con U Rent It.
                 </p>
                 <div className="mt-8 flex items-center justify-between border-t border-white/10 pt-5">
                   <div className="text-sm text-white/70">urentit.mx/referidos</div>

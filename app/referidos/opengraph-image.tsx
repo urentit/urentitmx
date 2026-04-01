@@ -56,12 +56,12 @@ export default function Image() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 760 }}>
               <div style={{ fontSize: 76, fontWeight: 700, lineHeight: 1.02 }}>
-                Comparte tu
-                <span style={{ color: '#e1be4a' }}> programa </span>
-                de referidos
+                Refiere y recibe
+                <span style={{ color: '#e1be4a' }}> hasta una renta </span>
+                sin costo
               </div>
               <div style={{ fontSize: 30, lineHeight: 1.35, color: 'rgba(255,255,255,0.72)' }}>
-                Registra a la persona que recomiendas y comparte una página lista para WhatsApp y redes.
+                Si la persona o empresa referida firma contrato con U Rent It, el beneficio se aplica al formalizar la operación.
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@ export default function Image() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               <div style={{ fontSize: 28, color: 'rgba(255,255,255,0.68)' }}>urentit.mx/referidos</div>
               <div style={{ fontSize: 22, color: 'rgba(255,255,255,0.48)' }}>
-                Formulario con datos del promotor y del referido
+                Beneficio sujeto a firma de contrato y operación formalizada
               </div>
             </div>
             <div

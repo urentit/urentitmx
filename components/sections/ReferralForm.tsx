@@ -128,20 +128,21 @@ export function ReferralForm() {
             <Badge>Formulario de referidos</Badge>
             <div>
               <h1 className="max-w-3xl text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl">
-                Comparte el programa de{' '}
-                <span className="text-gold italic">referidos U Rent It</span>
+                En U Rent It queremos reconocer{' '}
+                <span className="text-gold italic">tu confianza</span>
               </h1>
               <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/60 md:text-lg">
-                Registra tus datos, agrega a la persona que recomiendas y compártele esta
-                página con una miniatura optimizada para WhatsApp, LinkedIn y redes sociales.
+                Si nos refieres a una persona o empresa y esa persona firma contrato con
+                nosotros, podrás recibir hasta una renta mensual sin costo en tu contrato
+                vigente. Tu recomendación puede convertirse en un ahorro real para ti.
               </p>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
               {[
-                { icon: Share2, title: 'Página compartible', copy: 'URL limpia y miniatura social propia' },
-                { icon: UserRoundPlus, title: 'Captura doble', copy: 'Tus datos y los del referido en un flujo' },
-                { icon: Gift, title: 'Términos visibles', copy: 'Aviso y aceptación dentro del formulario' },
+                { icon: Gift, title: 'Beneficio real', copy: 'Hasta una renta mensual sin costo en tu contrato vigente' },
+                { icon: UserRoundPlus, title: 'Condición clara', copy: 'Aplica solo cuando el referido firma contrato con U Rent It' },
+                { icon: Share2, title: 'Página compartible', copy: 'URL limpia y miniatura social propia para compartir' },
               ].map((item) => (
                 <div key={item.title} className="rounded-sm border border-white/10 bg-white/[0.04] p-5">
                   <item.icon size={18} className="mb-3 text-gold" />
@@ -167,12 +168,13 @@ export function ReferralForm() {
               <div className="inline-flex rounded-full border border-gold/20 px-4 py-2 text-xs uppercase tracking-[0.28em] text-gold/80">
                 U Rent It
               </div>
-              <h2 className="mt-6 max-w-md text-3xl font-bold leading-tight text-white">
-                Recomienda hoy a la persona indicada para arrendar con U Rent It.
+              <h2 className="mt-6 max-w-lg text-3xl font-bold leading-tight text-white">
+                Refiere a alguien y recibe hasta una renta mensual sin costo.
               </h2>
               <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/60">
-                Comparte esta liga para que la campaña de referidos tenga una presentación clara
-                desde el primer vistazo.
+                Comparte esta liga con quien tengas en mente. Si la persona o empresa
+                referida firma contrato con nosotros, el beneficio se activa cuando la
+                operación queda formalizada.
               </p>
 
               <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
@@ -255,7 +257,7 @@ export function ReferralForm() {
                       <p className="text-xs uppercase tracking-[0.28em] text-gold/70">Sección 1</p>
                       <h2 className="mt-3 text-2xl font-bold text-white">Tus datos</h2>
                       <p className="mt-2 text-sm leading-relaxed text-white/55">
-                        Solicita tu código de referido y registra la información para validar la recomendación.
+                        Déjanos tus datos para identificar tu contrato vigente y poder asignar el beneficio si tu referido formaliza su operación.
                       </p>
                     </div>
 
@@ -305,7 +307,7 @@ export function ReferralForm() {
                       <p className="text-xs uppercase tracking-[0.28em] text-gold/70">Sección 2</p>
                       <h2 className="mt-3 text-2xl font-bold text-white">Datos del referido</h2>
                       <p className="mt-2 text-sm leading-relaxed text-white/55">
-                        Ayúdanos ingresando los datos de la persona a la que deseas recomendar.
+                        Comparte la información de la persona o empresa que quieres recomendarnos. ¿Tienes a alguien en mente?
                       </p>
                     </div>
 
@@ -370,9 +372,10 @@ export function ReferralForm() {
                 <div className="rounded-[1.25rem] border border-white/10 bg-white/[0.03] p-5">
                   <p className="text-sm font-semibold text-white">Aviso</p>
                   <p className="mt-3 text-sm leading-relaxed text-white/60">
-                    Puedes llenar el formulario varias veces para múltiples referidos. Al enviar este
-                    formulario, aceptas los términos y condiciones de la campaña de referidos de U Rent It.
-                    El beneficio se otorgará solo si el referido firma contrato dentro del periodo vigente.
+                    En U Rent It queremos reconocer tu confianza. Puedes llenar el formulario varias
+                    veces para múltiples referidos. El beneficio puede ser de hasta una renta mensual
+                    sin costo sobre tu contrato vigente y se otorgará únicamente si la persona o empresa
+                    referida firma contrato y la operación queda formalizada dentro del periodo vigente.
                     Consulta más información en{' '}
                     <Link href="/aviso-de-privacidad" className="text-gold underline decoration-gold/60 underline-offset-4">
                       Aviso de Privacidad
