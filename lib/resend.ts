@@ -10,9 +10,13 @@ function getEnv(name: string) {
   return value
 }
 
-export const resend = new Resend(getEnv('RESEND_API_KEY'))
+export function getResendClient() {
+  return new Resend(getEnv('RESEND_API_KEY'))
+}
 
-export const resendConfig = {
-  from: getEnv('RESEND_FROM_EMAIL'),
-  to: getEnv('RESEND_TO_EMAIL'),
+export function getResendConfig() {
+  return {
+    from: getEnv('RESEND_FROM_EMAIL'),
+    to: getEnv('RESEND_TO_EMAIL'),
+  }
 }

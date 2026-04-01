@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { resend, resendConfig } from '@/lib/resend'
+import { getResendClient, getResendConfig } from '@/lib/resend'
 
 const schema = z.object({
   nombreCompleto: z.string().min(2),
@@ -18,6 +18,9 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const data = schema.parse(body)
+    const resend = getResendClient()
+    const resendConfig = getResendConfig()
+
     const { error } = await resend.emails.send({
       from: resendConfig.from,
       to: [resendConfig.to],
@@ -63,8 +66,15 @@ export async function POST(req: NextRequest) {
 
     console.error('Error sending referral email:', err)
 
+    const message =
+      err instanceof Error ? err.message : 'Error interno del servidor'
+
     return NextResponse.json(
-      { ok: false, message: 'Error interno del servidor' },
+      {
+        ok: false,
+        message: 'Error interno del servidor',
+        ...(process.env.NODE_ENV === 'development' ? { debug: message } : {}),
+      },
       { status: 500 }
     )
   }
