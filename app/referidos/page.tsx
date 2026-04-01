@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     url: 'https://referidos.urentit.mx/referidos',
     images: [
       {
-        url: 'https://referidos.urentit.mx/img/v1.png',
+        url: 'https://referidos.urentit.mx/img/v1.jpg',
         width: 1200,
         height: 630,
         alt: 'Programa de referidos U Rent It',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: 'Referidos U Rent It',
     description:
       'Refiere a una persona o empresa y obtén hasta una renta mensual sin costo si la operación se formaliza.',
-    images: ['https://referidos.urentit.mx/img/v1.png'],
+    images: ['https://referidos.urentit.mx/img/v1.jpg'],
   },
 }
 
