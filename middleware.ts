@@ -5,5 +5,5 @@ export default withAuth({
 })
 
 export const config = {
-  matcher: ['/cotizador/:path((?!login).*)'],
+  matcher: ['/cotizador/((?!login).+)'],
 }
