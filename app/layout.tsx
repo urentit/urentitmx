@@ -29,15 +29,20 @@ export const metadata: Metadata = {
   description:
     'Arrendamiento puro de vehículos premium, gama media, utilitarios, comerciales, carga y blindados para empresas y empresarios en México. Planes flexibles, deducción fiscal y mantenimiento incluido.',
   keywords: [
-    'arrendamiento de vehículos',
-    'arrendamiento puro México',
-    'renta de autos para empresas',
-    'flotilla vehicular',
-    'leasing vehicular México',
+    'arrendamiento puro de vehículos México',
+    'arrendamiento de autos para empresas CDMX',
+    'leasing vehicular sin enganche',
+    'arrendamiento flotilla vehicular',
+    'deducción fiscal vehículos empresa',
+    'renta de autos para empresas México',
+    'arrendamiento puro Estado de México',
+    'arrendamiento vehículos utilitarios carga',
+    'arrendamiento vehículos blindados México',
+    'planes arrendamiento 36 48 meses',
+    'arrendamiento personas morales México',
+    'arrendamiento personas físicas actividad empresarial',
+    'U Rent It arrendamiento',
     'arrendamiento puro CDMX',
-    'vehículos premium empresa',
-    'deducción fiscal vehículos',
-    'U Rent It',
   ],
   authors: [{ name: 'U Rent It', url: 'https://urentit.mx' }],
   creator: 'U Rent It',
@@ -88,6 +93,22 @@ export const viewport: Viewport = {
 
 /* ─── GTM ─── */
 const GTM_ID = 'GTM-T7CFMMR8'
+
+/* ─── JSON-LD WebSite ─── */
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://urentit.mx/#website',
+  name: 'U Rent It',
+  url: 'https://urentit.mx',
+  description: 'Arrendamiento puro de vehículos para empresas y empresarios en México.',
+  inLanguage: 'es-MX',
+  publisher: {
+    '@type': 'Organization',
+    '@id': 'https://urentit.mx/#organization',
+    name: 'U Rent It',
+  },
+}
 
 /* ─── JSON-LD Organization ─── */
 const organizationSchema = {
@@ -166,6 +187,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','${GTM_ID}');`,
           }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
         <script
           type="application/ld+json"

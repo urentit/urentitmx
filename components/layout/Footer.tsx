@@ -4,11 +4,12 @@ import { Facebook, Instagram, Linkedin, ArrowRight } from 'lucide-react'
 
 const NAV_LINKS = [
   { label: '¿Quiénes somos?', hash: 'quienes-somos' },
-  { label: 'Vehículos', hash: 'vehiculos-ejemplo' },
-  { label: 'Marcas', hash: 'marcas-disponibles' },
-  { label: 'Referidos', hash: 'referidos' },
-  { label: 'Reseñas', hash: 'opiniones-clientes' },
-  { label: "FAQ'S", hash: 'preguntas-frecuentes' },
+  { label: 'Vehículos',       hash: 'vehiculos-ejemplo' },
+  { label: 'Marcas',          hash: 'marcas-disponibles' },
+  { label: 'Referidos',       hash: 'referidos' },
+  { label: 'Reseñas',         hash: 'opiniones-clientes' },
+  { label: "FAQ'S",           hash: 'preguntas-frecuentes' },
+  { label: 'Contacto',        hash: 'contacto' },
 ]
 
 const SOCIAL = [

@@ -10,11 +10,12 @@ import { clsx } from 'clsx'
 
 const NAV_LINKS = [
   { label: '¿Quiénes somos?', hash: 'quienes-somos' },
-  { label: 'Vehículos', hash: 'vehiculos-ejemplo' },
-  { label: 'Marcas', hash: 'marcas-disponibles' },
-  { label: 'Referidos', hash: 'referidos' },
-  { label: 'Reseñas', hash: 'opiniones-clientes' },
-  { label: "FAQ'S", hash: 'preguntas-frecuentes' },
+  { label: 'Vehículos',       hash: 'vehiculos-ejemplo' },
+  { label: 'Marcas',          hash: 'marcas-disponibles' },
+  { label: 'Referidos',       hash: 'referidos' },
+  { label: 'Reseñas',         hash: 'opiniones-clientes' },
+  { label: "FAQ'S",           hash: 'preguntas-frecuentes' },
+  { label: 'Contacto',        hash: 'contacto' },
 ]
 
 const WHATSAPP = 'https://wa.me/525518062633'
@@ -107,9 +108,10 @@ export function Navbar() {
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1" aria-label="Navegación principal">
             {NAV_LINKS.map((link) => (
-              <button
+              <a
                 key={link.hash}
-                onClick={() => scrollTo(link.hash)}
+                href={`/#${link.hash}`}
+                onClick={(e) => { e.preventDefault(); scrollTo(link.hash) }}
                 className={clsx(
                   'relative px-4 py-2 text-sm font-sans font-medium transition-colors duration-200 rounded-sm',
                   active === link.hash
@@ -124,7 +126,7 @@ export function Navbar() {
                     className="absolute bottom-0 left-4 right-4 h-px bg-gold"
                   />
                 )}
-              </button>
+              </a>
             ))}
           </nav>
 
@@ -148,12 +150,13 @@ export function Navbar() {
             >
               WhatsApp
             </ButtonLink>
-            <button
-              onClick={() => scrollTo('cotizar')}
+            <a
+              href="/#cotizar"
+              onClick={(e) => { e.preventDefault(); scrollTo('cotizar') }}
               className="inline-flex items-center gap-2 px-4 py-2 bg-gold text-black font-sans font-semibold text-sm rounded-sm hover:bg-gold-light transition-colors duration-200"
             >
               Cotiza ahora
-            </button>
+            </a>
           </div>
 
           {/* Mobile hamburger */}
@@ -205,17 +208,18 @@ export function Navbar() {
               {/* Nav links */}
               <nav className="flex-1 py-6 px-4" aria-label="Navegación móvil">
                 {NAV_LINKS.map((link, i) => (
-                  <motion.button
+                  <motion.a
                     key={link.hash}
+                    href={`/#${link.hash}`}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.06 }}
-                    onClick={() => scrollTo(link.hash)}
+                    onClick={(e) => { e.preventDefault(); scrollTo(link.hash) }}
                     className="w-full flex items-center justify-between px-4 py-4 text-white/80 hover:text-gold hover:bg-white/5 rounded-sm transition-all font-sans font-medium text-base border-b border-white/5"
                   >
                     {link.label}
                     <ChevronRight size={16} className="text-gold/50" />
-                  </motion.button>
+                  </motion.a>
                 ))}
               </nav>
 
@@ -239,12 +243,13 @@ export function Navbar() {
                 >
                   Contactar por WhatsApp
                 </ButtonLink>
-                <button
-                  onClick={() => scrollTo('cotizar')}
+                <a
+                  href="/#cotizar"
+                  onClick={(e) => { e.preventDefault(); scrollTo('cotizar') }}
                   className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-gold text-black font-sans font-semibold text-sm rounded-sm hover:bg-gold-light transition-colors duration-200"
                 >
                   Cotiza ahora
-                </button>
+                </a>
               </div>
             </motion.div>
           </>
