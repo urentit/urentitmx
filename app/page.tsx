@@ -1,15 +1,16 @@
 import type { Metadata } from 'next'
 import { Hero } from '@/components/sections/Hero'
+import { ProblemStatement } from '@/components/sections/ProblemStatement'
 import { AboutUs } from '@/components/sections/AboutUs'
-import { ValueProposition } from '@/components/sections/ValueProposition'
 import { CarsGallery } from '@/components/sections/CarsGallery'
 import { Brands } from '@/components/sections/Brands'
+import { ValueProposition } from '@/components/sections/ValueProposition'
 import { Features } from '@/components/sections/Features'
 import { CotizadorPublico } from '@/components/sections/CotizadorPublico'
-import { ReferralTeaser } from '@/components/sections/ReferralTeaser'
-import { ContactForm } from '@/components/sections/ContactForm'
 import { Testimonials } from '@/components/sections/Testimonials'
+import { ReferralTeaser } from '@/components/sections/ReferralTeaser'
 import { FAQs } from '@/components/sections/FAQs'
+import { ContactForm } from '@/components/sections/ContactForm'
 import { CTAFinal } from '@/components/sections/CTAFinal'
 
 export const metadata: Metadata = {
@@ -161,16 +162,17 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavSchema) }}
       />
       <Hero />
+      <ProblemStatement />
       <AboutUs />
-      <ValueProposition />
       <CarsGallery />
       <Brands />
+      <ValueProposition />
       <Features />
       <CotizadorPublico />
-      <ReferralTeaser />
-      <ContactForm />
       <Testimonials />
+      <ReferralTeaser />
       <FAQs />
+      <ContactForm />
       <CTAFinal />
     </>
   )

@@ -143,7 +143,7 @@ export function Hero() {
             className="text-white/55 font-sans text-base md:text-lg leading-relaxed max-w-lg mb-10"
           >
             Premium, gama media, utilitarios, comerciales, carga y blindados.
-            Planes con beneficios fiscales y mantenimiento incluido.
+            Seguro incluido, mantenimiento preventivo y trámites gestionados.
           </motion.p>
 
           <motion.div
