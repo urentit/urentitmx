@@ -104,6 +104,14 @@ export function Footer() {
                 Arrendamiento Puro
               </Link>
             </li>
+            <li>
+              <Link
+                href="/blog"
+                className="text-white/50 hover:text-gold text-sm transition-colors duration-200"
+              >
+                Blog
+              </Link>
+            </li>
           </ul>
         </div>
 
