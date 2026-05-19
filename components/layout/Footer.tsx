@@ -67,7 +67,7 @@ export function Footer() {
           </Link>
           <p className="text-white/50 text-sm leading-relaxed max-w-xs">
             Arrendamiento puro de vehículos para empresas y empresarios en México.
-            Planes flexibles, deducción fiscal y más de 36 marcas disponibles.
+            Planes flexibles, seguro incluido y más de 36 marcas disponibles.
           </p>
           <p className="mt-4 font-display text-gold italic text-sm">¡Aspira a más!</p>
         </div>

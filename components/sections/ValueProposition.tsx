@@ -18,8 +18,8 @@ const OFFERS = [
   },
   {
     icon: 'deduccion-fiscal.svg',
-    label: 'Deducción fiscal',
-    description: 'Optimiza tu carga tributaria con los beneficios fiscales del arrendamiento puro.*',
+    label: 'Gestión operativa',
+    description: 'Nos encargamos de trámites, placas y verificaciones para que tú te enfoques en tu negocio.',
   },
   {
     icon: 'mantenimiento.svg',

@@ -7,14 +7,14 @@ import { Badge } from '@/components/ui/Badge'
 export const metadata: Metadata = {
   title: 'Arrendamiento Puro de Vehículos',
   description:
-    'Conoce cómo funciona el arrendamiento puro de U Rent It: sin enganche, con deducción fiscal del 100%, seguro incluido y planes a 36 o 48 meses para empresas en México.',
+    'Conoce cómo funciona el arrendamiento puro de U Rent It: seguro incluido, mantenimiento preventivo, trámites gestionados y planes a 36 o 48 meses para empresas en México.',
   alternates: {
     canonical: 'https://urentit.mx/arrendamiento-puro',
   },
   openGraph: {
     title: 'Arrendamiento Puro de Vehículos | U Rent It',
     description:
-      'Sin enganche, deducción fiscal 100%, seguro incluido. Planes a 36 o 48 meses para personas físicas con actividad empresarial y personas morales.',
+      'Seguro incluido, mantenimiento preventivo y trámites gestionados. Planes a 36 o 48 meses para personas físicas con actividad empresarial y personas morales.',
     url: 'https://urentit.mx/arrendamiento-puro',
   },
 }
@@ -50,12 +50,12 @@ const serviceSchema = {
   },
   areaServed: { '@type': 'Country', name: 'México' },
   description:
-    'Arrendamiento puro de vehículos para empresas: sin pago inicial, deducción fiscal del 100%, seguro amplio, gestión de trámites y mantenimiento. Plazos de 36 y 48 meses.',
+    'Arrendamiento puro de vehículos para empresas: seguro amplio, gestión de trámites y mantenimiento preventivo incluidos. Plazos de 36 y 48 meses.',
 }
 
 const BENEFITS = [
-  { title: 'Sin enganche ni pago inicial', desc: 'Conserva tu capital de trabajo y desvíalo a lo que realmente impulsa tu negocio.' },
-  { title: 'Beneficios fiscales*', desc: 'Las rentas mensuales pueden ser deducibles de impuestos para personas morales y físicas con actividad empresarial. Consulta a tu contador.' },
+  { title: 'Protege tu capital de trabajo', desc: 'Destina tus recursos financieros a lo que realmente impulsa tu negocio, no a la compra de vehículos.' },
+  { title: 'Planes a la medida', desc: 'Adaptamos el contrato a las necesidades de tu empresa: tipo de vehículo, plazo y cobertura.' },
   { title: 'Seguro Premium disponible', desc: 'Nuestros planes son flexibles y pueden incluir seguro, mantenimiento y trámites en tu renta mensual.' },
   { title: 'Gestión de trámites completa', desc: 'Tramitamos placas, refrendos, tenencias y verificaciones en CDMX, EDOMEX, Morelos, Puebla, Hidalgo, Aguascalientes y más.' },
   { title: 'Mantenimiento preventivo', desc: 'El programa de mantenimiento preventivo está incluido para mantener tu flota siempre operativa.' },

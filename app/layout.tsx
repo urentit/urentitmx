@@ -27,13 +27,13 @@ export const metadata: Metadata = {
     template: '%s | U Rent It',
   },
   description:
-    'Arrendamiento puro de vehículos premium, gama media, utilitarios, comerciales, carga y blindados para empresas y empresarios en México. Planes flexibles, deducción fiscal y mantenimiento incluido.',
+    'Arrendamiento puro de vehículos premium, gama media, utilitarios, comerciales, carga y blindados para empresas y empresarios en México. Planes flexibles, seguro incluido y mantenimiento preventivo.',
   keywords: [
     'arrendamiento puro de vehículos México',
     'arrendamiento de autos para empresas CDMX',
-    'leasing vehicular sin enganche',
+    'leasing vehicular para empresas',
     'arrendamiento flotilla vehicular',
-    'deducción fiscal vehículos empresa',
+    'arrendamiento seguro mantenimiento incluido',
     'renta de autos para empresas México',
     'arrendamiento puro Estado de México',
     'arrendamiento vehículos utilitarios carga',
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     siteName: 'U Rent It',
     title: 'U Rent It | Arrendamiento de Vehículos para Empresas',
     description:
-      'Arrendamiento puro de vehículos para empresas en México. Planes flexibles, deducción fiscal y más de 36 marcas disponibles.',
+      'Arrendamiento puro de vehículos para empresas en México. Planes flexibles, seguro incluido y más de 36 marcas disponibles.',
     images: [
       {
         url: '/img/og-image.jpg',
@@ -140,7 +140,7 @@ const localBusinessSchema = {
   '@id': 'https://urentit.mx/#localbusiness',
   name: 'U Rent It',
   description:
-    'Arrendamiento puro de vehículos para empresas en México. Más de 36 marcas disponibles, planes flexibles con deducción fiscal y mantenimiento incluido.',
+    'Arrendamiento puro de vehículos para empresas en México. Más de 36 marcas disponibles, planes flexibles con seguro y mantenimiento incluido.',
   url: 'https://urentit.mx',
   telephone: '+52-55-1806-2633',
   image: 'https://urentit.mx/img/og-image.jpg',

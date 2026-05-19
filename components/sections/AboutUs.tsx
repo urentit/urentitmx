@@ -102,7 +102,7 @@ export function AboutUs() {
 
             <p className="text-white/60 font-sans text-base leading-relaxed mb-8">
               Desde vehículos de lujo hasta flotillas comerciales, ofrecemos
-              planes a la medida con deducción fiscal, mantenimiento incluido y
+              planes a la medida con mantenimiento incluido, seguro amplio y
               gestión operativa completa a nivel nacional.
             </p>
 

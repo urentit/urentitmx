@@ -101,7 +101,7 @@ export function CTAFinal() {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="mt-12 flex flex-wrap justify-center gap-8 text-white/25 font-sans text-xs tracking-wide"
         >
-          {['Sin pagos iniciales', 'Deducción fiscal*', 'Mantenimiento incluido', 'Respuesta en 24 hrs'].map((item) => (
+          {['Seguro incluido', 'Mantenimiento preventivo', 'Trámites gestionados', 'Respuesta en 24 hrs'].map((item) => (
             <span key={item} className="flex items-center gap-2">
               <span className="w-1 h-1 rounded-full bg-gold/40" />
               {item}

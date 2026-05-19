@@ -15,14 +15,14 @@ import { CTAFinal } from '@/components/sections/CTAFinal'
 export const metadata: Metadata = {
   title: 'Arrendamiento de Vehículos para Empresas en México',
   description:
-    'U Rent It ofrece arrendamiento puro de vehículos premium, gama media, utilitarios, carga y blindados para empresas en México. Sin enganche, deducción fiscal 100% y más de 36 marcas. Cotiza ahora.',
+    'U Rent It ofrece arrendamiento puro de vehículos premium, gama media, utilitarios, carga y blindados para empresas en México. Seguro incluido, mantenimiento preventivo y más de 36 marcas. Cotiza ahora.',
   alternates: {
     canonical: 'https://urentit.mx',
   },
   openGraph: {
     title: 'U Rent It | Arrendamiento de Vehículos para Empresas en México',
     description:
-      'Arrendamiento puro de vehículos para empresas. Sin enganche, deducción fiscal 100%, seguro incluido. Más de 36 marcas a 36 o 48 meses.',
+      'Arrendamiento puro de vehículos para empresas. Seguro incluido, mantenimiento preventivo y trámites gestionados. Más de 36 marcas a 36 o 48 meses.',
     url: 'https://urentit.mx',
     images: [
       {
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'U Rent It | Arrendamiento de Vehículos para Empresas',
     description:
-      'Arrendamiento puro sin enganche. Deducción fiscal 100%, seguro incluido. Más de 36 marcas disponibles en México.',
+      'Arrendamiento puro con seguro incluido, mantenimiento preventivo y trámites gestionados. Más de 36 marcas disponibles en México.',
     images: ['https://urentit.mx/img/og-image.jpg'],
   },
 }
@@ -61,7 +61,7 @@ const serviceSchema = {
     name: 'México',
   },
   description:
-    'Arrendamiento puro de vehículos para empresas y empresarios en México. Incluye seguro, trámites, mantenimiento y deducción fiscal del 100%.',
+    'Arrendamiento puro de vehículos para empresas y empresarios en México. Incluye seguro, trámites, mantenimiento y gestión operativa completa.',
   offers: {
     '@type': 'Offer',
     priceCurrency: 'MXN',
