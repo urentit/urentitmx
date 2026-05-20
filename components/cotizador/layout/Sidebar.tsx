@@ -28,17 +28,17 @@ export function Sidebar() {
   return (
     <aside className="flex h-full w-56 flex-col border-r border-white/10 bg-[#111111]">
       {/* Logo */}
-      <div className="border-b border-white/10 px-5 py-4 flex flex-col gap-2">
+      <div className="border-b border-white/10 px-5 py-4 flex flex-col items-center gap-2">
         <div className="relative w-28 h-10">
           <Image
             src="/img/logos/logo-urentit.svg"
             alt="U Rent It"
             fill
-            className="object-contain object-left"
+            className="object-contain object-center"
             priority
           />
         </div>
-        <span className="font-display text-xs font-bold text-gold tracking-widest uppercase">
+        <span className="font-sans text-xs font-bold text-gold tracking-widest uppercase">
           Cotizador
         </span>
       </div>
