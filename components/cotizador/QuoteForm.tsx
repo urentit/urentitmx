@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
 import { SECTION_ONE, SECTION_TWO, SECTION_THREE } from '@/lib/cotizador/placas'
 import type { QuoteType, QuoteResponse } from '@/lib/cotizador/types'
 import { QuoteResult } from './QuoteResult'
@@ -11,6 +12,7 @@ import { QuoteResult } from './QuoteResult'
 const schema = z.object({
   totalPrice:            z.string().min(1, 'Requerido'),
   modelo:                z.string().optional(),
+  cilindraje:            z.enum(['4', '6', '8']).optional(),
   accessory:             z.string().optional(),
   accessoryValue:        z.string().optional(),
   state:                 z.string().min(2, 'Selecciona un estado'),
@@ -39,6 +41,12 @@ const ANTICIPO_OPTS = [
   { value: '0.45', label: '45%' },
 ]
 
+const CILINDRAJE_OPTS = [
+  { value: '4', label: '4 Cilindros' },
+  { value: '6', label: '6 Cilindros' },
+  { value: '8', label: '8 Cilindros' },
+]
+
 function getStates(quoteType: QuoteType) {
   if (quoteType === 'electrico') return Object.entries(SECTION_THREE)
   if (quoteType === 'carga' || quoteType === 'carga-pesada' || quoteType === 'foraneo')
@@ -54,7 +62,13 @@ const inputCls  = 'w-full rounded border border-white/10 bg-white/5 px-3 py-2.5 
 const selectCls = 'w-full rounded border border-white/10 bg-[#1c1c1c] px-3 py-2.5 text-sm text-white focus:border-gold/50 focus:outline-none transition-colors cursor-pointer'
 const labelCls  = 'mb-1.5 block text-xs font-medium text-white/60 uppercase tracking-wide'
 
+// Tipos que muestran el campo cilindraje
+const WITH_CILINDRAJE: QuoteType[] = ['auto', 'vip', 'carga', 'carga-pesada', 'foraneo', 'flotilla', 'refinanciamiento']
+
 export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
+  const { data: session } = useSession()
+  const manualServices = (session?.user as any)?.manualServices === true
+
   const [result,    setResult]    = useState<QuoteResponse | null>(null)
   const [loading,   setLoading]   = useState(false)
   const [lastInput, setLastInput] = useState<Record<string, unknown>>({})
@@ -63,6 +77,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
+      cilindraje:            '4',
       anticipo:              '0.25',
       servicios:             '0',
       includeInsurance:      true,
@@ -72,11 +87,12 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
     },
   })
 
-  const states       = getStates(quoteType)
-  const isFlotilla   = quoteType === 'flotilla'
-  const isUsado      = quoteType === 'usado'
-  const isRefin      = quoteType === 'refinanciamiento'
+  const states        = getStates(quoteType)
+  const isFlotilla    = quoteType === 'flotilla'
+  const isUsado       = quoteType === 'usado'
+  const isRefin       = quoteType === 'refinanciamiento'
   const isCargaPesada = quoteType === 'carga-pesada'
+  const hasCilindraje = WITH_CILINDRAJE.includes(quoteType)
 
   async function onSubmit(values: FormValues) {
     setLoading(true)
@@ -92,22 +108,21 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       accessoryValue: parseFloat(values.accessoryValue ?? '0') || 0,
     }
 
-    if (!isRefin && !isCargaPesada) {
-      body.servicios = parseInt(values.servicios ?? '0') || 0
-    }
-    if (values.seguro)        body.seguro        = parseFloat(values.seguro)
-    if (values.servicesValue) body.servicesValue = parseFloat(values.servicesValue)
+    if (hasCilindraje && values.cilindraje) body.cilindraje = values.cilindraje
+    if (!isRefin && !isCargaPesada)         body.servicios  = parseInt(values.servicios ?? '0') || 0
+    if (values.seguro)                      body.seguro        = parseFloat(values.seguro)
+    if (values.servicesValue)               body.servicesValue = parseFloat(values.servicesValue)
     if (isUsado && values.autometricaValue)
       body.autometricaValue = parseFloat(values.autometricaValue.replace(/[,$\s]/g, ''))
     if (isFlotilla) {
-      body.residualValue24      = parseFloat(values.residualValue24 ?? '20') || 20
-      body.residualValue36      = parseFloat(values.residualValue36 ?? '30') || 30
-      body.residualValue48      = parseFloat(values.residualValue48 ?? '25') || 25
-      body.includeInsurance     = values.includeInsurance
-      body.includeGps           = values.includeGps
-      body.includeTenencias     = values.includeTenencias
+      body.residualValue24       = parseFloat(values.residualValue24 ?? '20') || 20
+      body.residualValue36       = parseFloat(values.residualValue36 ?? '30') || 30
+      body.residualValue48       = parseFloat(values.residualValue48 ?? '25') || 25
+      body.includeInsurance      = values.includeInsurance
+      body.includeGps            = values.includeGps
+      body.includeTenencias      = values.includeTenencias
       body.includeVerificaciones = values.includeVerificaciones
-      body.plazos               = ['24', '36', '48']
+      body.plazos                = ['24', '36', '48']
     }
 
     setLastInput({ modelo: values.modelo ?? '', totalPrice: body.totalPrice, quoteType })
@@ -156,6 +171,18 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
           />
         </div>
 
+        {/* Cilindraje */}
+        {hasCilindraje && (
+          <div>
+            <label className={labelCls}>Cilindraje</label>
+            <select {...register('cilindraje')} className={selectCls}>
+              {CILINDRAJE_OPTS.map(o => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+          </div>
+        )}
+
         {/* Estado */}
         <div>
           <label className={labelCls}>Estado para placas *</label>
@@ -202,6 +229,19 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
             className={inputCls}
           />
         </div>
+
+        {/* Valor de cada servicio — solo usuarios con manualServices */}
+        {manualServices && (
+          <div>
+            <label className={labelCls}>Valor de cada servicio</label>
+            <input
+              {...register('servicesValue')}
+              inputMode="numeric"
+              placeholder="Automático"
+              className={inputCls}
+            />
+          </div>
+        )}
 
         {/* Accesorio */}
         <div>
