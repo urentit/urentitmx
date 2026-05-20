@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Playfair_Display } from 'next/font/google'
-import { Navbar } from '@/components/layout/Navbar'
-import { Footer } from '@/components/layout/Footer'
-import { WhatsAppWidget } from '@/components/layout/WhatsAppWidget'
+import { PublicShell } from '@/components/layout/PublicShell'
 import { MotionProvider } from '@/components/providers/MotionProvider'
 import './globals.css'
 
@@ -213,10 +211,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </noscript>
 
         <MotionProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-          <WhatsAppWidget />
+          <PublicShell>{children}</PublicShell>
         </MotionProvider>
       </body>
     </html>
