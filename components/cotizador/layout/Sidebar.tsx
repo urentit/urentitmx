@@ -38,7 +38,9 @@ export function Sidebar() {
             priority
           />
         </div>
-        <span className="text-[10px] text-white/30 uppercase tracking-widest">Cotizador interno</span>
+        <span className="font-display text-xs font-bold text-gold tracking-widest uppercase">
+          Cotizador
+        </span>
       </div>
 
       {/* Nav */}
