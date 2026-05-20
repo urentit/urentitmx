@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer'
+import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer'
 import type { QuoteResponse, QuoteType } from '@/lib/cotizador/types'
 
 const GOLD     = '#e1be4a'
@@ -8,7 +8,8 @@ const LIGHT    = '#f0f0f0'
 const styles = StyleSheet.create({
   page:        { backgroundColor: '#ffffff', padding: 40, fontFamily: 'Helvetica', fontSize: 9, color: BLACK },
   header:      { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, paddingBottom: 16, borderBottomWidth: 2, borderBottomColor: GOLD },
-  logo:        { fontSize: 18, fontFamily: 'Helvetica-Bold', color: GOLD, letterSpacing: 1 },
+  logoImg:     { width: 100, height: 32, objectFit: 'contain', marginBottom: 4 },
+  logo:        { fontSize: 14, fontFamily: 'Helvetica-Bold', color: GOLD, letterSpacing: 2 },
   subtitle:    { fontSize: 7, color: GRAY, marginTop: 2 },
   title:       { fontSize: 13, fontFamily: 'Helvetica-Bold', color: BLACK },
   meta:        { fontSize: 8, color: GRAY, marginTop: 3 },
@@ -36,9 +37,10 @@ interface Props {
   quoteType:  QuoteType
   modelo:     string
   totalPrice: number
+  logoPath?:  string
 }
 
-export function PDFTemplate({ result, quoteType, modelo, totalPrice }: Props) {
+export function PDFTemplate({ result, quoteType, modelo, totalPrice, logoPath }: Props) {
   const periods = Object.keys(result).sort()
   const date    = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' })
 
@@ -48,7 +50,8 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice }: Props) {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.logo}>U Rent It</Text>
+            {logoPath && <Image style={styles.logoImg} src={logoPath} />}
+            <Text style={styles.logo}>U RENT IT</Text>
             <Text style={styles.subtitle}>Cotización de Arrendamiento Puro</Text>
           </View>
           <View>
@@ -118,7 +121,7 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice }: Props) {
 
         {/* Footer */}
         <View style={styles.footer} fixed>
-          <Text style={styles.footerText}>U Rent It — ¡Aspira a más!</Text>
+          <Text style={styles.footerText}>U RENT IT — ¡Aspira a más!</Text>
           <Text style={styles.footerText}>urentit.mx · (55) 1806-2633</Text>
           <Text style={styles.footerText} render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
         </View>
