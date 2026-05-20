@@ -62,7 +62,8 @@ const QUOTE_TYPE_LABELS: Record<QuoteType, string> = {
   refinanciamiento: 'Refinanciamiento',
 }
 
-const inputCls = 'w-full rounded border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/30 focus:border-gold/50 focus:outline-none'
+const inputCls  = 'w-full rounded border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/30 focus:border-gold/50 focus:outline-none'
+const selectCls = 'w-full rounded border border-white/10 bg-[#1c1c1c] px-3 py-2 text-sm text-white focus:border-gold/50 focus:outline-none'
 const labelCls = 'mb-1 block text-xs text-white/50'
 
 export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
@@ -155,7 +156,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
         {/* Estado / placas */}
         <div>
           <label className={labelCls}>Estado para placas *</label>
-          <select {...register('state')} className={inputCls}>
+          <select {...register('state')} className={selectCls}>
             <option value="">— Seleccionar —</option>
             {states.map(([key, s]) => (
               <option key={key} value={key}>{s.name}</option>
@@ -167,7 +168,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
         {/* Anticipo */}
         <div>
           <label className={labelCls}>% Anticipo *</label>
-          <select {...register('anticipo')} className={inputCls}>
+          <select {...register('anticipo')} className={selectCls}>
             <option value="">— Seleccionar —</option>
             {ANTICIPO_OPTS.map(o => (
               <option key={o.value} value={o.value}>{o.label}</option>
@@ -180,7 +181,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
         {!isCargaPesada && !isRefin && (
           <div>
             <label className={labelCls}>Servicios incluidos (años)</label>
-            <select {...register('servicios')} className={inputCls}>
+            <select {...register('servicios')} className={selectCls}>
               <option value="0">Ninguno</option>
               <option value="1">1 año</option>
               <option value="2">2 años</option>
