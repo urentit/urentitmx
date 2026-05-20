@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -31,9 +32,19 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a]">
       <div className="w-full max-w-sm">
-        <div className="mb-8 text-center">
-          <p className="font-sans text-2xl font-bold text-gold tracking-wide">U Rent It</p>
-          <p className="mt-1 text-sm text-white/40">Cotizador interno</p>
+        <div className="mb-8 text-center flex flex-col items-center gap-3">
+          <div className="relative w-36 h-12">
+            <Image
+              src="/img/logos/logo-urentit.svg"
+              alt="U Rent It"
+              fill
+              className="object-contain object-center"
+              priority
+            />
+          </div>
+          <p className="font-sans text-xs font-bold text-gold tracking-widest uppercase">
+            Cotizador interno
+          </p>
         </div>
 
         <form
