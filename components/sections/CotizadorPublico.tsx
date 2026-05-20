@@ -23,12 +23,14 @@ function fmt(n: number) {
 }
 
 interface ResultData {
-  mensualidad36: number
-  mensualidad48: number
-  anticipo36:    number
-  anticipo48:    number
-  finalCost36:   number
-  finalCost48:   number
+  mensualidadMin36: number
+  mensualidadMax36: number
+  anticipo36:       number
+  finalCost36:      number
+  mensualidadMin48: number
+  mensualidadMax48: number
+  anticipo48:       number
+  finalCost48:      number
 }
 
 const inputCls = 'w-full rounded border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/30 focus:border-gold/50 focus:outline-none transition-colors'
@@ -189,21 +191,29 @@ export function CotizadorPublico() {
               >
                 <div className="grid gap-4 sm:grid-cols-2">
                   {[
-                    { label: '36 meses', mensualidad: result.mensualidad36, anticipo: result.anticipo36, finalCost: result.finalCost36 },
-                    { label: '48 meses', mensualidad: result.mensualidad48, anticipo: result.anticipo48, finalCost: result.finalCost48 },
+                    { label: '36 meses', min: result.mensualidadMin36, max: result.mensualidadMax36, anticipo: result.anticipo36, finalCost: result.finalCost36 },
+                    { label: '48 meses', min: result.mensualidadMin48, max: result.mensualidadMax48, anticipo: result.anticipo48, finalCost: result.finalCost48 },
                   ].map(col => (
                     <div
                       key={col.label}
                       className="rounded-xl border border-gold/20 bg-gold/5 p-6"
                     >
                       <p className="mb-4 text-xs uppercase tracking-widest text-gold/70">{col.label}</p>
-                      <p className="mb-1 font-display text-4xl font-bold text-white">
-                        {fmt(col.mensualidad)}
-                        <span className="ml-1 text-base font-normal text-white/40">/mes</span>
+
+                      {/* Rango de precio */}
+                      <p className="text-xs text-white/35 mb-1 uppercase tracking-widest">Renta mensual estimada</p>
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="font-display text-2xl font-bold text-white">{fmt(col.min)}</span>
+                        <span className="text-white/40 text-sm">—</span>
+                        <span className="font-display text-2xl font-bold text-gold">{fmt(col.max)}</span>
+                      </div>
+                      <p className="text-xs text-white/30 mb-4">
+                        Plan básico — Plan completo con servicios
                       </p>
-                      <div className="mt-4 space-y-1.5 text-sm text-white/50">
+
+                      <div className="space-y-1.5 text-sm text-white/50 border-t border-white/8 pt-4">
                         <div className="flex justify-between">
-                          <span>Anticipo inicial</span>
+                          <span>Anticipo referencial</span>
                           <span className="text-white/80">{fmt(col.anticipo)}</span>
                         </div>
                         <div className="flex justify-between">
@@ -215,8 +225,18 @@ export function CotizadorPublico() {
                   ))}
                 </div>
 
+                {/* Disclaimer prominente */}
+                <div className="mt-5 rounded-sm border border-white/8 bg-white/[0.03] px-5 py-4">
+                  <p className="text-xs text-white/40 leading-relaxed text-center">
+                    <span className="text-white/60 font-semibold">Estimación referencial sujeta a términos y condiciones.</span>{' '}
+                    El precio final puede variar según el plan seleccionado, servicios incluidos, evaluación de crédito
+                    y condiciones vigentes al momento de la cotización formal.
+                    Para una propuesta definitiva sin costo, contacta a un ejecutivo.
+                  </p>
+                </div>
+
                 {/* CTAs */}
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                   <a
                     href={WHATSAPP}
                     target="_blank"
@@ -239,10 +259,6 @@ export function CotizadorPublico() {
                     <ArrowRight size={16} />
                   </a>
                 </div>
-
-                <p className="mt-4 text-center text-xs text-white/25">
-                  Precios estimados basados en arrendamiento puro estándar · Tasa referencial 28% / 27% anual · No incluye evaluación de crédito
-                </p>
               </motion.div>
             )}
           </AnimatePresence>
