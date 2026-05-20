@@ -32,7 +32,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a]">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <p className="font-display text-2xl font-bold text-gold">U Rent It</p>
+          <p className="font-sans text-2xl font-bold text-gold tracking-wide">U Rent It</p>
           <p className="mt-1 text-sm text-white/40">Cotizador interno</p>
         </div>
 

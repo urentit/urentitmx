@@ -8,7 +8,7 @@ export function InternalHeader({ title }: { title: string }) {
 
   return (
     <header className="flex h-14 items-center justify-between border-b border-white/10 bg-[#0a0a0a] px-6">
-      <h1 className="text-sm font-semibold text-white">{title}</h1>
+      <h1 className="font-sans text-sm font-semibold text-white">{title}</h1>
       <div className="flex items-center gap-4">
         <span className="flex items-center gap-2 text-xs text-white/50">
           <User size={13} />

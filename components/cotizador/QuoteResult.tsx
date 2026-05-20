@@ -115,7 +115,7 @@ export function QuoteResult({ result, quoteType, modelo, totalPrice }: Props) {
       {/* Encabezado */}
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h3 className="text-base font-semibold text-white">
+          <h3 className="font-sans text-base font-semibold text-white">
             {modelo || 'Cotización'}{' '}
             <span className="text-white/40 text-sm font-normal">— {fmt(totalPrice)}</span>
           </h3>
