@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import {
   Car, Truck, Package, Zap, Map, History, RotateCcw,
@@ -27,11 +28,17 @@ export function Sidebar() {
   return (
     <aside className="flex h-full w-56 flex-col border-r border-white/10 bg-[#111111]">
       {/* Logo */}
-      <div className="border-b border-white/10 px-5 py-5">
-        <span className="font-display text-sm font-bold text-gold tracking-widest uppercase">
-          Cotizador
-        </span>
-        <p className="mt-0.5 text-[10px] text-white/30 uppercase tracking-widest">U Rent It</p>
+      <div className="border-b border-white/10 px-5 py-4 flex flex-col gap-2">
+        <div className="relative w-28 h-10">
+          <Image
+            src="/img/logos/logo-urentit.svg"
+            alt="U Rent It"
+            fill
+            className="object-contain object-left"
+            priority
+          />
+        </div>
+        <span className="text-[10px] text-white/30 uppercase tracking-widest">Cotizador interno</span>
       </div>
 
       {/* Nav */}
