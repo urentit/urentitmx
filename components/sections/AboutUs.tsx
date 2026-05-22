@@ -86,19 +86,6 @@ export function AboutUs() {
               <div className="absolute inset-0 ring-1 ring-inset ring-gold/20 rounded-sm pointer-events-none" />
             </div>
 
-            {/* Floating metric card */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="absolute -bottom-5 -right-4 glass rounded-sm px-5 py-4 shadow-gold"
-            >
-              <div className="font-display text-3xl font-bold text-gold">10+</div>
-              <div className="text-white/60 text-xs font-sans mt-1 tracking-wide">
-                Años de<br />experiencia
-              </div>
-            </motion.div>
-
             {/* Decorative corner lines */}
             <div className="absolute -top-4 -left-4 w-12 h-12 border-t-2 border-l-2 border-gold/40" />
             <div className="absolute -bottom-4 -right-4 w-12 h-12 border-b-2 border-r-2 border-gold/40 lg:right-0" />
