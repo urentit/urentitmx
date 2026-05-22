@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/Badge'
 import { ButtonLink } from '@/components/ui/Button'
 
 // Reemplaza este ID con el de YouTube una vez que subas el video como "No listado"
-const YOUTUBE_ID = 'PENDIENTE'
+const YOUTUBE_ID = 'Ff7xsHFkxhQ'
 
 const COTIZAR = '#cotizar'
 
