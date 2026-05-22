@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { useForm } from 'react-hook-form'
+import { analytics } from '@/lib/analytics'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -74,9 +75,7 @@ export function ContactForm() {
       reset()
 
       // GA4 event
-      if (typeof window !== 'undefined' && (window as any).dataLayer) {
-        ;(window as any).dataLayer.push({ event: 'form_submit', form_type: 'contact' })
-      }
+      analytics.formSubmit('contact')
     } catch {
       setStatus('error')
     }
@@ -151,9 +150,7 @@ export function ContactForm() {
                   rel="noopener noreferrer"
                   className="text-[#25D366] font-sans font-semibold text-sm hover:underline"
                   onClick={() => {
-                    if (typeof window !== 'undefined' && (window as any).dataLayer) {
-                      ;(window as any).dataLayer.push({ event: 'whatsapp_click', source: 'contact_section' })
-                    }
+                    analytics.whatsappClick('contact_section')
                   }}
                 >
                   Contactar por WhatsApp →

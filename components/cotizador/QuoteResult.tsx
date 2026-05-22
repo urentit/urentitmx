@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Download } from 'lucide-react'
 import type { QuoteResponse, QuoteResult as QR, QuoteType } from '@/lib/cotizador/types'
+import { analytics } from '@/lib/analytics'
 
 function fmt(n: number) {
   return n.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 })
@@ -118,6 +119,7 @@ export function QuoteResult({ result, quoteType, modelo, totalPrice }: Props) {
       a.download = `cotizacion-${modelo || quoteType}-urentit.pdf`
       a.click()
       URL.revokeObjectURL(url)
+      analytics.cotizadorPDF(quoteType)
     } finally {
       setDownloading(false)
     }

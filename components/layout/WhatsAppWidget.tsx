@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
+import { analytics } from '@/lib/analytics'
 
 const WHATSAPP_NUMBER = '525518062633'
 const MESSAGE = encodeURIComponent('Hola, me gustaría obtener información sobre el arrendamiento de vehículos.')
@@ -31,10 +32,7 @@ export function WhatsAppWidget() {
       '_blank',
       'noopener,noreferrer'
     )
-    // Fire GA4 event if dataLayer available
-    if (typeof window !== 'undefined' && (window as any).dataLayer) {
-      ;(window as any).dataLayer.push({ event: 'whatsapp_click' })
-    }
+    analytics.whatsappClick('widget')
   }
 
   return (

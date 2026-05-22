@@ -5,6 +5,7 @@ import { useRef, useState } from 'react'
 import { CheckCircle2, Play } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { ButtonLink } from '@/components/ui/Button'
+import { analytics } from '@/lib/analytics'
 
 // Reemplaza este ID con el de YouTube una vez que subas el video como "No listado"
 const YOUTUBE_ID = 'Ff7xsHFkxhQ'
@@ -71,7 +72,7 @@ export function AboutUs() {
                   />
                   {/* Play button */}
                   <button
-                    onClick={() => setPlaying(true)}
+                    onClick={() => { setPlaying(true); analytics.videoPlay('U Rent It corporativo') }}
                     className="absolute inset-0 flex items-center justify-center group cursor-pointer"
                     aria-label="Reproducir video"
                   >

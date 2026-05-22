@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator, ChevronDown, ArrowRight, MessageCircle } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
+import { analytics } from '@/lib/analytics'
 import { SECTION_ONE } from '@/lib/cotizador/placas'
 import { clsx } from 'clsx'
 
@@ -242,9 +243,7 @@ export function CotizadorPublico() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => {
-                      if (typeof window !== 'undefined' && (window as any).gtag) {
-                        ;(window as any).gtag('event', 'cotizador_publico_whatsapp', { event_category: 'cotizador' })
-                      }
+                      analytics.cotizadorWA('publico')
                     }}
                     className="flex flex-1 items-center justify-center gap-2 rounded-sm bg-gold px-6 py-3.5 text-sm font-semibold text-black transition-all hover:bg-gold-light"
                   >

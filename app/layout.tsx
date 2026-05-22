@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Playfair_Display } from 'next/font/google'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { PublicShell } from '@/components/layout/PublicShell'
 import { MotionProvider } from '@/components/providers/MotionProvider'
 import './globals.css'
@@ -89,8 +90,9 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-/* ─── GTM ─── */
+/* ─── Analytics ─── */
 const GTM_ID = 'GTM-T7CFMMR8'
+const GA4_ID = 'G-CEPKV6Y3M0'
 
 /* ─── JSON-LD WebSite ─── */
 const websiteSchema = {
@@ -213,6 +215,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <MotionProvider>
           <PublicShell>{children}</PublicShell>
         </MotionProvider>
+        <GoogleAnalytics gaId={GA4_ID} />
       </body>
     </html>
   )
