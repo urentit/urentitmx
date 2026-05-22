@@ -70,6 +70,15 @@ export function Footer() {
             Planes flexibles, seguro incluido y más de 36 marcas disponibles.
           </p>
           <p className="mt-4 font-display text-gold italic text-sm">¡Aspira a más!</p>
+          <a
+            href="https://cotiza.urentit.mx/login"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex items-center gap-2 rounded border border-white/15 px-4 py-2 text-xs text-white/50 hover:border-gold/40 hover:text-gold transition-colors duration-200"
+          >
+            <Lock size={12} />
+            Cotizador
+          </a>
         </div>
 
         {/* Col 2 — Navegación */}
@@ -189,21 +198,9 @@ export function Footer() {
           <p className="text-white/30 text-xs text-center sm:text-left">
             © {year} U Rent It. Todos los derechos reservados.
           </p>
-          <div className="flex items-center gap-4">
-            <p className="text-white/20 text-xs">
-              Arrendamiento puro de vehículos · México
-            </p>
-            <a
-              href="https://cotiza.urentit.mx/login"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/15 hover:text-white/30 transition-colors duration-200"
-              aria-label="Acceso interno"
-              title="Acceso interno"
-            >
-              <Lock size={11} />
-            </a>
-          </div>
+          <p className="text-white/20 text-xs">
+            Arrendamiento puro de vehículos · México
+          </p>
         </div>
       </div>
     </footer>
