@@ -2,10 +2,12 @@
 
 import Image from 'next/image'
 import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
-import { CheckCircle2 } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { CheckCircle2, Play } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { ButtonLink } from '@/components/ui/Button'
+
+const VIDEO_SRC = '/video/corporativo.mp4'
 
 const COTIZAR = '#cotizar'
 
@@ -25,6 +27,14 @@ const METRICS = [
 export function AboutUs() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [playing, setPlaying] = useState(false)
+
+  function handlePlay() {
+    if (!videoRef.current) return
+    videoRef.current.play()
+    setPlaying(true)
+  }
 
   return (
     <section
@@ -39,24 +49,39 @@ export function AboutUs() {
       <div className="container-site">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-          {/* ─── Image side ─── */}
+          {/* ─── Video side ─── */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.5 }}
             className="relative order-2 lg:order-1"
           >
-            {/* Main image */}
-            <div className="relative aspect-[4/5] max-w-md mx-auto lg:mx-0 rounded-sm overflow-hidden">
-              <Image
-                src="/img/default/foto-intro.png"
-                alt="U Rent It — Arrendamiento de vehículos empresariales"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+            {/* Video player */}
+            <div className="relative aspect-[4/5] max-w-md mx-auto lg:mx-0 rounded-sm overflow-hidden bg-black">
+              <video
+                ref={videoRef}
+                src={VIDEO_SRC}
+                poster="/img/default/foto-intro.png"
+                className="absolute inset-0 w-full h-full object-cover"
+                playsInline
+                preload="metadata"
+                onEnded={() => setPlaying(false)}
               />
               {/* Gold overlay border */}
-              <div className="absolute inset-0 ring-1 ring-inset ring-gold/20 rounded-sm" />
+              <div className="absolute inset-0 ring-1 ring-inset ring-gold/20 rounded-sm pointer-events-none" />
+
+              {/* Play button overlay */}
+              {!playing && (
+                <button
+                  onClick={handlePlay}
+                  className="absolute inset-0 flex items-center justify-center group cursor-pointer"
+                  aria-label="Reproducir video"
+                >
+                  <div className="w-16 h-16 rounded-full bg-gold/90 flex items-center justify-center shadow-lg transition-transform duration-200 group-hover:scale-110">
+                    <Play size={24} className="text-black ml-1" fill="currentColor" />
+                  </div>
+                </button>
+              )}
             </div>
 
             {/* Floating metric card */}

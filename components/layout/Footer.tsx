@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Facebook, Instagram, Linkedin, ArrowRight } from 'lucide-react'
+import { Facebook, Instagram, Linkedin, ArrowRight, Lock } from 'lucide-react'
 
 const NAV_LINKS = [
   { label: '¿Quiénes somos?', hash: 'quienes-somos' },
@@ -25,7 +25,7 @@ const SOCIAL = [
   },
   {
     label: 'LinkedIn',
-    href: 'https://www.linkedin.com/company/urentit',
+    href: 'https://www.linkedin.com/company/urentitrenting/',
     icon: Linkedin,
   },
   {
@@ -189,9 +189,21 @@ export function Footer() {
           <p className="text-white/30 text-xs text-center sm:text-left">
             © {year} U Rent It. Todos los derechos reservados.
           </p>
-          <p className="text-white/20 text-xs">
-            Arrendamiento puro de vehículos · México
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-white/20 text-xs">
+              Arrendamiento puro de vehículos · México
+            </p>
+            <a
+              href="https://cotiza.urentit.mx/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/15 hover:text-white/30 transition-colors duration-200"
+              aria-label="Acceso interno"
+              title="Acceso interno"
+            >
+              <Lock size={11} />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
