@@ -6,22 +6,32 @@ const BLACK    = '#0a0a0a'
 const GRAY     = '#888888'
 const LIGHT    = '#f0f0f0'
 const styles = StyleSheet.create({
-  page:        { backgroundColor: '#ffffff', padding: 40, fontFamily: 'Helvetica', fontSize: 9, color: BLACK },
-  header:      { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, paddingBottom: 16, borderBottomWidth: 2, borderBottomColor: GOLD },
-  logoImg:     { width: 100, height: 32, objectFit: 'contain', marginBottom: 4 },
-  logo:        { fontSize: 14, fontFamily: 'Helvetica-Bold', color: GOLD, letterSpacing: 2 },
-  subtitle:    { fontSize: 7, color: GRAY, marginTop: 2 },
-  title:       { fontSize: 13, fontFamily: 'Helvetica-Bold', color: BLACK },
-  meta:        { fontSize: 8, color: GRAY, marginTop: 3 },
-  section:     { marginBottom: 16 },
-  sectionTitle: { fontSize: 9, fontFamily: 'Helvetica-Bold', color: '#ffffff', backgroundColor: GOLD, padding: '4 8', marginBottom: 0 },
-  table:       { borderWidth: 1, borderColor: LIGHT },
-  row:         { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: LIGHT },
-  rowAlt:      { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: LIGHT, backgroundColor: '#fafafa' },
-  cell:        { flex: 1, padding: '5 8', fontSize: 8 },
-  cellRight:   { flex: 1, padding: '5 8', fontSize: 8, textAlign: 'right', fontFamily: 'Helvetica-Bold' },
-  footer:      { position: 'absolute', bottom: 30, left: 40, right: 40, borderTopWidth: 1, borderTopColor: LIGHT, paddingTop: 8, flexDirection: 'row', justifyContent: 'space-between' },
-  footerText:  { fontSize: 7, color: GRAY },
+  page:          { backgroundColor: '#ffffff', padding: 40, fontFamily: 'Helvetica', fontSize: 9, color: BLACK },
+  header:        { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, paddingBottom: 16, borderBottomWidth: 2, borderBottomColor: GOLD },
+  logoImg:       { width: 100, height: 32, objectFit: 'contain', marginBottom: 4 },
+  logo:          { fontSize: 14, fontFamily: 'Helvetica-Bold', color: GOLD, letterSpacing: 2 },
+  subtitle:      { fontSize: 7, color: GRAY, marginTop: 2 },
+  title:         { fontSize: 13, fontFamily: 'Helvetica-Bold', color: BLACK },
+  meta:          { fontSize: 8, color: GRAY, marginTop: 3 },
+  section:       { marginBottom: 16 },
+  sectionTitle:  { fontSize: 9, fontFamily: 'Helvetica-Bold', color: '#ffffff', backgroundColor: GOLD, padding: '4 8', marginBottom: 0 },
+  table:         { borderWidth: 1, borderColor: LIGHT },
+  row:           { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: LIGHT },
+  rowAlt:        { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: LIGHT, backgroundColor: '#fafafa' },
+  cell:          { flex: 1, padding: '5 8', fontSize: 8 },
+  cellRight:     { flex: 1, padding: '5 8', fontSize: 8, textAlign: 'right', fontFamily: 'Helvetica-Bold' },
+  footer:        { position: 'absolute', bottom: 30, left: 40, right: 40, borderTopWidth: 1, borderTopColor: LIGHT, paddingTop: 8, flexDirection: 'row', justifyContent: 'space-between' },
+  footerText:    { fontSize: 7, color: GRAY },
+  // Secciones finales
+  checkRow:      { flexDirection: 'row', borderWidth: 1, borderColor: LIGHT, marginTop: 16 },
+  checkCell:     { flex: 1, padding: '5 8', fontSize: 8, borderRightWidth: 1, borderRightColor: LIGHT, textAlign: 'center' },
+  checkLabel:    { flex: 2, padding: '5 8', fontSize: 8 },
+  considerations:{ marginTop: 16, padding: '10 12', borderWidth: 1, borderColor: LIGHT, backgroundColor: '#fafafa' },
+  consTitle:     { fontSize: 8, fontFamily: 'Helvetica-Bold', marginBottom: 5 },
+  consBullet:    { fontSize: 7.5, color: '#444444', marginBottom: 3 },
+  disclaimer:    { marginTop: 10, fontSize: 7, color: GRAY, fontFamily: 'Helvetica-Oblique', lineHeight: 1.5 },
+  signLine:      { marginTop: 28, borderTopWidth: 1, borderTopColor: BLACK, width: 220, alignSelf: 'center' },
+  signLabel:     { fontSize: 7.5, color: GRAY, textAlign: 'center', marginTop: 4, alignSelf: 'center' },
 })
 
 function fmt(n: number) {
@@ -77,6 +87,7 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, logoPath }:
             ['Total rentas + IVA',                    fmt(c.totalRentasMasIva)],
             ['Valor comercial al vencimiento',        fmt(c.valorVehiculo)],
             ['Importe a deducir (ISR + IVA + PTU)',   fmt(c.importeDeducir)],
+            ['Entidad Placas',                        e.placas],
           ]
 
           const breakRows = [
@@ -118,6 +129,41 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, logoPath }:
             </View>
           )
         })}
+
+        {/* Favor de marcar el plazo */}
+        <View style={styles.checkRow}>
+          <Text style={styles.checkLabel}>Favor de marcar con una X el plazo deseado:</Text>
+          {periods.map(period => (
+            <Text key={period} style={styles.checkCell}>
+              {PERIOD_LABELS[period] ?? `${period} meses`}
+            </Text>
+          ))}
+        </View>
+
+        {/* Consideraciones */}
+        <View style={styles.considerations}>
+          <Text style={styles.consTitle}>*Consideraciones:</Text>
+          {[
+            'No hay etiqueta fiscal. El coche está a nombre de la arrendadora.',
+            'Deducción total (en IVA e ISR) de todas las rentas.',
+            'Utilidad final en la diferencia de compra y venta.',
+            'El Arrendamiento incluye: Seguro Platinum, Servicios, Localizador GPS, Verificaciones, Trámites iniciales.',
+            'Flujo mensual constante y fijo.',
+            'Gastos deducibles TODOS los meses del año. Buena práctica fiscal, sobre todo ahora con la Contabilidad en Línea.',
+          ].map((item, i) => (
+            <Text key={i} style={styles.consBullet}>{'- ' + item}</Text>
+          ))}
+          <Text style={styles.disclaimer}>
+            La presente propuesta de RENTING es únicamente informativa, requiere de su aprobación y puede ser modificada
+            en cualquier momento. Tiene vigencia del mes en Curso.
+          </Text>
+        </View>
+
+        {/* Firma */}
+        <View style={{ marginTop: 32, alignItems: 'center' }}>
+          <View style={styles.signLine} />
+          <Text style={styles.signLabel}>Nombre y Firma de Autorización</Text>
+        </View>
 
         {/* Footer */}
         <View style={styles.footer} fixed>

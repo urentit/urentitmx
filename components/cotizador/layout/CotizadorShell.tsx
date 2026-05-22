@@ -6,6 +6,7 @@ import type { Session } from 'next-auth'
 import { SessionProvider } from '@/components/cotizador/SessionProvider'
 import { Sidebar } from './Sidebar'
 import { InternalHeader } from './InternalHeader'
+import { DownloadDocs } from '@/components/cotizador/DownloadDocs'
 
 export function CotizadorShell({ children, session }: { children: React.ReactNode; session: Session }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -27,6 +28,7 @@ export function CotizadorShell({ children, session }: { children: React.ReactNod
           <InternalHeader onMenuToggle={() => setSidebarOpen(v => !v)} />
           <main className="flex-1 overflow-y-auto p-4 lg:p-6">
             {children}
+            <DownloadDocs />
           </main>
         </div>
       </div>
