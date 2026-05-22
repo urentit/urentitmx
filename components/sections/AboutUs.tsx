@@ -50,7 +50,7 @@ export function AboutUs() {
             className="relative order-2 lg:order-1"
           >
             {/* YouTube embed */}
-            <div className="relative aspect-video max-w-md mx-auto lg:mx-0 rounded-sm overflow-hidden bg-black">
+            <div className="relative aspect-video w-full rounded-sm overflow-hidden bg-black">
               {playing ? (
                 <iframe
                   className="absolute inset-0 w-full h-full"
@@ -90,7 +90,7 @@ export function AboutUs() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="absolute -bottom-6 -right-4 lg:-right-8 glass rounded-sm px-6 py-5 shadow-gold"
+              className="absolute -bottom-5 -right-4 glass rounded-sm px-5 py-4 shadow-gold"
             >
               <div className="font-display text-3xl font-bold text-gold">10+</div>
               <div className="text-white/60 text-xs font-sans mt-1 tracking-wide">
