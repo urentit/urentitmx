@@ -53,6 +53,96 @@ const serviceSchema = {
     'Arrendamiento puro de vehículos para empresas: seguro amplio, gestión de trámites y mantenimiento preventivo incluidos. Plazos de 36 y 48 meses.',
 }
 
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: '¿Cómo funciona el arrendamiento puro de vehículos con U Rent It?',
+  description: 'Proceso paso a paso para arrendar un vehículo para tu empresa con U Rent It en México.',
+  totalTime: 'P1D',
+  step: [
+    {
+      '@type': 'HowToStep',
+      position: 1,
+      name: 'Cotiza en línea',
+      text: 'Llena nuestro formulario de contacto o escríbenos por WhatsApp. Un ejecutivo te contactará en menos de 24 horas.',
+      url: 'https://urentit.mx/#cotizar',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 2,
+      name: 'Elige tu vehículo',
+      text: 'Selecciona la marca, modelo y plazo que mejor se adapte a tu empresa. Contamos con más de 36 marcas disponibles.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 3,
+      name: 'Firma el contrato',
+      text: 'Proceso 100% digital con revisión de documentos empresariales. Para personas físicas con actividad empresarial y personas morales.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 4,
+      name: 'Recibe tu vehículo',
+      text: 'Entrega a domicilio o en nuestras oficinas, con placas y seguro listos para circular.',
+    },
+  ],
+}
+
+const faqArrendamientoSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '¿Qué es el arrendamiento puro de vehículos?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Es un contrato mediante el cual U Rent It te cede el uso y goce de un vehículo por un plazo determinado a cambio de una renta mensual fija. A diferencia de un crédito, no pagas tasas de interés y al término del contrato puedes comprar el vehículo, renovar o simplemente devolverlo.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Qué plazos de arrendamiento manejan?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Manejamos plazos de 36 y 48 meses para arrendamiento puro. No ofrecemos arrendamientos cortos de 30, 60 o 90 días.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Qué incluye la renta mensual del arrendamiento puro?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Nuestros planes pueden incluir el vehículo, seguro amplio, mantenimiento preventivo, trámites de placas, tenencias, verificaciones y vehículo sustituto en caso de siniestro o taller.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Quién puede arrendar un vehículo con U Rent It?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Contamos con planes para personas físicas con actividad empresarial y personas morales. No ofrecemos arrendamiento para plataformas como Uber, Didi o Beat.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿En qué estados tramitan las placas?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Tramitamos placas en CDMX, EDOMEX, Morelos, Puebla, Hidalgo, Aguascalientes y resto de la República Mexicana.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Ofrecen arrendamiento de flotillas?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Sí, contamos con atención especializada para clientes flotilleros con planes a la medida para múltiples unidades.',
+      },
+    },
+  ],
+}
+
 const BENEFITS = [
   { title: 'Protege tu capital de trabajo', desc: 'Destina tus recursos financieros a lo que realmente impulsa tu negocio, no a la compra de vehículos.' },
   { title: 'Planes a la medida', desc: 'Adaptamos el contrato a las necesidades de tu empresa: tipo de vehículo, plazo y cobertura.' },
@@ -77,6 +167,14 @@ export default function ArrendamientoPuroPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqArrendamientoSchema) }}
       />
 
       {/* Hero de página */}

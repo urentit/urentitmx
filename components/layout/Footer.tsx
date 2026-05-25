@@ -6,7 +6,6 @@ const NAV_LINKS = [
   { label: '¿Quiénes somos?', hash: 'quienes-somos' },
   { label: 'Vehículos',       hash: 'vehiculos-ejemplo' },
   { label: 'Marcas',          hash: 'marcas-disponibles' },
-  { label: 'Referidos',       hash: 'referidos' },
   { label: 'Reseñas',         hash: 'opiniones-clientes' },
   { label: "FAQ'S",           hash: 'preguntas-frecuentes' },
   { label: 'Contacto',        hash: 'contacto' },
@@ -97,14 +96,6 @@ export function Footer() {
                 </a>
               </li>
             ))}
-            <li>
-              <Link
-                href="/referidos"
-                className="text-white/50 hover:text-gold text-sm transition-colors duration-200"
-              >
-                Formulario de referidos
-              </Link>
-            </li>
             <li>
               <Link
                 href="/arrendamiento-puro"

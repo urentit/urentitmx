@@ -13,7 +13,6 @@ const NAV_LINKS = [
   { label: '¿Quiénes somos?', href: '/quienes-somos' },
   { label: 'Vehículos',       href: '/vehiculos' },
   { label: 'Marcas',          href: '/marcas' },
-  { label: 'Referidos',       href: '/referidos' },
   { label: 'Reseñas',         href: '/testimonios' },
   { label: "FAQ'S",           href: '/preguntas-frecuentes' },
   { label: 'Contacto',        href: '/contacto' },

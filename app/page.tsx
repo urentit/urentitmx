@@ -8,7 +8,6 @@ import { ValueProposition } from '@/components/sections/ValueProposition'
 import { Features } from '@/components/sections/Features'
 import { CotizadorPublico } from '@/components/sections/CotizadorPublico'
 import { Testimonials } from '@/components/sections/Testimonials'
-import { ReferralTeaser } from '@/components/sections/ReferralTeaser'
 import { FAQs } from '@/components/sections/FAQs'
 import { ContactForm } from '@/components/sections/ContactForm'
 import { CTAFinal } from '@/components/sections/CTAFinal'
@@ -71,6 +70,40 @@ const serviceSchema = {
   },
 }
 
+/* ─── JSON-LD VideoObject ─── */
+const videoObjectSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: 'U Rent It — Video Corporativo',
+  description:
+    'Conoce a U Rent It, empresa mexicana especializada en arrendamiento puro de vehículos para empresas, ejecutivos y emprendedores en México.',
+  thumbnailUrl: 'https://img.youtube.com/vi/Ff7xsHFkxhQ/maxresdefault.jpg',
+  uploadDate: '2025-01-01',
+  embedUrl: 'https://www.youtube-nocookie.com/embed/Ff7xsHFkxhQ',
+  url: 'https://youtu.be/Ff7xsHFkxhQ',
+  publisher: {
+    '@type': 'Organization',
+    name: 'U Rent It',
+    url: 'https://urentit.mx',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://urentit.mx/img/logo/logo-white.png',
+    },
+  },
+}
+
+/* ─── JSON-LD Speakable (marca texto clave para motores AI/voice) ─── */
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': 'https://urentit.mx/#webpage',
+  url: 'https://urentit.mx',
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['h1', 'h2', '[data-speakable]'],
+  },
+}
+
 /* ─── JSON-LD SiteNavigationElement (árbol del sitio para Google) ─── */
 const siteNavSchema = {
   '@context': 'https://schema.org',
@@ -115,13 +148,6 @@ const siteNavSchema = {
     {
       '@type': 'SiteNavigationElement',
       position: 6,
-      name: 'Programa de referidos',
-      description: 'Refiere y obtén hasta una renta mensual sin costo',
-      url: 'https://urentit.mx/#referidos',
-    },
-    {
-      '@type': 'SiteNavigationElement',
-      position: 7,
       name: 'Testimonios',
       description: 'Opiniones de clientes de U Rent It',
       url: 'https://urentit.mx/#opiniones-clientes',
@@ -161,6 +187,14 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoObjectSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }}
+      />
       <Hero />
       <ProblemStatement />
       <AboutUs />
@@ -170,7 +204,6 @@ export default function HomePage() {
       <Features />
       <CotizadorPublico />
       <Testimonials />
-      <ReferralTeaser />
       <FAQs />
       <ContactForm />
       <CTAFinal />

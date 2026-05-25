@@ -23,7 +23,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/testimonios`,                 lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/preguntas-frecuentes`,        lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE_URL}/contacto`,                    lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${BASE_URL}/referidos`,                   lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/aviso-de-privacidad`,         lastModified: new Date(), changeFrequency: 'yearly',  priority: 0.3 },
     { url: `${BASE_URL}/blog`,                        lastModified: new Date(), changeFrequency: 'weekly',  priority: 0.8 },
     ...blogEntries,
