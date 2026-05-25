@@ -92,7 +92,16 @@ async function notifyLead(
     // Alta en lista de distribución (solo si está configurada la audiencia)
     const audienceId = process.env.RESEND_AUDIENCE_ID
     if (audienceId) {
-      await resend.contacts.create({ email, audienceId, unsubscribed: false })
+      const { error: contactError } = await resend.contacts.create({
+        email,
+        audienceId,
+        unsubscribed: false,
+      })
+      if (contactError) {
+        console.error('Resend contacts.create error:', contactError)
+      }
+    } else {
+      console.warn('RESEND_AUDIENCE_ID not set — skipping audience add')
     }
   } catch (err) {
     // No bloquear la respuesta si falla el email
