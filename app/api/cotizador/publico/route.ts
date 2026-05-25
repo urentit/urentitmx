@@ -63,7 +63,7 @@ async function notifyLead(
     // Notificación interna
     await resend.emails.send({
       from:    config.from,
-      to:      ['contact@urentit.mx'],
+      to:      ['contacto@urentit.mx'],
       subject: `Nuevo lead cotizador público — ${esc(email)}`,
       html: `
         <div style="font-family: Arial, sans-serif; color: #111111; line-height: 1.6;">
