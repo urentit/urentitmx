@@ -55,7 +55,8 @@ async function notifyLead(
   anticipo: number,
   min36: number, max36: number,
   min48: number, max48: number,
-) {
+): Promise<{ audienceResult: unknown }> {
+  let audienceResult: unknown = null
   try {
     const resend = getResendClient()
     const config = getResendConfig()
@@ -89,24 +90,19 @@ async function notifyLead(
       `,
     })
 
-    // Alta en lista de distribución (solo si está configurada la audiencia)
+    // Alta en lista de distribución
     const audienceId = process.env.RESEND_AUDIENCE_ID
     if (audienceId) {
-      const { error: contactError } = await resend.contacts.create({
-        email,
-        audienceId,
-        unsubscribed: false,
-      })
-      if (contactError) {
-        console.error('Resend contacts.create error:', contactError)
-      }
+      const result = await resend.contacts.create({ email, audienceId, unsubscribed: false })
+      audienceResult = result
     } else {
-      console.warn('RESEND_AUDIENCE_ID not set — skipping audience add')
+      audienceResult = { skipped: true, reason: 'RESEND_AUDIENCE_ID not set' }
     }
   } catch (err) {
-    // No bloquear la respuesta si falla el email
     console.error('Lead notification error:', err)
+    audienceResult = { exception: String(err) }
   }
+  return { audienceResult }
 }
 
 export async function POST(req: NextRequest) {
@@ -123,7 +119,7 @@ export async function POST(req: NextRequest) {
     const min48 = calcMin(body.totalPrice, body.state, body.anticipo, 48)
 
     // Notificar lead (await necesario — Vercel mata funciones fire-and-forget)
-    await notifyLead(
+    const { audienceResult } = await notifyLead(
       body.email,
       body.totalPrice, body.state, body.anticipo,
       min36.costs.mensualidad, max36.costs.mensualidad,
@@ -132,6 +128,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       ok: true,
+      _debug_audience: audienceResult,
       // Rango 36 meses
       mensualidadMin36: min36.costs.mensualidad,
       mensualidadMax36: max36.costs.mensualidad,
