@@ -41,6 +41,7 @@ export function CotizadorPublico() {
   const [price,    setPrice]    = useState('')
   const [state,    setState]    = useState('')
   const [anticipo, setAnticipo] = useState(0.25)
+  const [email,    setEmail]    = useState('')
   const [result,   setResult]   = useState<ResultData | null>(null)
   const [loading,  setLoading]  = useState(false)
   const [error,    setError]    = useState('')
@@ -48,7 +49,7 @@ export function CotizadorPublico() {
   async function handleCalcular(e: React.FormEvent) {
     e.preventDefault()
     const p = parseFloat(price.replace(/[,$\s]/g, ''))
-    if (!p || !state) { setError('Completa todos los campos.'); return }
+    if (!p || !state || !email) { setError('Completa todos los campos.'); return }
     setError('')
     setLoading(true)
     setResult(null)
@@ -57,7 +58,7 @@ export function CotizadorPublico() {
       const res  = await fetch('/api/cotizador/publico', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ totalPrice: p, state, anticipo }),
+        body:    JSON.stringify({ totalPrice: p, state, anticipo, email }),
       })
       const json = await res.json()
       if (json.ok) setResult(json)
@@ -151,6 +152,22 @@ export function CotizadorPublico() {
                   <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white/30" size={16} />
                 </div>
               </div>
+            </div>
+
+            {/* Email */}
+            <div className="mt-5">
+              <label className={labelCls}>Correo electrónico</label>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="tu@empresa.com"
+                className={inputCls}
+                required
+              />
+              <p className="mt-1.5 text-xs text-white/25">
+                * Tus datos personales son confidenciales, no se comparten con terceros y solo los usamos para comunicarnos contigo.
+              </p>
             </div>
 
             {error && (
