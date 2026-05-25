@@ -122,8 +122,8 @@ export async function POST(req: NextRequest) {
     const min36 = calcMin(body.totalPrice, body.state, body.anticipo, 36)
     const min48 = calcMin(body.totalPrice, body.state, body.anticipo, 48)
 
-    // Notificar lead en background (no bloqueante)
-    void notifyLead(
+    // Notificar lead (await necesario — Vercel mata funciones fire-and-forget)
+    await notifyLead(
       body.email,
       body.totalPrice, body.state, body.anticipo,
       min36.costs.mensualidad, max36.costs.mensualidad,
