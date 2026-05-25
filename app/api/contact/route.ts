@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getResendClient, getResendConfig } from '@/lib/resend'
 
+function esc(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
 const schema = z.object({
   nombre: z.string().min(2),
   apellido: z.string().min(2),
@@ -16,7 +25,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const data = schema.parse(body)
-    const fullName = `${data.nombre} ${data.apellido}`
+    const fullName = `${esc(data.nombre)} ${esc(data.apellido)}`
     const resend = getResendClient()
     const resendConfig = getResendConfig()
 
@@ -31,11 +40,11 @@ export async function POST(req: NextRequest) {
           <p>Se recibio una nueva solicitud desde el formulario principal de U Rent It.</p>
           <table cellpadding="8" cellspacing="0" border="1" style="border-collapse: collapse; margin-top: 16px;">
             <tr><td><strong>Nombre</strong></td><td>${fullName}</td></tr>
-            <tr><td><strong>Empresa</strong></td><td>${data.empresa}</td></tr>
-            <tr><td><strong>Correo</strong></td><td>${data.email}</td></tr>
-            <tr><td><strong>Telefono</strong></td><td>${data.telefono}</td></tr>
-            <tr><td><strong>Vehiculo</strong></td><td>${data.vehiculo || 'No especificado'}</td></tr>
-            <tr><td><strong>Mensaje</strong></td><td>${data.mensaje}</td></tr>
+            <tr><td><strong>Empresa</strong></td><td>${esc(data.empresa)}</td></tr>
+            <tr><td><strong>Correo</strong></td><td>${esc(data.email)}</td></tr>
+            <tr><td><strong>Telefono</strong></td><td>${esc(data.telefono)}</td></tr>
+            <tr><td><strong>Vehiculo</strong></td><td>${data.vehiculo ? esc(data.vehiculo) : 'No especificado'}</td></tr>
+            <tr><td><strong>Mensaje</strong></td><td>${esc(data.mensaje)}</td></tr>
           </table>
         </div>
       `,

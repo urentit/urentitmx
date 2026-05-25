@@ -24,6 +24,9 @@
 *.tsbuildinfo
 next-env.d.ts
 
+# Claude local settings (may contain sensitive data)
+.claude/settings.local.json
+
 # misc
 .DS_Store
 *.pem

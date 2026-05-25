@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getResendClient, getResendConfig } from '@/lib/resend'
 
+function esc(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
 const schema = z.object({
   nombreCompleto: z.string().min(2),
   email: z.string().email(),
@@ -32,16 +41,16 @@ export async function POST(req: NextRequest) {
           <p>Se recibio un nuevo registro desde el formulario de referidos.</p>
           <h2 style="margin-top: 24px;">Datos del promotor</h2>
           <table cellpadding="8" cellspacing="0" border="1" style="border-collapse: collapse; margin-top: 12px;">
-            <tr><td><strong>Nombre</strong></td><td>${data.nombreCompleto}</td></tr>
-            <tr><td><strong>Correo</strong></td><td>${data.email}</td></tr>
-            <tr><td><strong>Telefono</strong></td><td>${data.telefono}</td></tr>
-            <tr><td><strong>Empresa</strong></td><td>${data.empresa}</td></tr>
+            <tr><td><strong>Nombre</strong></td><td>${esc(data.nombreCompleto)}</td></tr>
+            <tr><td><strong>Correo</strong></td><td>${esc(data.email)}</td></tr>
+            <tr><td><strong>Telefono</strong></td><td>${esc(data.telefono)}</td></tr>
+            <tr><td><strong>Empresa</strong></td><td>${esc(data.empresa)}</td></tr>
           </table>
           <h2 style="margin-top: 24px;">Datos del referido</h2>
           <table cellpadding="8" cellspacing="0" border="1" style="border-collapse: collapse; margin-top: 12px;">
-            <tr><td><strong>Nombre</strong></td><td>${data.referidoNombre}</td></tr>
-            <tr><td><strong>Correo</strong></td><td>${data.referidoEmail}</td></tr>
-            <tr><td><strong>Telefono</strong></td><td>${data.referidoTelefono}</td></tr>
+            <tr><td><strong>Nombre</strong></td><td>${esc(data.referidoNombre)}</td></tr>
+            <tr><td><strong>Correo</strong></td><td>${esc(data.referidoEmail)}</td></tr>
+            <tr><td><strong>Telefono</strong></td><td>${esc(data.referidoTelefono)}</td></tr>
             <tr><td><strong>Enterado</strong></td><td>${data.referidoEnterado === 'si' ? 'Si' : 'No'}</td></tr>
           </table>
         </div>
