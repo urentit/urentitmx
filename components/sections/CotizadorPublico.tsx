@@ -10,14 +10,6 @@ import { clsx } from 'clsx'
 
 const WHATSAPP = 'https://wa.me/525518062633?text=' + encodeURIComponent('Hola, me gustaría obtener una cotización de arrendamiento de vehículos.')
 
-const ANTICIPO_OPTS = [
-  { value: 0.20, label: '20%' },
-  { value: 0.25, label: '25%' },
-  { value: 0.30, label: '30%' },
-  { value: 0.35, label: '35%' },
-  { value: 0.40, label: '40%' },
-  { value: 0.45, label: '45%' },
-]
 
 function fmt(n: number) {
   return n.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 0, maximumFractionDigits: 0 })
@@ -38,10 +30,10 @@ const inputCls = 'w-full rounded border border-white/10 bg-white/5 px-4 py-3 tex
 const labelCls = 'mb-1.5 block text-xs uppercase tracking-widest text-white/40'
 
 export function CotizadorPublico() {
-  const [price,    setPrice]    = useState('')
-  const [state,    setState]    = useState('')
-  const [anticipo, setAnticipo] = useState(0.25)
-  const [email,    setEmail]    = useState('')
+  const [price, setPrice] = useState('')
+  const [state, setState] = useState('')
+  const [email, setEmail] = useState('')
+  const anticipo = 0.25
   const [result,   setResult]   = useState<ResultData | null>(null)
   const [loading,  setLoading]  = useState(false)
   const [error,    setError]    = useState('')
@@ -118,7 +110,7 @@ export function CotizadorPublico() {
               </div>
 
               {/* Estado */}
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-3">
                 <label className={labelCls}>Estado para placas</label>
                 <div className="relative">
                   <select
@@ -136,22 +128,6 @@ export function CotizadorPublico() {
                 </div>
               </div>
 
-              {/* Anticipo */}
-              <div>
-                <label className={labelCls}>% Anticipo</label>
-                <div className="relative">
-                  <select
-                    value={anticipo}
-                    onChange={e => setAnticipo(parseFloat(e.target.value))}
-                    className={clsx(inputCls, 'appearance-none pr-10')}
-                  >
-                    {ANTICIPO_OPTS.map(o => (
-                      <option key={o.value} value={o.value}>{o.label}</option>
-                    ))}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white/30" size={16} />
-                </div>
-              </div>
             </div>
 
             {/* Email */}
@@ -209,8 +185,8 @@ export function CotizadorPublico() {
               >
                 <div className="grid gap-4 sm:grid-cols-2">
                   {[
-                    { label: '36 meses', min: result.mensualidadMin36, max: result.mensualidadMax36, anticipo: result.anticipo36, finalCost: result.finalCost36 },
-                    { label: '48 meses', min: result.mensualidadMin48, max: result.mensualidadMax48, anticipo: result.anticipo48, finalCost: result.finalCost48 },
+                    { label: '36 meses', min: result.mensualidadMin36, max: result.mensualidadMax36 },
+                    { label: '48 meses', min: result.mensualidadMin48, max: result.mensualidadMax48 },
                   ].map(col => (
                     <div
                       key={col.label}
@@ -225,20 +201,9 @@ export function CotizadorPublico() {
                         <span className="text-white/40 text-sm">—</span>
                         <span className="font-display text-2xl font-bold text-gold">{fmt(col.max)}</span>
                       </div>
-                      <p className="text-xs text-white/30 mb-4">
+                      <p className="text-xs text-white/30">
                         Plan básico — Plan completo con servicios
                       </p>
-
-                      <div className="space-y-1.5 text-sm text-white/50 border-t border-white/8 pt-4">
-                        <div className="flex justify-between">
-                          <span>Anticipo referencial</span>
-                          <span className="text-white/80">{fmt(col.anticipo)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Valor residual</span>
-                          <span className="text-white/80">{fmt(col.finalCost)}</span>
-                        </div>
-                      </div>
                     </div>
                   ))}
                 </div>
