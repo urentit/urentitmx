@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronRight } from 'lucide-react'
+import { Menu, X, ChevronRight, Home } from 'lucide-react'
 import { ButtonLink } from '@/components/ui/Button'
 import { clsx } from 'clsx'
 
@@ -78,6 +78,19 @@ export function Navbar() {
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1" aria-label="Navegación principal">
+            <Link
+              href="/"
+              className={clsx(
+                'relative px-3 py-2 text-sm font-sans font-medium transition-colors duration-200 rounded-sm',
+                pathname === '/' ? 'text-gold' : 'text-white/70 hover:text-white'
+              )}
+              aria-label="Inicio"
+            >
+              <Home size={16} />
+              {pathname === '/' && (
+                <motion.span layoutId="nav-indicator" className="absolute bottom-0 left-3 right-3 h-px bg-gold" />
+              )}
+            </Link>
             {NAV_LINKS.map((link) => {
               const isActive = pathname === link.href
               return (
@@ -149,6 +162,20 @@ export function Navbar() {
               </div>
 
               <nav className="flex-1 py-6 px-4" aria-label="Navegación móvil">
+                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0 }}>
+                  <Link
+                    href="/"
+                    onClick={() => setOpen(false)}
+                    className={clsx(
+                      'w-full flex items-center gap-3 px-4 py-4 hover:text-gold hover:bg-white/5 rounded-sm transition-all font-sans font-medium text-base border-b border-white/5',
+                      pathname === '/' ? 'text-gold' : 'text-white/80'
+                    )}
+                  >
+                    <Home size={16} className="flex-shrink-0" />
+                    Inicio
+                    <ChevronRight size={16} className="text-gold/50 ml-auto" />
+                  </Link>
+                </motion.div>
                 {NAV_LINKS.map((link, i) => (
                   <motion.div key={link.href} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.06 }}>
                     <Link
