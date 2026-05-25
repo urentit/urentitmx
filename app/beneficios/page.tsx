@@ -29,7 +29,7 @@ export default function BeneficiosPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <div className="pt-24">
+      <div className="pt-20 [&>section:first-child]:pt-8 [&>section:first-child]:md:pt-12 [&>section:first-child]:lg:pt-16">
         <Features />
         <div className="flex justify-center py-12 bg-black">
           <ButtonLink href="/arrendamiento-puro" variant="outline" size="lg">

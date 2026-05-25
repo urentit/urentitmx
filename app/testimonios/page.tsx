@@ -28,7 +28,7 @@ export default function TestimoniosPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <div className="pt-24">
+      <div className="pt-20 [&>section:first-child]:pt-8 [&>section:first-child]:md:pt-12 [&>section:first-child]:lg:pt-16">
         <Testimonials />
       </div>
     </>
