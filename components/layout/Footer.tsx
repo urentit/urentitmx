@@ -48,7 +48,7 @@ export function Footer() {
       <div className="container-site py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
 
         {/* Col 1 — Brand */}
-        <div className="sm:col-span-2 lg:col-span-1">
+        <div className="sm:col-span-2 lg:col-span-1 flex flex-col items-center sm:items-start">
           <Link href="/" className="group inline-flex" aria-label="U Rent It - Inicio">
             <div className="flex items-center gap-4 mb-4">
               <div className="relative w-14 h-14 flex-shrink-0">
@@ -64,7 +64,7 @@ export function Footer() {
               </span>
             </div>
           </Link>
-          <p className="text-white/50 text-sm leading-relaxed max-w-xs">
+          <p className="text-white/50 text-sm leading-relaxed max-w-xs text-center sm:text-left">
             Arrendamiento puro de vehículos para empresas y empresarios en México.
             Planes flexibles, seguro incluido y más de 36 marcas disponibles.
           </p>
@@ -81,11 +81,11 @@ export function Footer() {
         </div>
 
         {/* Col 2 — Navegación */}
-        <div>
+        <div className="flex flex-col items-center sm:items-start">
           <h3 className="text-white font-sans font-semibold text-sm tracking-widest uppercase mb-5">
             Navegación
           </h3>
-          <ul className="space-y-3">
+          <ul className="space-y-3 text-center sm:text-left">
             {NAV_LINKS.map((link) => (
               <li key={link.hash}>
                 <a
@@ -116,7 +116,7 @@ export function Footer() {
         </div>
 
         {/* Col 3 — Contacto */}
-        <div>
+        <div className="flex flex-col items-center sm:items-start">
           <h3 className="text-white font-sans font-semibold text-sm tracking-widest uppercase mb-5">
             Contacto
           </h3>
@@ -149,11 +149,11 @@ export function Footer() {
         </div>
 
         {/* Col 4 — Redes sociales */}
-        <div>
+        <div className="flex flex-col items-center sm:items-start">
           <h3 className="text-white font-sans font-semibold text-sm tracking-widest uppercase mb-5">
             Síguenos
           </h3>
-          <div className="flex flex-wrap gap-3 mb-6">
+          <div className="flex flex-wrap gap-3 mb-6 justify-center sm:justify-start">
             {SOCIAL.map((s) => (
               <a
                 key={s.label}
