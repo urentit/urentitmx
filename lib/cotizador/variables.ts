@@ -47,8 +47,8 @@ export const VARS = {
   VERI: 1800,
   VERI_FORANEOS: 3200,
 
-  // Estados con tenencia FIJA (no porcentual)
-  TENENCIA_FIXED_STATES: ['no', 'morelos', 'hidalgo', 'puebla'] as string[],
+  // Estados con tenencia FIJA (no porcentual) — jalisco incluido por lógica del legacy
+  TENENCIA_FIXED_STATES: ['no', 'morelos', 'hidalgo', 'puebla', 'jalisco'] as string[],
 
   // Usuarios VIP (email)
   VIP_USERS: ['dc@urentit.mx'] as string[],
