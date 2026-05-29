@@ -1,7 +1,7 @@
 import { calculate as calcFlotilla } from './flotilla'
 import type { QuoteInput, QuoteUser, QuoteResult } from '../types'
 
-const COMISION_EXTRA_PCT = 0.02
+const COMISION_EXTRA_PCT = 0.0275
 
 export function calculate(input: QuoteInput, user: QuoteUser, years: 24 | 36 | 48): QuoteResult {
   const base = calcFlotilla(input, user, years)
