@@ -4,7 +4,6 @@ import type { QuoteInput, QuoteUser, QuoteResult } from '../types'
 
 const RESIDUAL = { 36: 0.15, 48: 0.10 }
 const TASA     = { 36: VARS.TASARENTING, 48: VARS.TASARENTING2 }
-const VERI_C   = { 36: 6, 48: 8 }
 
 export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48): QuoteResult {
   const { totalPrice, accessoryValue = 0, accessory = '', state,
@@ -22,7 +21,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48): Q
   const tenencias  = 0
   const tramites   = VARS.TRAMITES_LIBRES
   const gps        = calcGps(yrs)
-  const veri       = VERI_C[years] * VARS.VERI
+  const veri       = 0  // legacy no incluye veri en carga pesada
 
   return calcCore(
     totalPrice, accessoryValue, anticipo, state, yrs,

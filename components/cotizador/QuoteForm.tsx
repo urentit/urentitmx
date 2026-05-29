@@ -63,7 +63,7 @@ const selectCls = 'w-full rounded border border-white/10 bg-[#1c1c1c] px-3 py-2.
 const labelCls  = 'mb-1.5 block text-xs font-medium text-white/60 uppercase tracking-wide'
 
 // Tipos que muestran el campo cilindraje
-const WITH_CILINDRAJE: QuoteType[] = ['auto', 'vip', 'carga', 'carga-pesada', 'foraneo', 'flotilla', 'refinanciamiento']
+const WITH_CILINDRAJE: QuoteType[] = ['auto', 'vip', 'carga', 'carga-pesada', 'foraneo', 'flotilla', 'comision-extra', 'refinanciamiento']
 
 export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const { data: session } = useSession()
@@ -88,7 +88,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   })
 
   const states        = getStates(quoteType)
-  const isFlotilla    = quoteType === 'flotilla'
+  const isFlotilla    = quoteType === 'flotilla' || quoteType === 'comision-extra'
   const isUsado       = quoteType === 'usado'
   const isRefin       = quoteType === 'refinanciamiento'
   const isCargaPesada = quoteType === 'carga-pesada'
@@ -125,7 +125,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       body.plazos                = ['24', '36', '48']
     }
 
-    setLastInput({ modelo: values.modelo ?? '', totalPrice: body.totalPrice, quoteType })
+    setLastInput({ modelo: values.modelo ?? '', totalPrice: body.totalPrice, quoteType, anticipo: parseFloat(values.anticipo) })
 
     try {
       const res  = await fetch(getEndpoint(quoteType), {
@@ -341,6 +341,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
           quoteType={quoteType}
           modelo={String(lastInput.modelo ?? '')}
           totalPrice={Number(lastInput.totalPrice ?? 0)}
+          anticipo={Number(lastInput.anticipo ?? 0.25)}
         />
       )}
     </div>

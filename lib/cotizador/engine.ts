@@ -1,5 +1,5 @@
 import { VARS } from './variables'
-import { getPlacaPrice, getPlacaName, SECTION_ONE } from './placas'
+import { getPlacaPrice, getPlacaName, getSection } from './placas'
 import type { QuoteUser, QuoteResult } from './types'
 
 // Port de FinancialClass::PMT — idéntico al cálculo de Excel/PHP
@@ -22,8 +22,8 @@ export function calcSeguroAuto(totalPrice: number, years: number): number {
 }
 
 export function calcSeguroCarga(totalPrice: number, years: number): number {
-  const p = totalPrice <= VARS.RANGO1 ? VARS.PS1_CARGA
-           : totalPrice <= VARS.RANGO2 ? VARS.PS2_CARGA
+  const p = totalPrice <= VARS.RANGO1_CARGA ? VARS.PS1_CARGA
+           : totalPrice <= VARS.RANGO2_CARGA ? VARS.PS2_CARGA
            : VARS.PS3_CARGA
   return Math.round((totalPrice * p) * years * 100) / 100
 }
@@ -48,7 +48,11 @@ export function calcTenencias(
   if (VARS.TENENCIA_FIXED_STATES.includes(state)) {
     return VARS.TENENCIAS_FIXED * years
   }
-  const placa = (section === 'section_one' ? SECTION_ONE : {})[state]
+  // Jalisco usa tenencia fija solo en autos (section_one); en carga/foráneo usa porcentaje
+  if (section === 'section_one' && state === 'jalisco') {
+    return VARS.TENENCIAS_FIXED * years
+  }
+  const placa = getSection(section)[state]
   if (!placa || placa.tenencia_percentage === 0) return VARS.TENENCIAS_FIXED * years
   return placa.tenencia_percentage * totalPrice * years
 }

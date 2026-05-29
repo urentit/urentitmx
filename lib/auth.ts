@@ -1,45 +1,25 @@
 import type { NextAuthOptions } from 'next-auth'
-import CredentialsProvider from 'next-auth/providers/credentials'
-import bcrypt from 'bcryptjs'
-import { findUserByEmail, findUserById } from '@/lib/cotizador/usersStore'
+import Auth0Provider from 'next-auth/providers/auth0'
+import { findUserByEmail } from '@/lib/cotizador/usersStore'
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    CredentialsProvider({
-      name: 'credentials',
-      credentials: {
-        email:    { label: 'Correo',     type: 'email' },
-        password: { label: 'Contraseña', type: 'password' },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null
-
-        const user = findUserByEmail(credentials.email)
-        if (!user) return null
-
-        const valid = await bcrypt.compare(credentials.password, user.password)
-        if (!valid) return null
-
-        return {
-          id:             user.id,
-          name:           user.name,
-          email:          user.email,
-          admin:          user.admin,
-          comision:       user.comision,
-          manualServices: user.manualServices,
-        }
-      },
+    Auth0Provider({
+      clientId:     process.env.AUTH0_CLIENT_ID!,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET!,
+      issuer:       process.env.AUTH0_ISSUER ?? 'https://dev-t6sufitbftarnct7.us.auth0.com',
     }),
   ],
   session: { strategy: 'jwt' },
   pages: { signIn: '/cotizador/login' },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id             = user.id
-        token.admin          = (user as any).admin
-        token.comision       = (user as any).comision
-        token.manualServices = (user as any).manualServices
+    async jwt({ token, account }) {
+      if (account) {
+        const localUser = findUserByEmail(token.email as string)
+        token.id             = token.sub
+        token.admin          = localUser?.admin          ?? false
+        token.comision       = localUser?.comision       ?? 0.03
+        token.manualServices = localUser?.manualServices ?? false
       }
       return token
     },

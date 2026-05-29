@@ -21,9 +21,13 @@ export const VARS = {
   PS2_CARGA: 0.06,
   PS3_CARGA: 0.04,
 
-  // Rangos de precio para seguros
+  // Rangos de precio para seguros auto/VIP/flotilla
   RANGO1: 380000,
   RANGO2: 500000,
+
+  // Rangos de precio para seguros carga
+  RANGO1_CARGA: 350000,
+  RANGO2_CARGA: 700000,
 
   // Servicios preventivos
   SERVICES_BASE: 2400,
@@ -36,6 +40,8 @@ export const VARS = {
   GPS_BASE: 4032,
   GPS_MONTHLY: 138,
   GPS_FACTOR: 1.95,
+  // GPS refinanciamiento: sin fee base, solo tarifa mensual (valor del legacy PHP)
+  GPS_MONTHLY_REFIN: 310.25641,
 
   // Trámites y administración
   TRAMITES_LIBRES: 4000,
@@ -47,7 +53,7 @@ export const VARS = {
   VERI: 1800,
   VERI_FORANEOS: 3200,
 
-  // Estados con tenencia FIJA (no porcentual)
+  // Estados con tenencia FIJA para todas las secciones; jalisco es fijo solo en section_one (ver calcTenencias)
   TENENCIA_FIXED_STATES: ['no', 'morelos', 'hidalgo', 'puebla'] as string[],
 
   // Usuarios VIP (email)

@@ -7,6 +7,7 @@ export type QuoteType =
   | 'usado'
   | 'vip'
   | 'flotilla'
+  | 'comision-extra'
   | 'refinanciamiento'
 
 export type PlacaSection = 'section_one' | 'section_two' | 'section_three'

@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import {
   Car, Truck, Package, Zap, Map, History, RotateCcw,
-  Star, Users, ClipboardList, X,
+  Star, Users, ClipboardList, X, BadgeDollarSign,
 } from 'lucide-react'
 import { clsx } from 'clsx'
 
@@ -17,8 +17,9 @@ const nav = [
   { href: '/cotizador/electrico',        label: 'Eléctrico',         icon: Zap },
   { href: '/cotizador/foraneo',          label: 'Foráneo',           icon: Map },
   { href: '/cotizador/usado',            label: 'Vehículo Usado',    icon: RotateCcw },
-  { href: '/cotizador/flotilla',         label: 'Flotilla',          icon: Users },
-  { href: '/cotizador/refinanciamiento', label: 'Refinanciamiento',  icon: ClipboardList },
+  { href: '/cotizador/flotilla',          label: 'Flotilla',                  icon: Users },
+  { href: '/cotizador/comision-extra',   label: 'Comisión Extra',            icon: BadgeDollarSign },
+  { href: '/cotizador/refinanciamiento', label: 'Refinanciamiento',          icon: ClipboardList },
   { href: '/cotizador/historial',        label: 'Historial',         icon: History },
 ]
 
