@@ -1,37 +1,49 @@
-import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer'
-import type { QuoteResponse, QuoteType } from '@/lib/cotizador/types'
+import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer'
+import type { QuoteResponse, QuoteResult, QuoteType } from '@/lib/cotizador/types'
 
-const GOLD     = '#e1be4a'
-const BLACK    = '#0a0a0a'
-const GRAY     = '#888888'
-const LIGHT    = '#f0f0f0'
-const styles = StyleSheet.create({
-  page:          { backgroundColor: '#ffffff', padding: 40, fontFamily: 'Helvetica', fontSize: 9, color: BLACK },
-  header:        { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, paddingBottom: 16, borderBottomWidth: 2, borderBottomColor: GOLD },
-  logoImg:       { width: 100, height: 32, objectFit: 'contain', marginBottom: 4 },
-  logo:          { fontSize: 14, fontFamily: 'Helvetica-Bold', color: GOLD, letterSpacing: 2 },
-  subtitle:      { fontSize: 7, color: GRAY, marginTop: 2 },
-  title:         { fontSize: 13, fontFamily: 'Helvetica-Bold', color: BLACK },
-  meta:          { fontSize: 8, color: GRAY, marginTop: 3 },
-  section:       { marginBottom: 16 },
-  sectionTitle:  { fontSize: 9, fontFamily: 'Helvetica-Bold', color: '#ffffff', backgroundColor: GOLD, padding: '4 8', marginBottom: 0 },
-  table:         { borderWidth: 1, borderColor: LIGHT },
-  row:           { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: LIGHT },
-  rowAlt:        { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: LIGHT, backgroundColor: '#fafafa' },
-  cell:          { flex: 1, padding: '5 8', fontSize: 8 },
-  cellRight:     { flex: 1, padding: '5 8', fontSize: 8, textAlign: 'right', fontFamily: 'Helvetica-Bold' },
-  footer:        { position: 'absolute', bottom: 30, left: 40, right: 40, borderTopWidth: 1, borderTopColor: LIGHT, paddingTop: 8, flexDirection: 'row', justifyContent: 'space-between' },
-  footerText:    { fontSize: 7, color: GRAY },
-  // Secciones finales
-  checkRow:      { flexDirection: 'row', borderWidth: 1, borderColor: LIGHT, marginTop: 16 },
-  checkCell:     { flex: 1, padding: '5 8', fontSize: 8, borderRightWidth: 1, borderRightColor: LIGHT, textAlign: 'center' },
-  checkLabel:    { flex: 2, padding: '5 8', fontSize: 8 },
-  considerations:{ marginTop: 16, padding: '10 12', borderWidth: 1, borderColor: LIGHT, backgroundColor: '#fafafa' },
-  consTitle:     { fontSize: 8, fontFamily: 'Helvetica-Bold', marginBottom: 5 },
-  consBullet:    { fontSize: 7.5, color: '#444444', marginBottom: 3 },
-  disclaimer:    { marginTop: 10, fontSize: 7, color: GRAY, fontFamily: 'Helvetica-Oblique', lineHeight: 1.5 },
-  signLine:      { marginTop: 28, borderTopWidth: 1, borderTopColor: BLACK, width: 220, alignSelf: 'center' },
-  signLabel:     { fontSize: 7.5, color: GRAY, textAlign: 'center', marginTop: 4, alignSelf: 'center' },
+const GOLD  = '#e1be4a'
+const BLACK = '#0a0a0a'
+const GRAY  = '#888888'
+const LIGHT = '#e8e8e8'
+
+const S = StyleSheet.create({
+  page:        { backgroundColor: '#ffffff', padding: 30, fontFamily: 'Helvetica', fontSize: 8, color: BLACK },
+  header:      { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14, paddingBottom: 11, borderBottomWidth: 2, borderBottomColor: GOLD },
+  logoImg:     { width: 88, height: 27, objectFit: 'contain', marginBottom: 2 },
+  logoName:    { fontSize: 12, fontFamily: 'Helvetica-Bold', color: GOLD, letterSpacing: 2 },
+  logoSub:     { fontSize: 6.5, color: GRAY, marginTop: 2 },
+  docTitle:    { fontSize: 12, fontFamily: 'Helvetica-Bold', color: BLACK, textAlign: 'right' },
+  docMeta:     { fontSize: 7.5, color: GRAY, marginTop: 2, textAlign: 'right' },
+
+  tableWrap:   { borderWidth: 1, borderColor: LIGHT },
+  tHead:       { flexDirection: 'row', backgroundColor: BLACK },
+  tRow:        { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: LIGHT },
+  tRowAlt:     { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: LIGHT, backgroundColor: '#f7f7f7' },
+  tRowBold:    { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: LIGHT, backgroundColor: '#fffbe6' },
+
+  cLabel:      { flex: 2.4, padding: '4 7', fontSize: 7.5 },
+  cLabelBold:  { flex: 2.4, padding: '4 7', fontSize: 7.5, fontFamily: 'Helvetica-Bold' },
+  cVal:        { flex: 1, padding: '4 7', fontSize: 7.5, textAlign: 'right', borderLeftWidth: 1, borderLeftColor: LIGHT },
+  cValBold:    { flex: 1, padding: '4 7', fontSize: 7.5, textAlign: 'right', fontFamily: 'Helvetica-Bold', color: '#7a6200', borderLeftWidth: 1, borderLeftColor: LIGHT },
+  cHead:       { flex: 2.4, padding: '4 7', fontSize: 7.5, fontFamily: 'Helvetica-Bold', color: '#ffffff' },
+  cHeadVal:    { flex: 1, padding: '4 7', fontSize: 7.5, fontFamily: 'Helvetica-Bold', color: GOLD, textAlign: 'center', borderLeftWidth: 1, borderLeftColor: '#444444' },
+
+  secLabel:    { fontSize: 7.5, fontFamily: 'Helvetica-Bold', color: GRAY, marginTop: 10, marginBottom: 3 },
+
+  checkRow:    { flexDirection: 'row', borderWidth: 1, borderColor: LIGHT, marginTop: 10 },
+  checkLabel:  { flex: 2.4, padding: '4 7', fontSize: 7.5 },
+  checkCell:   { flex: 1, padding: '4 7', fontSize: 7.5, textAlign: 'center', borderLeftWidth: 1, borderLeftColor: LIGHT },
+
+  cons:        { marginTop: 10, padding: '7 9', borderWidth: 1, borderColor: LIGHT, backgroundColor: '#f9f9f9' },
+  consTitle:   { fontSize: 7.5, fontFamily: 'Helvetica-Bold', marginBottom: 4 },
+  consBullet:  { fontSize: 7, color: '#444444', marginBottom: 2 },
+  disclaimer:  { marginTop: 5, fontSize: 6.5, color: GRAY, fontFamily: 'Helvetica-Oblique', lineHeight: 1.4 },
+
+  signLine:    { marginTop: 18, borderTopWidth: 1, borderTopColor: BLACK, width: 200, alignSelf: 'center' },
+  signLabel:   { fontSize: 7, color: GRAY, textAlign: 'center', marginTop: 3, alignSelf: 'center' },
+
+  footer:      { position: 'absolute', bottom: 20, left: 30, right: 30, borderTopWidth: 1, borderTopColor: LIGHT, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between' },
+  footerTxt:   { fontSize: 6.5, color: GRAY },
 })
 
 function fmt(n: number) {
@@ -40,6 +52,34 @@ function fmt(n: number) {
 
 const PERIOD_LABELS: Record<string, string> = {
   '12': '12 meses', '24': '24 meses', '36': '36 meses', '48': '48 meses',
+}
+
+interface TableBlockProps {
+  title:       string
+  rows:        { label: string; bold?: boolean; get: (d: QuoteResult) => string }[]
+  periods:     string[]
+  periodData:  QuoteResult[]
+}
+
+function TableBlock({ title, rows, periods, periodData }: TableBlockProps) {
+  return (
+    <View style={S.tableWrap}>
+      <View style={S.tHead}>
+        <Text style={S.cHead}>{title}</Text>
+        {periods.map(p => (
+          <Text key={p} style={S.cHeadVal}>{PERIOD_LABELS[p] ?? `${p}m`}</Text>
+        ))}
+      </View>
+      {rows.map((row, i) => (
+        <View key={row.label} style={row.bold ? S.tRowBold : i % 2 === 0 ? S.tRow : S.tRowAlt}>
+          <Text style={row.bold ? S.cLabelBold : S.cLabel}>{row.label}</Text>
+          {periodData.map((d, j) => (
+            <Text key={j} style={row.bold ? S.cValBold : S.cVal}>{row.get(d)}</Text>
+          ))}
+        </View>
+      ))}
+    </View>
+  )
 }
 
 interface Props {
@@ -51,98 +91,84 @@ interface Props {
 }
 
 export function PDFTemplate({ result, quoteType, modelo, totalPrice, logoPath }: Props) {
-  const periods = Object.keys(result).sort()
-  const date    = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' })
+  const periods    = Object.keys(result).sort()
+  const periodData = periods.map(p => result[p as keyof QuoteResponse]!)
+  const date       = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' })
+
+  const hasAccessory = periodData.some(d => d.eachMonth.accessoryValue > 0)
+
+  const mainRows: TableBlockProps['rows'] = [
+    { label: 'Anticipo',                           get: d => fmt(d.costs.anticipo) },
+    { label: 'Comisión de apertura',               get: d => fmt(d.costs.comisionAp) },
+    { label: 'Anticipo total',                     get: d => fmt(d.costs.anticipoTotal) },
+    { label: 'Renta mensual (con IVA)',            get: d => fmt(d.costs.mensualidad), bold: true },
+    { label: 'Valor residual / Compra final',      get: d => fmt(d.costs.finalCost) },
+    { label: 'Total rentas + IVA',                 get: d => fmt(d.costs.totalRentasMasIva) },
+    { label: 'Valor comercial al vencimiento',     get: d => fmt(d.costs.valorVehiculo) },
+    { label: 'Importe a deducir (ISR+IVA+PTU)',    get: d => fmt(d.costs.importeDeducir) },
+    { label: 'Entidad placas',                     get: d => d.eachMonth.placas },
+  ]
+
+  const breakRows: TableBlockProps['rows'] = [
+    { label: 'Valor del vehículo',    get: d => fmt(d.eachMonth.valorTotal) },
+    { label: 'Seguro (con IVA)',       get: d => fmt(d.eachMonth.seguro) },
+    { label: 'Servicios preventivos', get: d => fmt(d.eachMonth.services) },
+    { label: 'GPS',                   get: d => fmt(d.eachMonth.gps) },
+    { label: 'Trámites iniciales',    get: d => fmt(d.eachMonth.tramitesL) },
+    { label: 'Tenencias / Refrendos', get: d => fmt(d.eachMonth.tenencias) },
+    { label: 'Verificaciones',       get: d => fmt(d.eachMonth.veri) },
+    ...(hasAccessory
+      ? [{ label: 'Accesorio', get: (d: QuoteResult) => d.eachMonth.accessoryValue > 0 ? `${d.eachMonth.accessory}: ${fmt(d.eachMonth.accessoryValue)}` : '—' }]
+      : []),
+  ]
 
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
-        {/* Header */}
-        <View style={styles.header}>
+      <Page size="LETTER" style={S.page}>
+
+        {/* ── Header ── */}
+        <View style={S.header}>
           <View>
-            {logoPath && <Image style={styles.logoImg} src={logoPath} />}
-            <Text style={styles.logo}>U RENT IT</Text>
-            <Text style={styles.subtitle}>Cotización de Arrendamiento Puro</Text>
+            {logoPath && <Image style={S.logoImg} src={logoPath} />}
+            <Text style={S.logoName}>U RENT IT</Text>
+            <Text style={S.logoSub}>Cotización de Arrendamiento Puro</Text>
           </View>
           <View>
-            <Text style={styles.title}>{modelo || 'Cotización'}</Text>
-            <Text style={styles.meta}>Valor del vehículo: {fmt(totalPrice)}</Text>
-            <Text style={styles.meta}>Fecha: {date}</Text>
-            <Text style={styles.meta}>Tipo: {quoteType.toUpperCase()}</Text>
+            <Text style={S.docTitle}>{modelo || 'Cotización'}</Text>
+            <Text style={S.docMeta}>Valor del vehículo: {fmt(totalPrice)}</Text>
+            <Text style={S.docMeta}>Fecha: {date}</Text>
+            <Text style={S.docMeta}>Tipo: {quoteType.toUpperCase()}</Text>
           </View>
         </View>
 
-        {/* Tabla por plazo */}
-        {periods.map(period => {
-          const r = result[period as keyof QuoteResponse]
-          if (!r) return null
-          const { costs: c, eachMonth: e } = r
+        {/* ── Tabla principal ── */}
+        <TableBlock
+          title="Resumen por plazo"
+          rows={mainRows}
+          periods={periods}
+          periodData={periodData}
+        />
 
-          const mainRows = [
-            ['Anticipo',                              fmt(c.anticipo)],
-            ['Comisión de apertura',                  fmt(c.comisionAp)],
-            ['Anticipo total',                        fmt(c.anticipoTotal)],
-            ['Renta mensual',                         fmt(c.mensualidad)],
-            ['Valor residual / Compra final',         fmt(c.finalCost)],
-            ['Total rentas + IVA',                    fmt(c.totalRentasMasIva)],
-            ['Valor comercial al vencimiento',        fmt(c.valorVehiculo)],
-            ['Importe a deducir (ISR + IVA + PTU)',   fmt(c.importeDeducir)],
-            ['Entidad Placas',                        e.placas],
-          ]
+        {/* ── Desglose de la renta ── */}
+        <Text style={S.secLabel}>Componentes incluidos en la renta mensual:</Text>
+        <TableBlock
+          title="Desglose mensual"
+          rows={breakRows}
+          periods={periods}
+          periodData={periodData}
+        />
 
-          const breakRows = [
-            ['Valor del vehículo',       fmt(e.valorTotal)],
-            ['Seguro (con IVA)',          fmt(e.seguro)],
-            ['Servicios preventivos',    fmt(e.services)],
-            ['GPS',                      fmt(e.gps)],
-            ['Trámites iniciales',       fmt(e.tramitesL)],
-            ['Tenencias / Refrendos',    fmt(e.tenencias)],
-            ['Verificaciones',           fmt(e.veri)],
-            ...(e.accessoryValue > 0 ? [[`Accesorio: ${e.accessory}`, fmt(e.accessoryValue)]] : []),
-          ]
-
-          return (
-            <View key={period} style={styles.section}>
-              <View style={[styles.sectionTitle as any]}>
-                <Text>{PERIOD_LABELS[period] ?? `${period} meses`}</Text>
-              </View>
-              <View style={styles.table}>
-                {mainRows.map(([label, value], i) => (
-                  <View key={label} style={i % 2 === 0 ? styles.row : styles.rowAlt}>
-                    <Text style={styles.cell}>{label}</Text>
-                    <Text style={styles.cellRight}>{value}</Text>
-                  </View>
-                ))}
-              </View>
-
-              <Text style={{ fontSize: 8, color: GRAY, marginTop: 8, marginBottom: 4 }}>
-                Componentes incluidos en la renta mensual:
-              </Text>
-              <View style={styles.table}>
-                {breakRows.map(([label, value], i) => (
-                  <View key={label} style={i % 2 === 0 ? styles.row : styles.rowAlt}>
-                    <Text style={styles.cell}>{label}</Text>
-                    <Text style={styles.cellRight}>{value}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          )
-        })}
-
-        {/* Favor de marcar el plazo */}
-        <View style={styles.checkRow}>
-          <Text style={styles.checkLabel}>Favor de marcar con una X el plazo deseado:</Text>
-          {periods.map(period => (
-            <Text key={period} style={styles.checkCell}>
-              {PERIOD_LABELS[period] ?? `${period} meses`}
-            </Text>
+        {/* ── Marcar plazo ── */}
+        <View style={S.checkRow}>
+          <Text style={S.checkLabel}>Favor de marcar con una X el plazo deseado:</Text>
+          {periods.map(p => (
+            <Text key={p} style={S.checkCell}>{PERIOD_LABELS[p] ?? `${p} meses`}</Text>
           ))}
         </View>
 
-        {/* Consideraciones */}
-        <View style={styles.considerations}>
-          <Text style={styles.consTitle}>*Consideraciones:</Text>
+        {/* ── Consideraciones ── */}
+        <View style={S.cons}>
+          <Text style={S.consTitle}>*Consideraciones:</Text>
           {[
             'No hay etiqueta fiscal. El coche está a nombre de la arrendadora.',
             'Deducción total (en IVA e ISR) de todas las rentas.',
@@ -151,26 +177,27 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, logoPath }:
             'Flujo mensual constante y fijo.',
             'Gastos deducibles TODOS los meses del año. Buena práctica fiscal, sobre todo ahora con la Contabilidad en Línea.',
           ].map((item, i) => (
-            <Text key={i} style={styles.consBullet}>{'- ' + item}</Text>
+            <Text key={i} style={S.consBullet}>{'- ' + item}</Text>
           ))}
-          <Text style={styles.disclaimer}>
+          <Text style={S.disclaimer}>
             La presente propuesta de RENTING es únicamente informativa, requiere de su aprobación y puede ser modificada
             en cualquier momento. Tiene vigencia del mes en Curso.
           </Text>
         </View>
 
-        {/* Firma */}
-        <View style={{ marginTop: 32, alignItems: 'center' }}>
-          <View style={styles.signLine} />
-          <Text style={styles.signLabel}>Nombre y Firma de Autorización</Text>
+        {/* ── Firma ── */}
+        <View style={{ marginTop: 16, alignItems: 'center' }}>
+          <View style={S.signLine} />
+          <Text style={S.signLabel}>Nombre y Firma de Autorización</Text>
         </View>
 
-        {/* Footer */}
-        <View style={styles.footer} fixed>
-          <Text style={styles.footerText}>U RENT IT — ¡Aspira a más!</Text>
-          <Text style={styles.footerText}>urentit.mx · (55) 1806-2633</Text>
-          <Text style={styles.footerText} render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
+        {/* ── Footer ── */}
+        <View style={S.footer} fixed>
+          <Text style={S.footerTxt}>U RENT IT — ¡Aspira a más!</Text>
+          <Text style={S.footerTxt}>urentit.mx · (55) 1806-2633</Text>
+          <Text style={S.footerTxt} render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
         </View>
+
       </Page>
     </Document>
   )
