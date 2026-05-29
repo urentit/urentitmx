@@ -89,6 +89,7 @@ interface Props {
   quoteType:  QuoteType
   modelo:     string
   totalPrice: number
+  anticipo:   number
 }
 
 const PERIOD_LABELS: Record<string, string> = {
@@ -98,7 +99,7 @@ const PERIOD_LABELS: Record<string, string> = {
   '48': '48 meses',
 }
 
-export function QuoteResult({ result, quoteType, modelo, totalPrice }: Props) {
+export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo }: Props) {
   const [downloading, setDownloading] = useState(false)
 
   const periods = Object.keys(result).sort()
@@ -109,7 +110,7 @@ export function QuoteResult({ result, quoteType, modelo, totalPrice }: Props) {
       const res = await fetch('/api/cotizador/pdf', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ result, quoteType, modelo, totalPrice }),
+        body:    JSON.stringify({ result, quoteType, modelo, totalPrice, anticipo }),
       })
       if (!res.ok) return
       const blob = await res.blob()

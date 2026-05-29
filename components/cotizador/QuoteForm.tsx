@@ -125,7 +125,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       body.plazos                = ['24', '36', '48']
     }
 
-    setLastInput({ modelo: values.modelo ?? '', totalPrice: body.totalPrice, quoteType })
+    setLastInput({ modelo: values.modelo ?? '', totalPrice: body.totalPrice, quoteType, anticipo: parseFloat(values.anticipo) })
 
     try {
       const res  = await fetch(getEndpoint(quoteType), {
@@ -341,6 +341,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
           quoteType={quoteType}
           modelo={String(lastInput.modelo ?? '')}
           totalPrice={Number(lastInput.totalPrice ?? 0)}
+          anticipo={Number(lastInput.anticipo ?? 0.25)}
         />
       )}
     </div>

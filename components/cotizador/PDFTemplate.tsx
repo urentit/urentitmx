@@ -28,7 +28,6 @@ const S = StyleSheet.create({
   cHead:       { flex: 2.4, padding: '4 7', fontSize: 7.5, fontFamily: 'Helvetica-Bold', color: '#ffffff' },
   cHeadVal:    { flex: 1, padding: '4 7', fontSize: 7.5, fontFamily: 'Helvetica-Bold', color: GOLD, textAlign: 'center', borderLeftWidth: 1, borderLeftColor: '#444444' },
 
-  secLabel:    { fontSize: 7.5, fontFamily: 'Helvetica-Bold', color: GRAY, marginTop: 10, marginBottom: 3 },
 
   checkRow:    { flexDirection: 'row', borderWidth: 1, borderColor: LIGHT, marginTop: 10 },
   checkLabel:  { flex: 2.4, padding: '4 7', fontSize: 7.5 },
@@ -87,18 +86,19 @@ interface Props {
   quoteType:  QuoteType
   modelo:     string
   totalPrice: number
+  anticipo?:  number
   logoPath?:  string
 }
 
-export function PDFTemplate({ result, quoteType, modelo, totalPrice, logoPath }: Props) {
+export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, logoPath }: Props) {
   const periods    = Object.keys(result).sort()
   const periodData = periods.map(p => result[p as keyof QuoteResponse]!)
   const date       = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' })
-
-  const hasAccessory = periodData.some(d => d.eachMonth.accessoryValue > 0)
+  const quoteNo    = String(Math.floor(Date.now() / 1000) % 99999).padStart(5, '0')
+  const anticipoPct = anticipo ? Math.round(anticipo * 100) : 25
 
   const mainRows: TableBlockProps['rows'] = [
-    { label: 'Anticipo',                           get: d => fmt(d.costs.anticipo) },
+    { label: `Anticipo al ${anticipoPct}%`,        get: d => fmt(d.costs.anticipo) },
     { label: 'Comisión de apertura',               get: d => fmt(d.costs.comisionAp) },
     { label: 'Anticipo total',                     get: d => fmt(d.costs.anticipoTotal) },
     { label: 'Renta mensual (con IVA)',            get: d => fmt(d.costs.mensualidad), bold: true },
@@ -110,16 +110,14 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, logoPath }:
   ]
 
   const breakRows: TableBlockProps['rows'] = [
-    { label: 'Valor del vehículo',    get: d => fmt(d.eachMonth.valorTotal) },
-    { label: 'Seguro (con IVA)',       get: d => fmt(d.eachMonth.seguro) },
-    { label: 'Servicios preventivos', get: d => fmt(d.eachMonth.services) },
-    { label: 'GPS',                   get: d => fmt(d.eachMonth.gps) },
-    { label: 'Trámites iniciales',    get: d => fmt(d.eachMonth.tramitesL) },
-    { label: 'Tenencias / Refrendos', get: d => fmt(d.eachMonth.tenencias) },
-    { label: 'Verificaciones',       get: d => fmt(d.eachMonth.veri) },
-    ...(hasAccessory
-      ? [{ label: 'Accesorio', get: (d: QuoteResult) => d.eachMonth.accessoryValue > 0 ? `${d.eachMonth.accessory}: ${fmt(d.eachMonth.accessoryValue)}` : '—' }]
-      : []),
+    { label: 'Valor del vehículo. IVA Incluido',    get: d => fmt(d.eachMonth.valorTotal) },
+    { label: 'Seguro del auto. IVA Incluido',       get: d => fmt(d.eachMonth.seguro) },
+    { label: 'Accesorios',                          get: d => d.eachMonth.accessoryValue > 0 ? `${d.eachMonth.accessory}: ${fmt(d.eachMonth.accessoryValue)}` : fmt(0) },
+    { label: 'Servicio preventivo. IVA Incluido',   get: d => fmt(d.eachMonth.services) },
+    { label: 'Localización GPS. IVA Incluido',      get: d => fmt(d.eachMonth.gps) },
+    { label: 'Trámites iniciales. Libres de IVA',   get: d => fmt(d.eachMonth.tramitesL) },
+    { label: 'Tenencias o Refrendos. Libres de IVA',get: d => fmt(d.eachMonth.tenencias) },
+    { label: 'Verificaciones. Libres de IVA',       get: d => fmt(d.eachMonth.veri) },
   ]
 
   return (
@@ -133,10 +131,11 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, logoPath }:
             <Text style={S.logoName}>U RENT IT</Text>
             <Text style={S.logoSub}>Cotización de Arrendamiento Puro</Text>
           </View>
-          <View>
-            <Text style={S.docTitle}>{modelo || 'Cotización'}</Text>
-            <Text style={S.docMeta}>Valor del vehículo: {fmt(totalPrice)}</Text>
+          <View style={{ alignItems: 'flex-end' }}>
+            <Text style={S.docMeta}>No. {quoteNo}</Text>
             <Text style={S.docMeta}>Fecha: {date}</Text>
+            <Text style={[S.docTitle, { marginTop: 4 }]}>{modelo || 'Cotización'}</Text>
+            <Text style={S.docMeta}>Valor del vehículo: {fmt(totalPrice)}</Text>
             <Text style={S.docMeta}>Tipo: {quoteType.toUpperCase()}</Text>
           </View>
         </View>
@@ -148,9 +147,14 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, logoPath }:
           periods={periods}
           periodData={periodData}
         />
+        <Text style={{ fontSize: 7, color: GRAY, marginTop: 3, marginBottom: 2, fontFamily: 'Helvetica-Oblique' }}>
+          Importes más IVA.
+        </Text>
 
         {/* ── Desglose de la renta ── */}
-        <Text style={S.secLabel}>Componentes incluidos en la renta mensual:</Text>
+        <Text style={{ fontSize: 8, fontFamily: 'Helvetica-Bold', color: BLACK, marginTop: 8, marginBottom: 3 }}>
+          Que va incluido en la renta mensual:
+        </Text>
         <TableBlock
           title="Desglose mensual"
           rows={breakRows}
