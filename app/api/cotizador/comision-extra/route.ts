@@ -20,7 +20,7 @@ const schema = z.object({
   includeGps:            z.boolean().default(true),
   includeTenencias:      z.boolean().default(true),
   includeVerificaciones: z.boolean().default(true),
-  plazos:                z.array(z.enum(['24', '36', '48'])).default(['36', '48']),
+  plazos:                z.array(z.enum(['24', '36', '48'])).default(['24', '36', '48']),
 })
 
 export async function POST(req: NextRequest) {
