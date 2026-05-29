@@ -40,6 +40,8 @@ export const VARS = {
   GPS_BASE: 4032,
   GPS_MONTHLY: 138,
   GPS_FACTOR: 1.95,
+  // GPS refinanciamiento: sin fee base, solo tarifa mensual (valor del legacy PHP)
+  GPS_MONTHLY_REFIN: 310.25641,
 
   // Trámites y administración
   TRAMITES_LIBRES: 4000,
