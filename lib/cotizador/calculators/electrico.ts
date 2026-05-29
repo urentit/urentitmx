@@ -1,11 +1,10 @@
 import { VARS } from '../variables'
 import { getPlacaPrice } from '../placas'
-import { calcGps, calcCore } from '../engine'
+import { calcGps, calcTenencias, calcCore } from '../engine'
 import type { QuoteInput, QuoteUser, QuoteResult } from '../types'
 
 const RESIDUAL = { 36: 0.35, 48: 0.30 }
 const TASA     = { 36: VARS.TASARENTING, 48: VARS.TASARENTING2 }
-const VERI_C   = { 36: 6, 48: 8 }
 
 export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48): QuoteResult {
   const { totalPrice, accessoryValue = 0, accessory = '', state,
@@ -22,9 +21,9 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48): Q
 
   const gps      = calcGps(yrs)
   const tramites = getPlacaPrice(total, 'section_three', state)
-  // Eléctricos no pagan tenencia
-  const tenencias = 0
-  const veri      = VERI_C[years] * VARS.VERI
+  // Eléctricos sí pagan tenencia fija; veri no incluida en legacy
+  const tenencias = calcTenencias(total, yrs, state, 'section_three')
+  const veri      = 0
 
   return calcCore(
     totalPrice, accessoryValue, anticipo, state, yrs,

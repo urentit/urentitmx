@@ -21,9 +21,13 @@ export const VARS = {
   PS2_CARGA: 0.06,
   PS3_CARGA: 0.04,
 
-  // Rangos de precio para seguros
+  // Rangos de precio para seguros auto/VIP/flotilla
   RANGO1: 380000,
   RANGO2: 500000,
+
+  // Rangos de precio para seguros carga
+  RANGO1_CARGA: 350000,
+  RANGO2_CARGA: 700000,
 
   // Servicios preventivos
   SERVICES_BASE: 2400,
@@ -47,8 +51,8 @@ export const VARS = {
   VERI: 1800,
   VERI_FORANEOS: 3200,
 
-  // Estados con tenencia FIJA (no porcentual) — jalisco incluido por lógica del legacy
-  TENENCIA_FIXED_STATES: ['no', 'morelos', 'hidalgo', 'puebla', 'jalisco'] as string[],
+  // Estados con tenencia FIJA para todas las secciones; jalisco es fijo solo en section_one (ver calcTenencias)
+  TENENCIA_FIXED_STATES: ['no', 'morelos', 'hidalgo', 'puebla'] as string[],
 
   // Usuarios VIP (email)
   VIP_USERS: ['dc@urentit.mx'] as string[],
