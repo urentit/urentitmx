@@ -14,6 +14,15 @@ export async function getSessionUser() {
   }
 }
 
+type SessionUser = NonNullable<Awaited<ReturnType<typeof getSessionUser>>>
+
+export function applyComisionOverride(user: SessionUser, override?: number): SessionUser {
+  if (override !== undefined && Number.isFinite(override) && override >= 0 && override <= 0.1) {
+    return { ...user, comision: override }
+  }
+  return user
+}
+
 // No-op hasta tener base de datos configurada
 export async function saveQuote(
   _userId: string,

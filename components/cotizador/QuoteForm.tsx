@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { SECTION_ONE, SECTION_TWO, SECTION_THREE } from '@/lib/cotizador/placas'
 import type { QuoteType, QuoteResponse } from '@/lib/cotizador/types'
+import { useCommission } from '@/lib/cotizador/commissionContext'
 import { QuoteResult } from './QuoteResult'
 
 const schema = z.object({
@@ -68,11 +69,14 @@ const WITH_CILINDRAJE: QuoteType[] = ['auto', 'vip', 'carga', 'carga-pesada', 'f
 export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const { data: session } = useSession()
   const manualServices = (session?.user as any)?.manualServices === true
+  const { comision }   = useCommission()
 
   const [result,    setResult]    = useState<QuoteResponse | null>(null)
   const [loading,   setLoading]   = useState(false)
   const [lastInput, setLastInput] = useState<Record<string, unknown>>({})
   const [apiError,  setApiError]  = useState('')
+
+  const isFlotilla    = quoteType === 'flotilla' || quoteType === 'comision-extra'
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -80,6 +84,9 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       cilindraje:            '4',
       anticipo:              '0.25',
       servicios:             '0',
+      residualValue24:       isFlotilla ? '40' : '20',
+      residualValue36:       isFlotilla ? '35' : '30',
+      residualValue48:       isFlotilla ? '30' : '25',
       includeInsurance:      true,
       includeGps:            true,
       includeTenencias:      true,
@@ -88,7 +95,6 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   })
 
   const states        = getStates(quoteType)
-  const isFlotilla    = quoteType === 'flotilla' || quoteType === 'comision-extra'
   const isUsado       = quoteType === 'usado'
   const isRefin       = quoteType === 'refinanciamiento'
   const isCargaPesada = quoteType === 'carga-pesada'
@@ -100,12 +106,13 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
     setApiError('')
 
     const body: Record<string, unknown> = {
-      totalPrice:     parseFloat(values.totalPrice.replace(/[,$\s]/g, '')),
-      modelo:         values.modelo ?? '',
-      state:          values.state,
-      anticipo:       parseFloat(values.anticipo),
-      accessory:      values.accessory ?? '',
-      accessoryValue: parseFloat(values.accessoryValue ?? '0') || 0,
+      totalPrice:        parseFloat(values.totalPrice.replace(/[,$\s]/g, '')),
+      modelo:            values.modelo ?? '',
+      state:             values.state,
+      anticipo:          parseFloat(values.anticipo),
+      accessory:         values.accessory ?? '',
+      accessoryValue:    parseFloat(values.accessoryValue ?? '0') || 0,
+      comisionOverride:  comision,
     }
 
     if (hasCilindraje && values.cilindraje) body.cilindraje = values.cilindraje
@@ -115,9 +122,9 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
     if (isUsado && values.autometricaValue)
       body.autometricaValue = parseFloat(values.autometricaValue.replace(/[,$\s]/g, ''))
     if (isFlotilla) {
-      body.residualValue24       = parseFloat(values.residualValue24 ?? '20') || 20
-      body.residualValue36       = parseFloat(values.residualValue36 ?? '30') || 30
-      body.residualValue48       = parseFloat(values.residualValue48 ?? '25') || 25
+      body.residualValue24       = parseFloat(values.residualValue24 ?? (isFlotilla ? '40' : '20')) || (isFlotilla ? 40 : 20)
+      body.residualValue36       = parseFloat(values.residualValue36 ?? (isFlotilla ? '35' : '30')) || (isFlotilla ? 35 : 30)
+      body.residualValue48       = parseFloat(values.residualValue48 ?? (isFlotilla ? '30' : '25')) || (isFlotilla ? 30 : 25)
       body.includeInsurance      = values.includeInsurance
       body.includeGps            = values.includeGps
       body.includeTenencias      = values.includeTenencias
@@ -276,15 +283,15 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
           <>
             <div>
               <label className={labelCls}>Residual 24m (%)</label>
-              <input {...register('residualValue24')} inputMode="numeric" placeholder="20" className={inputCls} />
+              <input {...register('residualValue24')} inputMode="numeric" placeholder={isFlotilla ? '40' : '20'} className={inputCls} />
             </div>
             <div>
               <label className={labelCls}>Residual 36m (%)</label>
-              <input {...register('residualValue36')} inputMode="numeric" placeholder="30" className={inputCls} />
+              <input {...register('residualValue36')} inputMode="numeric" placeholder={isFlotilla ? '35' : '30'} className={inputCls} />
             </div>
             <div>
               <label className={labelCls}>Residual 48m (%)</label>
-              <input {...register('residualValue48')} inputMode="numeric" placeholder="25" className={inputCls} />
+              <input {...register('residualValue48')} inputMode="numeric" placeholder={isFlotilla ? '30' : '25'} className={inputCls} />
             </div>
             <div className="sm:col-span-2 lg:col-span-3">
               <p className={labelCls}>Incluir en renta:</p>

@@ -18,7 +18,7 @@ const nav = [
   { href: '/cotizador/foraneo',          label: 'Foráneo',           icon: Map },
   { href: '/cotizador/usado',            label: 'Vehículo Usado',    icon: RotateCcw },
   { href: '/cotizador/flotilla',          label: 'Flotilla',                  icon: Users },
-  { href: '/cotizador/comision-extra',   label: 'Comisión Extra',            icon: BadgeDollarSign },
+  { href: '/cotizador/comision-extra',   label: 'Cotizador especial',        icon: BadgeDollarSign },
   { href: '/cotizador/refinanciamiento', label: 'Refinanciamiento',          icon: ClipboardList },
   { href: '/cotizador/historial',        label: 'Historial',         icon: History },
 ]
