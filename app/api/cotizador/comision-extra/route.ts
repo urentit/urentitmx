@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { getSessionUser, saveQuote, unauthorized } from '@/lib/cotizador/apiHelper'
+import { getSessionUser, saveQuote, unauthorized, applyComisionOverride } from '@/lib/cotizador/apiHelper'
 import { calculate } from '@/lib/cotizador/calculators/comisionExtra'
 
 const schema = z.object({
@@ -21,6 +21,7 @@ const schema = z.object({
   includeTenencias:      z.boolean().default(true),
   includeVerificaciones: z.boolean().default(true),
   plazos:                z.array(z.enum(['24', '36', '48'])).default(['24', '36', '48']),
+  comisionOverride:      z.number().min(0).max(0.1).optional(),
 })
 
 export async function POST(req: NextRequest) {
@@ -28,13 +29,14 @@ export async function POST(req: NextRequest) {
   if (!user) return unauthorized()
 
   try {
-    const body  = schema.parse(await req.json())
+    const body          = schema.parse(await req.json())
+    const effectiveUser = applyComisionOverride(user, body.comisionOverride)
     const input = { ...body, quoteType: 'comision-extra' as const }
 
     const result: Record<string, unknown> = {}
     for (const p of body.plazos) {
       const years = Number(p) as 24 | 36 | 48
-      result[p] = calculate(input, user, years)
+      result[p] = calculate(input, effectiveUser, years)
     }
 
     await saveQuote(user.id, 'comision-extra', input, result as any)

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { getSessionUser, saveQuote, unauthorized } from '@/lib/cotizador/apiHelper'
+import { getSessionUser, saveQuote, unauthorized, applyComisionOverride } from '@/lib/cotizador/apiHelper'
 import { calculate } from '@/lib/cotizador/calculators/auto'
 
 const schema = z.object({
@@ -13,7 +13,8 @@ const schema = z.object({
   servicios:      z.number().min(0).max(4).default(0),
   seguro:         z.number().positive().optional(),
   servicesValue:  z.number().positive().optional(),
-  modelo:         z.string().default(''),
+  modelo:            z.string().default(''),
+  comisionOverride:  z.number().min(0).max(0.1).optional(),
 })
 
 export async function POST(req: NextRequest) {
@@ -21,12 +22,13 @@ export async function POST(req: NextRequest) {
   if (!user) return unauthorized()
 
   try {
-    const body  = schema.parse(await req.json())
+    const body         = schema.parse(await req.json())
+    const effectiveUser = applyComisionOverride(user, body.comisionOverride)
     const input = { ...body, quoteType: 'auto' as const }
 
     const result = {
-      '36': calculate(input, user, 36),
-      '48': calculate(input, user, 48),
+      '36': calculate(input, effectiveUser, 36),
+      '48': calculate(input, effectiveUser, 48),
     }
 
     await saveQuote(user.id, 'auto', input, result)

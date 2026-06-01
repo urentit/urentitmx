@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import type { Session } from 'next-auth'
 import { SessionProvider } from '@/components/cotizador/SessionProvider'
+import { CommissionProvider } from '@/lib/cotizador/commissionContext'
 import { Sidebar } from './Sidebar'
 import { InternalHeader } from './InternalHeader'
 import { DownloadDocs } from '@/components/cotizador/DownloadDocs'
@@ -16,6 +17,7 @@ export function CotizadorShell({ children, session }: { children: React.ReactNod
 
   return (
     <SessionProvider session={session}>
+      <CommissionProvider>
       <div className="flex h-dvh overflow-hidden bg-[#0a0a0a]">
         {sidebarOpen && (
           <div
@@ -32,6 +34,7 @@ export function CotizadorShell({ children, session }: { children: React.ReactNod
           </main>
         </div>
       </div>
+      </CommissionProvider>
     </SessionProvider>
   )
 }
