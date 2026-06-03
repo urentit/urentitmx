@@ -17,7 +17,7 @@ export async function getSessionUser() {
 type SessionUser = NonNullable<Awaited<ReturnType<typeof getSessionUser>>>
 
 export function applyComisionOverride(user: SessionUser, override?: number): SessionUser {
-  if (override !== undefined && Number.isFinite(override) && override >= 0 && override <= 0.1) {
+  if (override !== undefined && Number.isFinite(override) && override >= 0 && override <= 0.03) {
     return { ...user, comision: override }
   }
   return user
