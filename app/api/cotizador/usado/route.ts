@@ -12,7 +12,7 @@ const schema = z.object({
   seguro:          z.number().positive().optional(),
   autometricaValue: z.number().positive().optional(),
   modelo:           z.string().default(''),
-  comisionOverride: z.number().min(0).max(0.1).optional(),
+  comisionOverride: z.number().min(0).max(0.03).optional(),
 })
 
 export async function POST(req: NextRequest) {

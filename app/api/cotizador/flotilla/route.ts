@@ -21,7 +21,7 @@ const schema = z.object({
   includeTenencias:    z.boolean().default(true),
   includeVerificaciones: z.boolean().default(true),
   plazos:              z.array(z.enum(['24', '36', '48'])).default(['36', '48']),
-  comisionOverride:    z.number().min(0).max(0.1).optional(),
+  comisionOverride:    z.number().min(0).max(0.03).optional(),
 })
 
 export async function POST(req: NextRequest) {
