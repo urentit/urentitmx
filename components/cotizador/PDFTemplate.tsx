@@ -90,6 +90,19 @@ interface Props {
   logoPath?:  string
 }
 
+const QUOTE_TYPE_LABELS: Record<string, string> = {
+  'auto':             'Autos',
+  'vip':              'VIP / Lujo',
+  'carga':            'Carga',
+  'carga-pesada':     'Carga Pesada',
+  'electrico':        'Eléctrico',
+  'foraneo':          'Foráneo',
+  'usado':            'Vehículo Usado',
+  'flotilla':         'Flotilla',
+  'comision-extra':   'Cotizador especial',
+  'refinanciamiento': 'Refinanciamiento',
+}
+
 export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, logoPath }: Props) {
   const periods    = Object.keys(result).sort()
   const periodData = periods.map(p => result[p as keyof QuoteResponse]!)
@@ -136,7 +149,7 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, l
             <Text style={S.docMeta}>Fecha: {date}</Text>
             <Text style={[S.docTitle, { marginTop: 4 }]}>{modelo || 'Cotización'}</Text>
             <Text style={S.docMeta}>Valor del vehículo: {fmt(totalPrice)}</Text>
-            <Text style={S.docMeta}>Tipo: {quoteType.toUpperCase()}</Text>
+            <Text style={S.docMeta}>Tipo: {QUOTE_TYPE_LABELS[quoteType] ?? quoteType}</Text>
           </View>
         </View>
 
