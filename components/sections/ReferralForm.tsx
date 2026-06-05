@@ -95,6 +95,9 @@ export function ReferralForm() {
       setStatus('success')
       reset()
 
+      if (typeof window !== 'undefined' && typeof (window as any).fbq === 'function') {
+        ;(window as any).fbq('track', 'Lead')
+      }
       if (typeof window !== 'undefined' && (window as any).dataLayer) {
         ;(window as any).dataLayer.push({ event: 'form_submit', form_type: 'referrals' })
       }

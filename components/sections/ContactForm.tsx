@@ -74,6 +74,9 @@ export function ContactForm() {
       setStatus('success')
       reset()
 
+      if (typeof window !== 'undefined' && typeof (window as any).fbq === 'function') {
+        ;(window as any).fbq('track', 'Lead')
+      }
       // GA4 event
       analytics.formSubmit('contact')
     } catch {
