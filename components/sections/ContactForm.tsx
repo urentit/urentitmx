@@ -86,7 +86,7 @@ export function ContactForm() {
 
   return (
     <section
-      id="contacto"
+      id="cotizar"
       className="relative section-padding overflow-hidden"
       aria-label="Solicitar cotización"
     >
