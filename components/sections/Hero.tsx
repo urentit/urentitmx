@@ -68,7 +68,9 @@ export function Hero() {
     }
   }
 
-  const handleCotizarClick = () => {
+  const handleCotizarClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    document.getElementById('cotizar')?.scrollIntoView({ behavior: 'smooth' })
     if (typeof window !== 'undefined' && (window as any).dataLayer) {
       ;(window as any).dataLayer.push({ event: 'cta_hero_click', cta: 'cotiza_ahora' })
     }

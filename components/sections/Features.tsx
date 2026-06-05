@@ -111,6 +111,7 @@ function FeatureItem({ feature, index }: FeatureItemProps) {
           variant="ghost"
           size="md"
           className="group px-0 hover:text-gold"
+          onClick={(e) => { e.preventDefault(); document.getElementById('cotizar')?.scrollIntoView({ behavior: 'smooth' }) }}
         >
           Conocer más
           <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />

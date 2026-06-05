@@ -144,6 +144,7 @@ export function AboutUs() {
               href={COTIZAR}
               variant="primary"
               size="md"
+              onClick={(e) => { e.preventDefault(); document.getElementById('cotizar')?.scrollIntoView({ behavior: 'smooth' }) }}
             >
               Solicitar cotización
             </ButtonLink>
