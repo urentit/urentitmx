@@ -98,7 +98,7 @@ export function ValueProposition() {
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
               className="font-display text-4xl sm:text-5xl md:text-6xl text-white font-bold leading-tight max-w-xl"
             >
               Todo lo que incluye tu{' '}
@@ -128,7 +128,7 @@ export function ValueProposition() {
             <motion.div
               key={offer.label}
               variants={item}
-              className="group relative flex flex-col gap-5 p-7 md:p-8 bg-black-secondary hover:bg-black-light transition-all duration-300 cursor-pointer overflow-hidden"
+              className="group relative flex flex-col gap-5 p-7 md:p-8 bg-black-secondary hover:bg-black-light transition-[background-color,color] duration-150 ease-out-expo cursor-pointer overflow-hidden"
             >
               {/* Large decorative number — editorial element */}
               <span

@@ -170,7 +170,7 @@ export function Hero() {
             </ButtonLink>
             <button
               onClick={scrollToContent}
-              className="inline-flex items-center gap-2 px-6 py-4 text-sm font-sans text-white/70 border border-white/15 rounded-sm hover:border-gold/40 hover:text-gold transition-all duration-300"
+              className="inline-flex items-center gap-2 px-6 py-4 text-sm font-sans text-white/70 border border-white/15 rounded-sm hover:border-gold/40 hover:text-gold transition-[border-color,color,transform] duration-150 ease-out-expo active:scale-[0.97]"
             >
               Ver vehículos
             </button>

@@ -56,7 +56,7 @@ export function ProblemStatement() {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.55, delay: 0.1 }}
+            transition={{ duration: 0.55, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
             className="font-display text-3xl sm:text-4xl md:text-5xl text-white font-bold leading-tight"
           >
             Deja de{' '}

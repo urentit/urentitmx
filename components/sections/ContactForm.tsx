@@ -50,7 +50,7 @@ function Field({
 }
 
 const inputBase =
-  'w-full bg-white/5 border border-white/10 rounded-sm px-4 py-3 text-white font-sans text-sm placeholder:text-white/25 focus:outline-none focus:border-gold/60 focus:bg-white/8 transition-all duration-200'
+  'w-full bg-white/5 border border-white/10 rounded-sm px-4 py-3 text-white font-sans text-sm placeholder:text-white/25 focus:outline-none focus:border-gold/60 focus:bg-white/[0.08] transition-[border-color,background-color] duration-150 ease-out-expo'
 
 /* ─── Main ─── */
 export function ContactForm() {
