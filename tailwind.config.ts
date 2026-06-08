@@ -43,7 +43,6 @@ const config: Config = {
         'marquee': 'marquee 30s linear infinite',
         'marquee-reverse': 'marquee-reverse 30s linear infinite',
         'fade-up': 'fadeUp 0.6s ease forwards',
-        'counter': 'counter 2s ease-out forwards',
       },
       keyframes: {
         marquee: {
@@ -66,6 +65,7 @@ const config: Config = {
       },
       transitionTimingFunction: {
         'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        'out-expo': 'cubic-bezier(0.23, 1, 0.32, 1)',
       },
     },
   },

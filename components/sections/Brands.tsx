@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { Badge } from '@/components/ui/Badge'
 
 const ALL_BRANDS = [
   { slug: 'acura',          name: 'Acura' },
@@ -93,7 +92,6 @@ export function Brands() {
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
 
       <div className="container-site mb-12 text-center">
-        <Badge className="mb-5">Marcas</Badge>
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-white font-bold mb-4">
           Más de{' '}
           <span className="text-gold italic">36 marcas</span>

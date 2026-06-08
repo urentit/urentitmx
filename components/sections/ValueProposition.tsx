@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Badge } from '@/components/ui/Badge'
 
 const OFFERS = [
   {
@@ -18,7 +17,7 @@ const OFFERS = [
   },
   {
     icon: 'deduccion-fiscal.svg',
-    label: 'Gestión operativa',
+    label: 'Trámites y Placas',
     description: 'Nos encargamos de trámites, placas y verificaciones para que tú te enfoques en tu negocio.',
   },
   {
@@ -33,7 +32,7 @@ const OFFERS = [
   },
   {
     icon: 'gestion-operativa.svg',
-    label: 'Gestión operativa',
+    label: 'GPS y Monitoreo',
     description: 'Nos encargamos de verificaciones, GPS, documentación y más.',
   },
   {
@@ -99,7 +98,7 @@ export function ValueProposition() {
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
               className="font-display text-4xl sm:text-5xl md:text-6xl text-white font-bold leading-tight max-w-xl"
             >
               Todo lo que incluye tu{' '}
@@ -129,7 +128,7 @@ export function ValueProposition() {
             <motion.div
               key={offer.label}
               variants={item}
-              className="group relative flex flex-col gap-5 p-7 md:p-8 bg-[#0d0d0d] hover:bg-black-secondary transition-all duration-300 cursor-pointer overflow-hidden"
+              className="group relative flex flex-col gap-5 p-7 md:p-8 bg-black-secondary hover:bg-black-light transition-[background-color,color] duration-150 ease-out-expo cursor-pointer overflow-hidden"
             >
               {/* Large decorative number — editorial element */}
               <span
@@ -159,7 +158,7 @@ export function ValueProposition() {
                 <h3 className="font-sans font-semibold text-white/80 group-hover:text-gold text-base mb-2 transition-colors duration-300">
                   {offer.label}
                 </h3>
-                <p className="text-white/40 font-sans text-sm leading-relaxed">
+                <p className="text-white/50 font-sans text-sm leading-relaxed">
                   {offer.description}
                 </p>
               </div>

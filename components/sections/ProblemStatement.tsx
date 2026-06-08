@@ -14,7 +14,7 @@ const PROBLEMS = [
 ]
 
 const SOLUTIONS = [
-  'Renta mensual fija — capital de trabajo libre',
+  'Renta mensual fija, capital de trabajo libre',
   'Sin depreciación en tu balance general',
   'Mantenimiento preventivo y seguro incluidos',
   'Trámites, placas y refrendos gestionados por U Rent It',
@@ -56,7 +56,7 @@ export function ProblemStatement() {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.55, delay: 0.1 }}
+            transition={{ duration: 0.55, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
             className="font-display text-3xl sm:text-4xl md:text-5xl text-white font-bold leading-tight"
           >
             Deja de{' '}
@@ -92,7 +92,7 @@ export function ProblemStatement() {
                 <motion.li
                   key={p}
                   variants={row}
-                  className="flex items-start gap-3 text-white/40 font-sans text-sm leading-relaxed"
+                  className="flex items-start gap-3 text-white/50 font-sans text-sm leading-relaxed"
                 >
                   <X size={15} className="text-red-400/50 mt-0.5 flex-shrink-0" />
                   {p}

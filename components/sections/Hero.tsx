@@ -57,7 +57,7 @@ function StatItem({ value, suffix, label }: { value: number; suffix: string; lab
       <div className="font-display text-5xl md:text-6xl font-bold text-white leading-none tabular-nums">
         {count}<span className="text-gold">{suffix}</span>
       </div>
-      <div className="text-white/40 text-[11px] font-sans tracking-[0.15em] uppercase">{label}</div>
+      <div className="text-white/55 text-xs font-sans tracking-[0.15em] uppercase">{label}</div>
     </div>
   )
 }
@@ -83,7 +83,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col overflow-hidden"
+      className="relative min-h-[100dvh] flex flex-col overflow-hidden"
       aria-label="Inicio"
     >
       {/* ─── Background ─── */}
@@ -133,10 +133,10 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.85, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="font-display font-bold leading-[0.95] tracking-tight mb-8"
-            style={{ fontSize: 'clamp(3rem, 8vw, 7.5rem)' }}
+            style={{ fontSize: 'clamp(2.75rem, 7vw, 6rem)' }}
           >
             <span className="block text-white">Vehículos que</span>
-            <span className="block text-gold italic" style={{ textShadow: '0 0 80px rgba(225,190,74,0.3)' }}>
+            <span className="block text-gold italic">
               impulsan
             </span>
             <span className="block text-white">tu empresa</span>
@@ -165,12 +165,12 @@ export function Hero() {
               onClick={handleCotizarClick}
               className="group"
             >
-              Cotiza ahora — es gratis
+              Cotiza ahora, es gratis
               <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
             </ButtonLink>
             <button
               onClick={scrollToContent}
-              className="inline-flex items-center gap-2 px-6 py-4 text-sm font-sans text-white/70 border border-white/15 rounded-sm hover:border-gold/40 hover:text-gold transition-all duration-300"
+              className="inline-flex items-center gap-2 px-6 py-4 text-sm font-sans text-white/70 border border-white/15 rounded-sm hover:border-gold/40 hover:text-gold transition-[border-color,color,transform] duration-150 ease-out-expo active:scale-[0.97]"
             >
               Ver vehículos
             </button>
@@ -185,31 +185,12 @@ export function Hero() {
         transition={{ duration: 0.7, delay: 0.7 }}
         className="relative z-10 container-site pb-16 pt-12"
       >
-        <div
-          className="inline-flex flex-wrap gap-10 md:gap-16 px-8 py-6 rounded-sm border border-white/8"
-          style={{
-            background: 'rgba(10,10,10,0.55)',
-            backdropFilter: 'blur(20px) saturate(1.4)',
-            WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
-          }}
-        >
+        <div className="inline-flex flex-wrap gap-10 md:gap-16 px-8 py-6 rounded-sm border border-white/8 bg-black/65">
           {STATS.map((stat) => (
             <StatItem key={stat.label} {...stat} />
           ))}
         </div>
       </motion.div>
-
-      {/* ─── Vertical decorative text ─── */}
-      <div className="absolute right-6 top-1/2 -translate-y-1/2 z-10 hidden xl:flex flex-col items-center gap-6">
-        <div className="w-px h-16 bg-gradient-to-b from-transparent to-gold/30" />
-        <p
-          className="font-sans text-[10px] tracking-[0.3em] uppercase text-white/20 font-medium"
-          style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
-        >
-          Premium · Lujo · Flotillas · Blindados
-        </p>
-        <div className="w-px h-16 bg-gradient-to-t from-transparent to-gold/30" />
-      </div>
 
       {/* ─── Scroll indicator ─── */}
       <button

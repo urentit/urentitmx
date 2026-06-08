@@ -143,7 +143,6 @@ export function Features() {
       <div className="container-site relative z-10">
         {/* Section header */}
         <div className="text-center pt-16 md:pt-24 mb-4">
-          <Badge className="mb-5">Diferenciadores</Badge>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-white font-bold mb-4">
             ¿Por qué elegir{' '}
             <span className="text-gold italic">U Rent It</span>?

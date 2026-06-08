@@ -33,16 +33,6 @@ export function CTAFinal() {
       <div className="absolute -right-20 top-1/2 -translate-y-1/2 w-40 h-40 border border-gold/15 rounded-full pointer-events-none" />
 
       <div className="container-site relative z-10 text-center">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="font-sans text-gold text-sm font-semibold tracking-widest uppercase mb-4"
-        >
-          ¿Listo para comenzar?
-        </motion.p>
-
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -79,7 +69,7 @@ export function CTAFinal() {
             onClick={handleClick}
             className="group min-w-[220px] justify-center"
           >
-            Cotiza ahora — es gratis
+            Cotiza ahora, es gratis
             <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
           </ButtonLink>
           <ButtonLink
