@@ -23,7 +23,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48): Q
 
   // Seguro sobre valor Autométrica al 4%
   const baseSeguro = autometricaValue ?? total
-  const seguro     = seguroManual ?? Math.round(baseSeguro * 0.04 * yrs * 100) / 100
+  const seguro     = seguroManual != null ? seguroManual * yrs : Math.round(baseSeguro * 0.04 * yrs * 100) / 100
 
   // Sin servicios preventivos
   const serviciosP = 0

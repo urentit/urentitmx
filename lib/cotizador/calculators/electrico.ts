@@ -14,7 +14,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48): Q
   const yrs   = years / 12
 
   // Seguro eléctrico: 4% fijo
-  const seguro = seguroManual ?? Math.round(total * 0.04 * yrs * 100) / 100
+  const seguro = seguroManual != null ? seguroManual * yrs : Math.round(total * 0.04 * yrs * 100) / 100
 
   // Servicios eléctricos especiales
   const serviciosP = VARS.ELECTRIC_SERVICES * Math.max(0, yrs - servicios)

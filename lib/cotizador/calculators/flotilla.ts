@@ -24,7 +24,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 24 | 36 | 4
   }
   const varData1 = (residualMap[years] ?? 30) / 100
 
-  const seguro     = includeInsurance ? (seguroManual ?? calcSeguroAuto(total, yrs)) : 0
+  const seguro     = includeInsurance ? (seguroManual != null ? seguroManual * yrs : calcSeguroAuto(total, yrs)) : 0
   const serviciosP = calcServiciosPreventivos(total, yrs, servicios, user.manualServices ? servicesValue : undefined)
   const gps        = includeGps ? calcGps(yrs) : 0
   const tramites   = getPlacaPrice(total, 'section_one', state)
