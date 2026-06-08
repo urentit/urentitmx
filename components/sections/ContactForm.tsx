@@ -29,19 +29,21 @@ type FormValues = z.infer<typeof schema>
 /* ─── Field component ─── */
 function Field({
   label,
+  id,
   error,
   children,
 }: {
   label: string
+  id?: string
   error?: string
   children: React.ReactNode
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-white/60 font-sans text-xs tracking-wide uppercase">{label}</label>
+      <label htmlFor={id} className="text-white/60 font-sans text-xs tracking-wide uppercase">{label}</label>
       {children}
       {error && (
-        <span className="text-red-400 text-xs font-sans">{error}</span>
+        <span role="alert" className="text-red-400 text-xs font-sans">{error}</span>
       )}
     </div>
   )
@@ -59,28 +61,32 @@ export function ContactForm() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormValues>({ resolver: zodResolver(schema) })
+  } = useForm<FormValues>({ resolver: zodResolver(schema), mode: 'onBlur' })
 
   const onSubmit = async (data: FormValues) => {
     setStatus('loading')
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 10000)
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
+        signal: controller.signal,
       })
       if (!res.ok) throw new Error()
 
       setStatus('success')
       reset()
 
-      if (typeof window !== 'undefined' && typeof (window as any).fbq === 'function') {
+      if (typeof window !== 'undefined' && (window as any).fbq) {
         ;(window as any).fbq('track', 'Lead')
       }
-      // GA4 event
       analytics.formSubmit('contact')
     } catch {
       setStatus('error')
+    } finally {
+      clearTimeout(timeout)
     }
   }
 
@@ -207,15 +213,17 @@ export function ContactForm() {
                     noValidate
                   >
                     <div className="grid grid-cols-2 gap-4">
-                      <Field label="Nombre" error={errors.nombre?.message}>
+                      <Field label="Nombre" id="nombre" error={errors.nombre?.message}>
                         <input
+                          id="nombre"
                           {...register('nombre')}
                           placeholder="Juan"
                           className={clsx(inputBase, errors.nombre && 'border-red-400/60')}
                         />
                       </Field>
-                      <Field label="Apellido" error={errors.apellido?.message}>
+                      <Field label="Apellido" id="apellido" error={errors.apellido?.message}>
                         <input
+                          id="apellido"
                           {...register('apellido')}
                           placeholder="García"
                           className={clsx(inputBase, errors.apellido && 'border-red-400/60')}
@@ -223,8 +231,9 @@ export function ContactForm() {
                       </Field>
                     </div>
 
-                    <Field label="Empresa" error={errors.empresa?.message}>
+                    <Field label="Empresa" id="empresa" error={errors.empresa?.message}>
                       <input
+                        id="empresa"
                         {...register('empresa')}
                         placeholder="Nombre de tu empresa"
                         className={clsx(inputBase, errors.empresa && 'border-red-400/60')}
@@ -232,16 +241,18 @@ export function ContactForm() {
                     </Field>
 
                     <div className="grid grid-cols-2 gap-4">
-                      <Field label="Correo electrónico" error={errors.email?.message}>
+                      <Field label="Correo electrónico" id="email" error={errors.email?.message}>
                         <input
+                          id="email"
                           {...register('email')}
                           type="email"
                           placeholder="correo@empresa.com"
                           className={clsx(inputBase, errors.email && 'border-red-400/60')}
                         />
                       </Field>
-                      <Field label="Teléfono" error={errors.telefono?.message}>
+                      <Field label="Teléfono" id="telefono" error={errors.telefono?.message}>
                         <input
+                          id="telefono"
                           {...register('telefono')}
                           type="tel"
                           placeholder="5512345678"
@@ -251,16 +262,18 @@ export function ContactForm() {
                       </Field>
                     </div>
 
-                    <Field label="Vehículo de interés (opcional)" error={errors.vehiculo?.message}>
+                    <Field label="Vehículo de interés (opcional)" id="vehiculo" error={errors.vehiculo?.message}>
                       <input
+                        id="vehiculo"
                         {...register('vehiculo')}
                         placeholder="ej. Toyota Prius, Flota de 5 unidades..."
                         className={inputBase}
                       />
                     </Field>
 
-                    <Field label="Mensaje" error={errors.mensaje?.message}>
+                    <Field label="Mensaje" id="mensaje" error={errors.mensaje?.message}>
                       <textarea
+                        id="mensaje"
                         {...register('mensaje')}
                         placeholder="Cuéntanos sobre tus necesidades..."
                         rows={3}
@@ -269,7 +282,7 @@ export function ContactForm() {
                     </Field>
 
                     {status === 'error' && (
-                      <p className="text-red-400 font-sans text-xs text-center">
+                      <p role="alert" className="text-red-400 font-sans text-xs text-center">
                         Ocurrió un error. Por favor intenta de nuevo o contáctanos por WhatsApp.
                       </p>
                     )}

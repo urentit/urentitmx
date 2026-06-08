@@ -10,10 +10,10 @@ const WHATSAPP = 'https://wa.me/525518062633?text=' + encodeURIComponent('Hola, 
 export function CTAFinal() {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault()
-    document.getElementById('cotizar')?.scrollIntoView({ behavior: 'smooth' })
     if (typeof window !== 'undefined' && (window as any).dataLayer) {
       ;(window as any).dataLayer.push({ event: 'cotizador_click', source: 'cta_final' })
     }
+    document.getElementById('cotizar')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (

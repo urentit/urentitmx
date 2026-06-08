@@ -34,29 +34,34 @@ const schema = z.object({
   aceptaTerminos: z.literal(true, {
     errorMap: () => ({ message: 'Debes aceptar los términos del programa' }),
   }),
+}).refine((data) => data.email !== data.referidoEmail, {
+  message: 'El correo del referido no puede ser el mismo que el tuyo',
+  path: ['referidoEmail'],
 })
 
 type ReferralFormValues = z.infer<typeof schema>
 
 function Field({
   label,
+  id,
   error,
   required = false,
   children,
 }: {
   label: string
+  id?: string
   error?: string
   required?: boolean
   children: React.ReactNode
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-xs font-medium uppercase tracking-[0.2em] text-white/60">
+      <label htmlFor={id} className="text-xs font-medium uppercase tracking-[0.2em] text-white/60">
         {label}
         {required ? <span className="ml-1 text-gold">*</span> : null}
       </label>
       {children}
-      {error ? <span className="text-xs text-red-400">{error}</span> : null}
+      {error ? <span role="alert" className="text-xs text-red-400">{error}</span> : null}
     </div>
   )
 }
@@ -76,6 +81,7 @@ export function ReferralForm() {
     formState: { errors },
   } = useForm<ReferralFormValues>({
     resolver: zodResolver(schema),
+    mode: 'onBlur',
     defaultValues: {
       referidoEnterado: undefined,
     },
@@ -83,11 +89,14 @@ export function ReferralForm() {
 
   const onSubmit = async (data: ReferralFormValues) => {
     setStatus('loading')
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 10000)
     try {
       const res = await fetch('/api/referrals', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
+        signal: controller.signal,
       })
 
       if (!res.ok) throw new Error()
@@ -95,7 +104,7 @@ export function ReferralForm() {
       setStatus('success')
       reset()
 
-      if (typeof window !== 'undefined' && typeof (window as any).fbq === 'function') {
+      if (typeof window !== 'undefined' && (window as any).fbq) {
         ;(window as any).fbq('track', 'Lead')
       }
       if (typeof window !== 'undefined' && (window as any).dataLayer) {
@@ -103,6 +112,8 @@ export function ReferralForm() {
       }
     } catch {
       setStatus('error')
+    } finally {
+      clearTimeout(timeout)
     }
   }
 
@@ -264,8 +275,9 @@ export function ReferralForm() {
                       </p>
                     </div>
 
-                    <Field label="Nombre completo" required error={errors.nombreCompleto?.message}>
+                    <Field label="Nombre completo" id="nombreCompleto" required error={errors.nombreCompleto?.message}>
                       <input
+                        id="nombreCompleto"
                         {...register('nombreCompleto')}
                         placeholder="Nombre y apellido"
                         className={clsx(inputBase, errors.nombreCompleto && 'border-red-400/60')}
@@ -273,8 +285,9 @@ export function ReferralForm() {
                     </Field>
 
                     <div className="grid gap-5 md:grid-cols-2">
-                      <Field label="Correo electrónico" required error={errors.email?.message}>
+                      <Field label="Correo electrónico" id="ref-email" required error={errors.email?.message}>
                         <input
+                          id="ref-email"
                           {...register('email')}
                           type="email"
                           placeholder="correo@empresa.com"
@@ -282,10 +295,11 @@ export function ReferralForm() {
                         />
                       </Field>
 
-                      <Field label="Número de teléfono" required error={errors.telefono?.message}>
+                      <Field label="Número de teléfono" id="ref-telefono" required error={errors.telefono?.message}>
                         <div className="relative">
                           <Phone size={16} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gold/70" />
                           <input
+                            id="ref-telefono"
                             {...register('telefono')}
                             type="tel"
                             maxLength={10}
@@ -296,8 +310,9 @@ export function ReferralForm() {
                       </Field>
                     </div>
 
-                    <Field label="Empresa o razón social" required error={errors.empresa?.message}>
+                    <Field label="Empresa o razón social" id="ref-empresa" required error={errors.empresa?.message}>
                       <input
+                        id="ref-empresa"
                         {...register('empresa')}
                         placeholder="Nombre de la empresa"
                         className={clsx(inputBase, errors.empresa && 'border-red-400/60')}
@@ -314,16 +329,18 @@ export function ReferralForm() {
                       </p>
                     </div>
 
-                    <Field label="Nombre del referido" required error={errors.referidoNombre?.message}>
+                    <Field label="Nombre del referido" id="referidoNombre" required error={errors.referidoNombre?.message}>
                       <input
+                        id="referidoNombre"
                         {...register('referidoNombre')}
                         placeholder="Nombre completo"
                         className={clsx(inputBase, errors.referidoNombre && 'border-red-400/60')}
                       />
                     </Field>
 
-                    <Field label="Correo electrónico del referido" required error={errors.referidoEmail?.message}>
+                    <Field label="Correo electrónico del referido" id="referidoEmail" required error={errors.referidoEmail?.message}>
                       <input
+                        id="referidoEmail"
                         {...register('referidoEmail')}
                         type="email"
                         placeholder="correo@empresa.com"
@@ -331,10 +348,11 @@ export function ReferralForm() {
                       />
                     </Field>
 
-                    <Field label="Teléfono del referido" required error={errors.referidoTelefono?.message}>
+                    <Field label="Teléfono del referido" id="referidoTelefono" required error={errors.referidoTelefono?.message}>
                       <div className="relative">
                         <Phone size={16} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gold/70" />
                         <input
+                          id="referidoTelefono"
                           {...register('referidoTelefono')}
                           type="tel"
                           maxLength={10}
@@ -400,7 +418,7 @@ export function ReferralForm() {
                 </div>
 
                 {status === 'error' ? (
-                  <p className="text-center text-xs text-red-400">
+                  <p role="alert" className="text-center text-xs text-red-400">
                     Ocurrió un error al enviar el referido. Intenta de nuevo en unos momentos.
                   </p>
                 ) : null}

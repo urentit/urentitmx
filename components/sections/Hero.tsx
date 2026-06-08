@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ArrowRight, ChevronDown } from 'lucide-react'
@@ -19,6 +19,10 @@ function useCounter(target: number, duration = 2000, start = false) {
   const [count, setCount] = useState(0)
   useEffect(() => {
     if (!start) return
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setCount(target)
+      return
+    }
     let startTime: number | null = null
     const step = (ts: number) => {
       if (!startTime) startTime = ts
@@ -68,13 +72,13 @@ export function Hero() {
     }
   }
 
-  const handleCotizarClick = (e: React.MouseEvent) => {
+  const handleCotizarClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
-    document.getElementById('cotizar')?.scrollIntoView({ behavior: 'smooth' })
     if (typeof window !== 'undefined' && (window as any).dataLayer) {
       ;(window as any).dataLayer.push({ event: 'cta_hero_click', cta: 'cotiza_ahora' })
     }
-  }
+    document.getElementById('cotizar')?.scrollIntoView({ behavior: 'smooth' })
+  }, [])
 
   return (
     <section
