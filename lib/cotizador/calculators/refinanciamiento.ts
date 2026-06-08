@@ -24,7 +24,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 12 | 24): Q
   const seguroPct = total <= VARS.RANGO1 ? VARS.PS1
                   : total <= VARS.RANGO2 ? VARS.PS2
                   : VARS.PS3
-  const seguro = seguroManual ?? Math.round(total * seguroPct * yrs * 100) / 100
+  const seguro = seguroManual != null ? seguroManual * yrs : Math.round(total * seguroPct * yrs * 100) / 100
 
   // Servicios: services_value × years (factor 1, no 2); cero si servicios == 0
   const serviciosP = (servicios > 0 && servicesValue) ? servicesValue * yrs : 0

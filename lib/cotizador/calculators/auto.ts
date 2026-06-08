@@ -16,7 +16,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48): Q
   const tasa     = TASA[years]
   const yrs      = years / 12
 
-  const seguro   = seguroManual ?? calcSeguroAuto(total, yrs)
+  const seguro   = seguroManual != null ? seguroManual * yrs : calcSeguroAuto(total, yrs)
   const serviciosP = calcServiciosPreventivos(total, yrs, servicios, user.manualServices ? servicesValue : undefined)
   const gps      = calcGps(yrs)
   const tramites = getPlacaPrice(total, 'section_one', state)

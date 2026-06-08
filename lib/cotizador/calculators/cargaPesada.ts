@@ -14,7 +14,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48): Q
 
   // Carga pesada: seguro especial 4.5% < $2M, 6.5% >= $2M
   const seguroPct = total < 2000000 ? 0.045 : 0.065
-  const seguro    = seguroManual ?? Math.round(total * seguroPct * yrs * 100) / 100
+  const seguro    = seguroManual != null ? seguroManual * yrs : Math.round(total * seguroPct * yrs * 100) / 100
 
   // Sin servicios preventivos, sin tenencias, trámites fijos $4,000
   const serviciosP = 0
