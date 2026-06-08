@@ -83,7 +83,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col overflow-hidden"
+      className="relative min-h-[100dvh] flex flex-col overflow-hidden"
       aria-label="Inicio"
     >
       {/* ─── Background ─── */}
@@ -165,7 +165,7 @@ export function Hero() {
               onClick={handleCotizarClick}
               className="group"
             >
-              Cotiza ahora — es gratis
+              Cotiza ahora, es gratis
               <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
             </ButtonLink>
             <button
@@ -191,18 +191,6 @@ export function Hero() {
           ))}
         </div>
       </motion.div>
-
-      {/* ─── Vertical decorative text ─── */}
-      <div className="absolute right-6 top-1/2 -translate-y-1/2 z-10 hidden xl:flex flex-col items-center gap-6">
-        <div className="w-px h-16 bg-gradient-to-b from-transparent to-gold/30" />
-        <p
-          className="font-sans text-[10px] tracking-[0.3em] uppercase text-white/20 font-medium"
-          style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
-        >
-          Premium · Lujo · Flotillas · Blindados
-        </p>
-        <div className="w-px h-16 bg-gradient-to-t from-transparent to-gold/30" />
-      </div>
 
       {/* ─── Scroll indicator ─── */}
       <button

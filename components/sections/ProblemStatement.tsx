@@ -14,7 +14,7 @@ const PROBLEMS = [
 ]
 
 const SOLUTIONS = [
-  'Renta mensual fija — capital de trabajo libre',
+  'Renta mensual fija, capital de trabajo libre',
   'Sin depreciación en tu balance general',
   'Mantenimiento preventivo y seguro incluidos',
   'Trámites, placas y refrendos gestionados por U Rent It',
