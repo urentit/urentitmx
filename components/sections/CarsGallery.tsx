@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ArrowRight, Shield, Zap, Truck, Star, Bike, Wrench, type LucideProps } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
-import { ButtonLink } from '@/components/ui/Button'
+import { Button, ButtonLink } from '@/components/ui/Button'
 import { clsx } from 'clsx'
 
 const COTIZAR = '#cotizar'
@@ -103,6 +103,8 @@ const CARS: Record<string, { name: string; items: CarItem[] }> = {
 /* ─── Car Card ─── */
 function CarCard({ car, category, onSelect }: { car: CarItem; category: string; onSelect: (car: CarItem) => void }) {
   const imgPath = `/img/cars/${category}/${car.slug}.jpg`
+  const [loaded, setLoaded] = useState(false)
+  const [imgError, setImgError] = useState(false)
 
   const handleClick = () => {
     onSelect(car)
@@ -123,14 +125,26 @@ function CarCard({ car, category, onSelect }: { car: CarItem; category: string; 
     >
       {/* Image */}
       <div className="relative aspect-[16/10] overflow-hidden bg-black-light">
-        <Image
-          src={imgPath}
-          alt={`${car.brand} ${car.name}`}
-          fill
-          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          onError={() => {/* fallback handled by CSS */}}
-        />
+        {/* Skeleton */}
+        {!loaded && !imgError && (
+          <div className="absolute inset-0 animate-pulse bg-white/5" />
+        )}
+        {/* Fallback */}
+        {imgError ? (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-white/20 font-sans text-xs">{car.brand} {car.name}</span>
+          </div>
+        ) : (
+          <Image
+            src={imgPath}
+            alt={`${car.brand} ${car.name}`}
+            fill
+            className={clsx('object-cover object-center transition-transform duration-500 group-hover:scale-105', !loaded && 'opacity-0')}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            onLoad={() => setLoaded(true)}
+            onError={() => setImgError(true)}
+          />
+        )}
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
         {/* CTA on hover */}
@@ -161,7 +175,7 @@ function CarModal({ car, category, onClose }: { car: CarItem; category: string; 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center p-4"
       onClick={onClose}
     >
       {/* Backdrop */}
@@ -205,14 +219,19 @@ function CarModal({ car, category, onClose }: { car: CarItem; category: string; 
             Disponible en arrendamiento puro con planes flexibles, mantenimiento incluido y
             beneficios fiscales y mantenimiento incluido. Consulta disponibilidad y condiciones con nuestro equipo.
           </p>
-          <ButtonLink
-            href={COTIZAR}
+          <Button
             variant="primary"
             size="md"
             className="w-full justify-center"
+            onClick={() => {
+              onClose()
+              setTimeout(() => {
+                document.getElementById('cotizar')?.scrollIntoView({ behavior: 'smooth' })
+              }, 150)
+            }}
           >
             Cotizar {car.name}
-          </ButtonLink>
+          </Button>
         </div>
       </motion.div>
     </motion.div>
@@ -340,6 +359,10 @@ export function CarsGallery() {
             href={COTIZAR}
             variant="outline"
             size="md"
+            onClick={(e) => {
+              e.preventDefault()
+              document.getElementById('cotizar')?.scrollIntoView({ behavior: 'smooth' })
+            }}
           >
             Solicitar modelo específico
           </ButtonLink>

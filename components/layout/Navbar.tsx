@@ -130,7 +130,7 @@ export function Navbar() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setOpen(!open)}
-            className="lg:hidden p-2 text-white hover:text-gold transition-colors"
+            className="lg:hidden p-3 text-white hover:text-gold transition-colors"
             aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={open}
           >
@@ -156,7 +156,7 @@ export function Navbar() {
             >
               <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
                 <span className="font-display text-gold font-semibold text-lg">Menú</span>
-                <button onClick={() => setOpen(false)} className="p-1 text-white/50 hover:text-white transition-colors" aria-label="Cerrar menú">
+                <button onClick={() => setOpen(false)} className="p-2 text-white/50 hover:text-white transition-colors" aria-label="Cerrar menú">
                   <X size={22} />
                 </button>
               </div>

@@ -99,7 +99,7 @@ export function AboutUs() {
             className="order-1 lg:order-2"
           >
             <Badge className="mb-5">
-              🇲🇽 Empresa Mexicana
+              Empresa Mexicana
             </Badge>
 
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-white font-bold mb-6 leading-tight">
@@ -144,6 +144,10 @@ export function AboutUs() {
               href={COTIZAR}
               variant="primary"
               size="md"
+              onClick={(e) => {
+                e.preventDefault()
+                document.getElementById('cotizar')?.scrollIntoView({ behavior: 'smooth' })
+              }}
             >
               Solicitar cotización
             </ButtonLink>

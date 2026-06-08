@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/Badge'
@@ -67,6 +67,7 @@ export function PreciosSlide() {
   const [current, setCurrent] = useState(0)
   const [direction, setDirection] = useState<1 | -1>(1)
   const [paused, setPaused] = useState(false)
+  const reducedMotion = useReducedMotion()
 
   const goTo = useCallback((idx: number, dir: 1 | -1 = 1) => {
     setDirection(dir)
@@ -84,10 +85,10 @@ export function PreciosSlide() {
   }, [])
 
   useEffect(() => {
-    if (paused) return
+    if (paused || reducedMotion) return
     const t = setInterval(next, INTERVAL)
     return () => clearInterval(t)
-  }, [paused, next])
+  }, [paused, next, reducedMotion])
 
   const slide = SLIDES[current]
 
@@ -132,7 +133,7 @@ export function PreciosSlide() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ duration: 0.4, ease: 'easeInOut' }}
+                transition={{ duration: reducedMotion ? 0 : 0.4, ease: 'easeInOut' }}
                 className="grid min-h-[420px] sm:min-h-[380px] md:grid-cols-2"
               >
                 {/* Imagen */}
@@ -195,14 +196,14 @@ export function PreciosSlide() {
               <button
                 onClick={prev}
                 aria-label="Anterior"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/40 transition-colors hover:border-gold/40 hover:text-gold"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/40 transition-colors hover:border-gold/40 hover:text-gold"
               >
                 <ChevronLeft size={18} />
               </button>
               <button
                 onClick={next}
                 aria-label="Siguiente"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/40 transition-colors hover:border-gold/40 hover:text-gold"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/40 transition-colors hover:border-gold/40 hover:text-gold"
               >
                 <ChevronRight size={18} />
               </button>
