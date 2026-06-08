@@ -57,7 +57,7 @@ function StatItem({ value, suffix, label }: { value: number; suffix: string; lab
       <div className="font-display text-5xl md:text-6xl font-bold text-white leading-none tabular-nums">
         {count}<span className="text-gold">{suffix}</span>
       </div>
-      <div className="text-white/40 text-[11px] font-sans tracking-[0.15em] uppercase">{label}</div>
+      <div className="text-white/55 text-xs font-sans tracking-[0.15em] uppercase">{label}</div>
     </div>
   )
 }
@@ -133,10 +133,10 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.85, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="font-display font-bold leading-[0.95] tracking-tight mb-8"
-            style={{ fontSize: 'clamp(3rem, 8vw, 7.5rem)' }}
+            style={{ fontSize: 'clamp(2.75rem, 7vw, 6rem)' }}
           >
             <span className="block text-white">Vehículos que</span>
-            <span className="block text-gold italic" style={{ textShadow: '0 0 80px rgba(225,190,74,0.3)' }}>
+            <span className="block text-gold italic">
               impulsan
             </span>
             <span className="block text-white">tu empresa</span>
@@ -185,14 +185,7 @@ export function Hero() {
         transition={{ duration: 0.7, delay: 0.7 }}
         className="relative z-10 container-site pb-16 pt-12"
       >
-        <div
-          className="inline-flex flex-wrap gap-10 md:gap-16 px-8 py-6 rounded-sm border border-white/8"
-          style={{
-            background: 'rgba(10,10,10,0.55)',
-            backdropFilter: 'blur(20px) saturate(1.4)',
-            WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
-          }}
-        >
+        <div className="inline-flex flex-wrap gap-10 md:gap-16 px-8 py-6 rounded-sm border border-white/8 bg-black/65">
           {STATS.map((stat) => (
             <StatItem key={stat.label} {...stat} />
           ))}

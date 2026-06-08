@@ -92,7 +92,7 @@ export function ProblemStatement() {
                 <motion.li
                   key={p}
                   variants={row}
-                  className="flex items-start gap-3 text-white/40 font-sans text-sm leading-relaxed"
+                  className="flex items-start gap-3 text-white/50 font-sans text-sm leading-relaxed"
                 >
                   <X size={15} className="text-red-400/50 mt-0.5 flex-shrink-0" />
                   {p}
