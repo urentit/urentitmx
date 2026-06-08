@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ArrowRight, Shield, Zap, Truck, Star, Bike, Wrench, type LucideProps } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
@@ -169,6 +170,19 @@ function CarCard({ car, category, onSelect }: { car: CarItem; category: string; 
 /* ─── Car Modal ─── */
 function CarModal({ car, category, onClose }: { car: CarItem; category: string; onClose: () => void }) {
   const imgPath = `/img/cars/${category}/${car.slug}.jpg`
+  const router = useRouter()
+
+  const handleCotizar = () => {
+    onClose()
+    setTimeout(() => {
+      const el = document.getElementById('cotizar')
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' })
+      } else {
+        router.push('/#cotizar')
+      }
+    }, 150)
+  }
 
   return (
     <motion.div
@@ -223,12 +237,7 @@ function CarModal({ car, category, onClose }: { car: CarItem; category: string; 
             variant="primary"
             size="md"
             className="w-full justify-center"
-            onClick={() => {
-              onClose()
-              setTimeout(() => {
-                document.getElementById('cotizar')?.scrollIntoView({ behavior: 'smooth' })
-              }, 150)
-            }}
+            onClick={handleCotizar}
           >
             Cotizar {car.name}
           </Button>
@@ -242,6 +251,17 @@ function CarModal({ car, category, onClose }: { car: CarItem; category: string; 
 export function CarsGallery() {
   const [activeTab, setActiveTab] = useState('lujo')
   const [selectedCar, setSelectedCar] = useState<CarItem | null>(null)
+  const router = useRouter()
+
+  const handleScrollToCotizar = (e: React.MouseEvent) => {
+    e.preventDefault()
+    const el = document.getElementById('cotizar')
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      router.push('/#cotizar')
+    }
+  }
 
   const current = CARS[activeTab]
 
@@ -359,10 +379,7 @@ export function CarsGallery() {
             href={COTIZAR}
             variant="outline"
             size="md"
-            onClick={(e) => {
-              e.preventDefault()
-              document.getElementById('cotizar')?.scrollIntoView({ behavior: 'smooth' })
-            }}
+            onClick={handleScrollToCotizar}
           >
             Solicitar modelo específico
           </ButtonLink>
