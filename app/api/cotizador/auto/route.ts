@@ -9,7 +9,7 @@ const schema = z.object({
   accessory:      z.string().default(''),
   cilindraje:     z.enum(['4', '6', '8']).optional(),
   state:          z.string().min(2),
-  anticipo:       z.number().min(0.2).max(0.45),
+  anticipo:       z.number().min(0).max(0.45),
   servicios:      z.number().min(0).max(4).default(0),
   seguro:         z.number().positive().optional(),
   servicesValue:  z.number().positive().optional(),
