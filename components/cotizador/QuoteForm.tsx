@@ -34,6 +34,10 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>
 
 const ANTICIPO_OPTS = [
+  { value: '0.00', label: '0%' },
+  { value: '0.05', label: '5%' },
+  { value: '0.10', label: '10%' },
+  { value: '0.15', label: '15%' },
   { value: '0.20', label: '20%' },
   { value: '0.25', label: '25%' },
   { value: '0.30', label: '30%' },
