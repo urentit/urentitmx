@@ -114,7 +114,7 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, l
     { label: `Anticipo al ${anticipoPct}%`,        get: d => fmt(d.costs.anticipo) },
     { label: 'Comisión de apertura',               get: d => fmt(d.costs.comisionAp) },
     { label: 'Anticipo total',                     get: d => fmt(d.costs.anticipoTotal) },
-    { label: 'Renta mensual (con IVA)',            get: d => fmt(d.costs.mensualidad), bold: true },
+    { label: 'Renta mensual (+IVA)',               get: d => fmt(d.costs.mensualidad), bold: true },
     { label: 'Valor residual / Compra final',      get: d => fmt(d.costs.finalCost) },
     { label: 'Total rentas + IVA',                 get: d => fmt(d.costs.totalRentasMasIva) },
     { label: 'Valor comercial al vencimiento',     get: d => fmt(d.costs.valorVehiculo) },
