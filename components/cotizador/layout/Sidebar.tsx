@@ -3,9 +3,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import {
   Car, Truck, Package, Zap, Map, History, RotateCcw,
-  Star, Users, ClipboardList, X, BadgeDollarSign,
+  Star, Users, ClipboardList, X, BadgeDollarSign, UserCog,
 } from 'lucide-react'
 import { clsx } from 'clsx'
 
@@ -30,6 +31,12 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const path = usePathname()
+  const { data: session } = useSession()
+  const isAdmin = Boolean((session?.user as any)?.admin)
+
+  const items = isAdmin
+    ? [...nav, { href: '/cotizador/usuarios', label: 'Usuarios', icon: UserCog }]
+    : nav
 
   return (
     <aside className={clsx(
@@ -65,7 +72,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-3">
-        {nav.map(({ href, label, icon: Icon }) => {
+        {items.map(({ href, label, icon: Icon }) => {
           const active = path === href
           return (
             <Link
