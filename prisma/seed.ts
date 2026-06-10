@@ -1,36 +1,27 @@
 import { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
+// Crea el primer usuario admin. Login es via Auth0 (Google SSO), no hay password.
 async function main() {
-  const email    = process.env.SEED_EMAIL    ?? 'admin@urentit.mx'
-  const name     = process.env.SEED_NAME     ?? 'Admin'
-  const password = process.env.SEED_PASSWORD ?? 'CambiarEsta123!'
+  const email    = process.env.SEED_EMAIL    ?? 'ti@urentit.mx'
+  const name     = process.env.SEED_NAME     ?? 'TI U Rent It'
   const comision = parseFloat(process.env.SEED_COMISION ?? '0.03')
 
-  const existing = await prisma.user.findUnique({ where: { email } })
-  if (existing) {
-    console.log(`Usuario ${email} ya existe — no se creó de nuevo.`)
-    return
-  }
-
-  const hash = await bcrypt.hash(password, 12)
-
-  const user = await prisma.user.create({
-    data: {
+  const user = await prisma.user.upsert({
+    where:  { email },
+    update: { admin: true, active: true },
+    create: {
       name,
       email,
-      password:       hash,
       admin:          true,
+      active:         true,
       comision,
       manualServices: true,
     },
   })
 
-  console.log(`✓ Usuario creado: ${user.email} (id: ${user.id})`)
-  console.log(`  Contraseña inicial: ${password}`)
-  console.log(`  ¡Cámbiala después del primer login!`)
+  console.log(`✓ Admin listo: ${user.email} (id: ${user.id})`)
 }
 
 main()

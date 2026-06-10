@@ -7,15 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Los usuarios se autentican con Google via Auth0; esta tabla controla
+// quién tiene acceso al cotizador y sus ajustes (comisión, admin, etc.)
 model User {
   id             Int      @id @default(autoincrement())
-  name           String   @unique
+  name           String
   email          String   @unique
-  password       String
   admin          Boolean  @default(false)
+  active         Boolean  @default(true)
   comision       Float    @default(0.03)
   manualServices Boolean  @default(false)
   createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
   quotes         Quote[]
 }
 
@@ -27,4 +30,6 @@ model Quote {
   quoteType String
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
 }
