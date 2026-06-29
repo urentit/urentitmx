@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/cotizador/'],
       },
     ],
-    sitemap: 'https://urentit.mx/sitemap.xml',
+    sitemap: ['https://urentit.mx/sitemap.xml', 'https://urentit.mx/feed.xml'],
   }
 }
