@@ -33,3 +33,7 @@ next-env.d.ts
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+corp-ca.pem
+
+# documentación interna (no publicar en el repo)
+docs/guia-de-referencia-tecnica.md
