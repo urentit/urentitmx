@@ -53,6 +53,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: 'https://urentit.mx',
+    types: {
+      'application/rss+xml': [{ url: '/feed.xml', title: 'Blog U Rent It' }],
+    },
   },
   openGraph: {
     type: 'website',
