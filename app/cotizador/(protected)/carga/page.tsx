@@ -1,6 +1,9 @@
 import { QuoteForm } from '@/components/cotizador/QuoteForm'
+import { requireSection } from '@/lib/cotizador/sectionGuard'
 
-export default function CargaPage() {
+export default async function CargaPage() {
+  await requireSection('carga')
+
   return (
     <div>
       <h2 className="font-sans mb-1 text-lg font-semibold text-white">Carga</h2>

@@ -63,6 +63,17 @@ function getEndpoint(quoteType: QuoteType) {
   return `/api/cotizador/${quoteType}`
 }
 
+// Traduce la respuesta de error de la API a un mensaje útil para el usuario.
+function describeError(json: any, status: number): string {
+  if (status === 401) return 'Tu sesión expiró. Vuelve a iniciar sesión.'
+  if (json?.errors && typeof json.errors === 'object') {
+    const campos = Object.keys(json.errors)
+    if (campos.length) return `Revisa estos campos: ${campos.join(', ')}.`
+  }
+  if (typeof json?.message === 'string') return json.message
+  return 'No se pudo calcular. Verifica los datos e intenta de nuevo.'
+}
+
 const inputCls  = 'w-full rounded border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white placeholder-white/25 focus:border-gold/50 focus:outline-none transition-colors'
 const selectCls = 'w-full rounded border border-white/10 bg-[#1c1c1c] px-3 py-2.5 text-sm text-white focus:border-gold/50 focus:outline-none transition-colors cursor-pointer'
 const labelCls  = 'mb-1.5 block text-xs font-medium text-white/60 uppercase tracking-wide'
@@ -146,7 +157,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       })
       const json = await res.json()
       if (json.ok) setResult(json.data)
-      else setApiError('No se pudo calcular. Verifica los datos e intenta de nuevo.')
+      else setApiError(describeError(json, res.status))
     } catch {
       setApiError('Error de conexión. Intenta de nuevo.')
     } finally {

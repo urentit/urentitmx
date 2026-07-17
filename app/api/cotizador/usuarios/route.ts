@@ -1,15 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { hash } from 'bcryptjs'
 import { prisma, hasDatabase } from '@/lib/prisma'
 import { getSessionUser, unauthorized, forbidden } from '@/lib/cotizador/apiHelper'
 import { getResendClient, getResendConfig } from '@/lib/resend'
+import { VARS } from '@/lib/cotizador/variables'
+import { ALL_SECTIONS } from '@/lib/cotizador/sections'
+import type { QuoteType } from '@/lib/cotizador/types'
 
 const createSchema = z.object({
   name:           z.string().min(2, 'Nombre requerido'),
   email:          z.string().email('Correo no válido').transform(e => e.toLowerCase()),
   admin:          z.boolean().default(false),
-  comision:       z.number().min(0).max(0.05).default(0.03),
+  comision:       z.number().min(0).max(VARS.MAX_COMISION).default(0.03),
   manualServices: z.boolean().default(false),
+  // Contraseña para login de usuarios externos (se guarda como hash bcrypt)
+  password:       z.string().min(8, 'Mínimo 8 caracteres').optional(),
+  // null/ausente = acceso a todas las secciones
+  allowedSections: z
+    .array(z.enum(ALL_SECTIONS as [QuoteType, ...QuoteType[]]))
+    .nullable()
+    .optional(),
   invitar:        z.boolean().default(true),
 })
 
@@ -30,11 +41,14 @@ export async function GET() {
     orderBy: { createdAt: 'desc' },
     select: {
       id: true, name: true, email: true, admin: true, active: true,
-      comision: true, manualServices: true, createdAt: true,
+      comision: true, manualServices: true, allowedSections: true, createdAt: true,
+      password: true,
       _count: { select: { quotes: true } },
     },
   })
-  return NextResponse.json({ ok: true, data: users })
+  // Solo se expone si tiene contraseña, nunca el hash
+  const safe = users.map(({ password, ...u }) => ({ ...u, hasPassword: Boolean(password) }))
+  return NextResponse.json({ ok: true, data: safe })
 }
 
 export async function POST(req: NextRequest) {
@@ -61,8 +75,12 @@ export async function POST(req: NextRequest) {
         admin:          body.admin,
         comision:       body.comision,
         manualServices: body.manualServices,
+        ...(body.password ? { password: await hash(body.password, 12) } : {}),
+        ...(body.allowedSections != null ? { allowedSections: body.allowedSections } : {}),
       },
     })
+    // El hash nunca sale de la API
+    const { password: _pw, ...createdSafe } = created
 
     let invited = false
     if (body.invitar) {
@@ -80,7 +98,9 @@ export async function POST(req: NextRequest) {
               <p>Se te dio acceso al cotizador interno de U Rent It. Para entrar:</p>
               <ol>
                 <li>Abre <a href="https://urentit.mx/cotizador" style="color: #b8962e;">urentit.mx/cotizador</a></li>
-                <li>Inicia sesión con Google usando este correo (<strong>${created.email}</strong>)</li>
+                ${body.password
+                  ? `<li>Inicia sesión con este correo (<strong>${created.email}</strong>) y la contraseña que te compartirá tu administrador</li>`
+                  : `<li>Inicia sesión con Google usando este correo (<strong>${created.email}</strong>)</li>`}
               </ol>
               <p style="color: #666; font-size: 13px;">Si no esperabas este acceso, ignora este correo.</p>
             </div>
@@ -92,7 +112,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ ok: true, data: created, invited }, { status: 201 })
+    return NextResponse.json({ ok: true, data: createdSafe, invited }, { status: 201 })
   } catch (err) {
     if (err instanceof z.ZodError)
       return NextResponse.json({ ok: false, errors: err.flatten().fieldErrors }, { status: 422 })

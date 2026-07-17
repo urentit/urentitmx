@@ -1,9 +1,32 @@
 'use client'
 
+import { useState } from 'react'
 import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { Loader2 } from 'lucide-react'
 
 export default function LoginPage() {
+  const router = useRouter()
+  const [email,    setEmail]    = useState('')
+  const [password, setPassword] = useState('')
+  const [loading,  setLoading]  = useState(false)
+  const [error,    setError]    = useState('')
+
+  async function onCredentials(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    const res = await signIn('credentials', { email, password, redirect: false })
+    setLoading(false)
+    if (res?.ok) {
+      router.push('/cotizador')
+      router.refresh()
+    } else {
+      setError('Correo o contraseña incorrectos.')
+    }
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a]">
       <div className="w-full max-w-sm">
@@ -28,12 +51,52 @@ export default function LoginPage() {
             Inicia sesión con tu cuenta corporativa
           </p>
           <button
-            onClick={() => signIn('auth0', { callbackUrl: '/cotizador/auto' })}
+            onClick={() => signIn('auth0', { callbackUrl: '/cotizador' })}
             className="flex w-full cursor-pointer items-center justify-center gap-3 rounded border border-white/10 bg-white/5 py-2.5 text-sm text-white transition-colors hover:bg-white/10"
           >
             <GoogleIcon />
             Continuar con Google
           </button>
+
+          {/* Separador */}
+          <div className="my-6 flex items-center gap-3">
+            <span className="h-px flex-1 bg-white/10" />
+            <span className="text-[10px] uppercase tracking-widest text-white/30">o con contraseña</span>
+            <span className="h-px flex-1 bg-white/10" />
+          </div>
+
+          {/* Login con credenciales (usuarios externos) */}
+          <form onSubmit={onCredentials} className="flex flex-col gap-3">
+            <input
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="correo@ejemplo.com"
+              required
+              autoComplete="email"
+              className="w-full rounded border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white placeholder-white/25 focus:border-gold/50 focus:outline-none transition-colors"
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="Contraseña"
+              required
+              autoComplete="current-password"
+              className="w-full rounded border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white placeholder-white/25 focus:border-gold/50 focus:outline-none transition-colors"
+            />
+            {error && (
+              <p className="rounded border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-400">{error}</p>
+            )}
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex w-full cursor-pointer items-center justify-center gap-2 rounded bg-gold py-2.5 text-sm font-semibold text-black transition-colors hover:bg-gold-light disabled:opacity-60"
+            >
+              {loading ? <Loader2 size={15} className="animate-spin" /> : null}
+              {loading ? 'Entrando…' : 'Iniciar sesión'}
+            </button>
+          </form>
         </div>
 
       </div>

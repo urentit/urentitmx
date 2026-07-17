@@ -9,18 +9,20 @@ import {
   Star, Users, ClipboardList, X, BadgeDollarSign, UserCog,
 } from 'lucide-react'
 import { clsx } from 'clsx'
+import { parseAllowedSections, canAccessSection } from '@/lib/cotizador/sections'
+import type { QuoteType } from '@/lib/cotizador/types'
 
-const nav = [
-  { href: '/cotizador/auto',             label: 'Autos',             icon: Car },
-  { href: '/cotizador/vip',              label: 'VIP / Lujo',        icon: Star },
-  { href: '/cotizador/carga',            label: 'Carga',             icon: Truck },
-  { href: '/cotizador/carga-pesada',     label: 'Carga Pesada',      icon: Package },
-  { href: '/cotizador/electrico',        label: 'Eléctrico',         icon: Zap },
-  { href: '/cotizador/foraneo',          label: 'Foráneo',           icon: Map },
-  { href: '/cotizador/usado',            label: 'Vehículo Usado',    icon: RotateCcw },
-  { href: '/cotizador/flotilla',          label: 'Flotilla',                  icon: Users },
-  { href: '/cotizador/comision-extra',   label: 'Cotizador especial',        icon: BadgeDollarSign },
-  { href: '/cotizador/refinanciamiento', label: 'Refinanciamiento',          icon: ClipboardList },
+const nav: Array<{ href: string; label: string; icon: any; section?: QuoteType }> = [
+  { href: '/cotizador/auto',             label: 'Autos',             icon: Car,             section: 'auto' },
+  { href: '/cotizador/vip',              label: 'VIP / Lujo',        icon: Star,            section: 'vip' },
+  { href: '/cotizador/carga',            label: 'Carga',             icon: Truck,           section: 'carga' },
+  { href: '/cotizador/carga-pesada',     label: 'Carga Pesada',      icon: Package,         section: 'carga-pesada' },
+  { href: '/cotizador/electrico',        label: 'Eléctrico',         icon: Zap,             section: 'electrico' },
+  { href: '/cotizador/foraneo',          label: 'Foráneo',           icon: Map,             section: 'foraneo' },
+  { href: '/cotizador/usado',            label: 'Vehículo Usado',    icon: RotateCcw,       section: 'usado' },
+  { href: '/cotizador/flotilla',          label: 'Flotilla',                  icon: Users,           section: 'flotilla' },
+  { href: '/cotizador/comision-extra',   label: 'Cotizador especial',        icon: BadgeDollarSign, section: 'comision-extra' },
+  { href: '/cotizador/refinanciamiento', label: 'Refinanciamiento',          icon: ClipboardList,   section: 'refinanciamiento' },
   { href: '/cotizador/historial',        label: 'Historial',         icon: History },
 ]
 
@@ -33,10 +35,15 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const path = usePathname()
   const { data: session } = useSession()
   const isAdmin = Boolean((session?.user as any)?.admin)
+  const allowed = parseAllowedSections((session?.user as any)?.allowedSections)
 
+  // Solo se muestran las secciones permitidas; Historial siempre visible
+  const visible = nav.filter(item =>
+    !item.section || canAccessSection(isAdmin, allowed, item.section),
+  )
   const items = isAdmin
-    ? [...nav, { href: '/cotizador/usuarios', label: 'Usuarios', icon: UserCog }]
-    : nav
+    ? [...visible, { href: '/cotizador/usuarios', label: 'Usuarios', icon: UserCog }]
+    : visible
 
   return (
     <aside className={clsx(

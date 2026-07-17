@@ -1,6 +1,9 @@
 import { QuoteForm } from '@/components/cotizador/QuoteForm'
+import { requireSection } from '@/lib/cotizador/sectionGuard'
 
-export default function RefinanciamientoPage() {
+export default async function RefinanciamientoPage() {
+  await requireSection('refinanciamiento')
+
   return (
     <div>
       <h2 className="font-sans mb-1 text-lg font-semibold text-white">Refinanciamiento</h2>

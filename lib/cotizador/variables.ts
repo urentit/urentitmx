@@ -11,6 +11,10 @@ export const VARS = {
   // Comisión de apertura base
   CPA: 0.03,
 
+  // Tope máximo de comisión (aplica al override en tiempo de cotización y al
+  // alta/edición de usuarios). El selector de comisión solo ofrece 0–3%.
+  MAX_COMISION: 0.03,
+
   // Seguros autos (porcentaje anual)
   PS1: 0.06,   // hasta $380,000
   PS2: 0.05,   // $380,001 – $500,000
@@ -55,7 +59,4 @@ export const VARS = {
 
   // Estados con tenencia FIJA para todas las secciones; jalisco es fijo solo en section_one (ver calcTenencias)
   TENENCIA_FIXED_STATES: ['no', 'morelos', 'hidalgo', 'puebla'] as string[],
-
-  // Usuarios VIP (email)
-  VIP_USERS: ['dc@urentit.mx'] as string[],
 } as const

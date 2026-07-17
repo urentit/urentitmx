@@ -10,16 +10,22 @@ datasource db {
 // Los usuarios se autentican con Google via Auth0; esta tabla controla
 // quién tiene acceso al cotizador y sus ajustes (comisión, admin, etc.)
 model User {
-  id             Int      @id @default(autoincrement())
-  name           String
-  email          String   @unique
-  admin          Boolean  @default(false)
-  active         Boolean  @default(true)
-  comision       Float    @default(0.03)
-  manualServices Boolean  @default(false)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  quotes         Quote[]
+  id              Int      @id @default(autoincrement())
+  name            String
+  email           String   @unique
+  admin           Boolean  @default(false)
+  active          Boolean  @default(true)
+  comision        Float    @default(0.03)
+  manualServices  Boolean  @default(false)
+  // Hash bcrypt para login con credenciales (usuarios externos).
+  // Los internos @urentit.mx entran con Google y no lo necesitan.
+  password        String?
+  // Secciones del cotizador visibles para el usuario (array de QuoteType).
+  // null = todas; los admins siempre ven todo sin importar este campo.
+  allowedSections Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  quotes          Quote[]
 }
 
 model Quote {

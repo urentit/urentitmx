@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
+import { defaultSectionPath } from '@/lib/cotizador/sectionGuard'
 
-export default function CotizadorIndex() {
-  redirect('/cotizador/auto')
+export default async function CotizadorIndex() {
+  redirect(await defaultSectionPath())
 }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { getSessionUser, saveQuote, unauthorized, applyComisionOverride } from '@/lib/cotizador/apiHelper'
+import { getSessionUser, saveQuote, unauthorized, applyComisionOverride, sectionAllowed, sectionForbidden } from '@/lib/cotizador/apiHelper'
 import { calculate } from '@/lib/cotizador/calculators/electrico'
 
 const schema = z.object({
@@ -18,6 +18,7 @@ const schema = z.object({
 export async function POST(req: NextRequest) {
   const user = await getSessionUser()
   if (!user) return unauthorized()
+  if (!sectionAllowed(user, 'electrico')) return sectionForbidden()
 
   try {
     const body          = schema.parse(await req.json())

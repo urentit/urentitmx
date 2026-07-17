@@ -1,19 +1,23 @@
 import { prisma, hasDatabase } from '@/lib/prisma'
+import { parseAllowedSections } from './sections'
+import type { QuoteType } from './types'
 
 export interface AuthUser {
-  id:             string   // id numérico de BD como string, o el id de COTIZADOR_USERS
-  name:           string
-  email:          string
-  admin:          boolean
-  active:         boolean
-  comision:       number
-  manualServices: boolean
+  id:              string   // id numérico de BD como string, o el id de COTIZADOR_USERS
+  name:            string
+  email:           string
+  admin:           boolean
+  active:          boolean
+  comision:        number
+  manualServices:  boolean
+  allowedSections: QuoteType[] | null   // null = todas las secciones
 }
 
 interface EnvUser {
   id:             string
   name:           string
   email:          string
+  password?:      string   // hash bcrypt (legado de COTIZADOR_USERS)
   admin:          boolean
   comision:       number
   manualServices: boolean
@@ -42,16 +46,50 @@ export async function findUserByEmail(email: string): Promise<AuthUser | null> {
     const u = await prisma.user.findUnique({ where: { email: email.toLowerCase() } })
     if (!u) return null
     return {
-      id:             String(u.id),
-      name:           u.name,
-      email:          u.email,
-      admin:          u.admin,
-      active:         u.active,
-      comision:       u.comision,
-      manualServices: u.manualServices,
+      id:              String(u.id),
+      name:            u.name,
+      email:           u.email,
+      admin:           u.admin,
+      active:          u.active,
+      comision:        u.comision,
+      manualServices:  u.manualServices,
+      allowedSections: parseAllowedSections(u.allowedSections),
     }
   }
   const u = getEnvUsers().find(x => x.email.toLowerCase() === email.toLowerCase())
   if (!u) return null
-  return { ...u, active: true }
+  return { ...u, active: true, allowedSections: null }
+}
+
+/**
+ * Valida email + contraseña para el login con credenciales.
+ * Devuelve el usuario si la contraseña coincide y está activo; null si no.
+ * Con BD compara contra User.password; sin BD, contra COTIZADOR_USERS.
+ */
+export async function verifyCredentials(email: string, password: string): Promise<AuthUser | null> {
+  const { compare } = await import('bcryptjs')
+  const normalized  = email.toLowerCase()
+
+  if (hasDatabase) {
+    const u = await prisma.user.findUnique({ where: { email: normalized } })
+    if (!u || !u.active || !u.password) return null
+    const ok = await compare(password, u.password)
+    if (!ok) return null
+    return {
+      id:              String(u.id),
+      name:            u.name,
+      email:           u.email,
+      admin:           u.admin,
+      active:          u.active,
+      comision:        u.comision,
+      manualServices:  u.manualServices,
+      allowedSections: parseAllowedSections(u.allowedSections),
+    }
+  }
+
+  const u = getEnvUsers().find(x => x.email.toLowerCase() === normalized)
+  if (!u?.password) return null
+  const ok = await compare(password, u.password)
+  if (!ok) return null
+  return { ...u, active: true, allowedSections: null }
 }

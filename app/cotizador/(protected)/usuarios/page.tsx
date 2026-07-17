@@ -5,7 +5,7 @@ import { UsersAdmin } from '@/components/cotizador/UsersAdmin'
 
 export default async function UsuariosPage() {
   const session = await getServerSession(authOptions)
-  if (!(session?.user as any)?.admin) redirect('/cotizador/auto')
+  if (!(session?.user as any)?.admin) redirect('/cotizador')
 
   return <UsersAdmin />
 }

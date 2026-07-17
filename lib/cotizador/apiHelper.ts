@@ -2,6 +2,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { NextResponse } from 'next/server'
 import { prisma, hasDatabase } from '@/lib/prisma'
+import { VARS } from './variables'
+import { parseAllowedSections, canAccessSection } from './sections'
 import type { QuoteInput, QuoteResponse, QuoteType } from './types'
 
 export async function getSessionUser() {
@@ -9,17 +11,18 @@ export async function getSessionUser() {
   if (!session?.user) return null
   const u = session.user as any
   return {
-    id:             String(u.id ?? ''),
-    admin:          Boolean(u.admin),
-    comision:       Number(u.comision ?? 0.03),
-    manualServices: Boolean(u.manualServices),
+    id:              String(u.id ?? ''),
+    admin:           Boolean(u.admin),
+    comision:        Number(u.comision ?? 0.03),
+    manualServices:  Boolean(u.manualServices),
+    allowedSections: parseAllowedSections(u.allowedSections),
   }
 }
 
 type SessionUser = NonNullable<Awaited<ReturnType<typeof getSessionUser>>>
 
 export function applyComisionOverride(user: SessionUser, override?: number): SessionUser {
-  if (override !== undefined && Number.isFinite(override) && override >= 0 && override <= 0.03) {
+  if (override !== undefined && Number.isFinite(override) && override >= 0 && override <= VARS.MAX_COMISION) {
     return { ...user, comision: override }
   }
   return user
@@ -49,6 +52,18 @@ export async function saveQuote(
     // La cotización ya se calculó; no rompemos la respuesta por un fallo de BD
     console.error('[saveQuote] Error guardando cotización:', e)
   }
+}
+
+/** ¿Puede el usuario de sesión cotizar en esta sección? */
+export function sectionAllowed(user: SessionUser, section: QuoteType): boolean {
+  return canAccessSection(user.admin, user.allowedSections, section)
+}
+
+export function sectionForbidden() {
+  return NextResponse.json(
+    { ok: false, message: 'No tienes acceso a esta sección del cotizador' },
+    { status: 403 },
+  )
 }
 
 export function unauthorized() {

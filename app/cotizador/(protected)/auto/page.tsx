@@ -1,6 +1,9 @@
 import { QuoteForm } from '@/components/cotizador/QuoteForm'
+import { requireSection } from '@/lib/cotizador/sectionGuard'
 
-export default function AutoPage() {
+export default async function AutoPage() {
+  await requireSection('auto')
+
   return (
     <div>
       <h2 className="font-sans mb-1 text-lg font-semibold text-white">Autos</h2>
