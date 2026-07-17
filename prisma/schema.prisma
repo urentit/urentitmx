@@ -23,6 +23,9 @@ model User {
   // Secciones del cotizador visibles para el usuario (array de QuoteType).
   // null = todas; los admins siempre ven todo sin importar este campo.
   allowedSections Json?
+  // Último inicio de sesión: fecha y método ('google' | 'password')
+  lastLoginAt     DateTime?
+  lastLoginMethod String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   quotes          Quote[]

@@ -19,8 +19,21 @@ interface AdminUser {
   manualServices:  boolean
   allowedSections: QuoteType[] | null
   hasPassword:     boolean
+  lastLoginAt:     string | null
+  lastLoginMethod: 'google' | 'password' | null
   createdAt:       string
   _count:          { quotes: number }
+}
+
+const METHOD_LABELS: Record<string, string> = {
+  google:   'Google',
+  password: 'Contraseña',
+}
+
+function fmtLastLogin(iso: string) {
+  return new Date(iso).toLocaleDateString('es-MX', {
+    day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
+  })
 }
 
 const createSchema = z.object({
@@ -271,13 +284,14 @@ export function UsersAdmin() {
         </div>
       ) : (
         <div className="overflow-x-auto rounded border border-white/10">
-          <table className="w-full min-w-[820px] text-sm">
+          <table className="w-full min-w-[980px] text-sm">
             <thead>
               <tr className="border-b border-white/10 bg-white/[0.03] text-left text-xs uppercase tracking-wide text-white/40">
                 <th className="px-4 py-3 font-medium">Usuario</th>
                 <th className="px-4 py-3 font-medium">Comisión</th>
                 <th className="px-4 py-3 font-medium">Rol</th>
                 <th className="px-4 py-3 font-medium">Estado</th>
+                <th className="px-4 py-3 font-medium">Acceso</th>
                 <th className="px-4 py-3 font-medium">Secciones</th>
                 <th className="px-4 py-3 font-medium">Cotizaciones</th>
                 <th className="px-4 py-3 text-right font-medium">Acciones</th>
@@ -317,6 +331,30 @@ export function UsersAdmin() {
                     <span className={clsx('text-xs font-medium', u.active ? 'text-green-400' : 'text-red-400')}>
                       {u.active ? 'Activo' : 'Inactivo'}
                     </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {u.email.endsWith('@urentit.mx') && (
+                        <span className="rounded bg-white/5 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-white/50">
+                          Google
+                        </span>
+                      )}
+                      {u.hasPassword && (
+                        <span className="rounded bg-gold/10 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-gold/80">
+                          Contraseña
+                        </span>
+                      )}
+                      {!u.email.endsWith('@urentit.mx') && !u.hasPassword && (
+                        <span className="rounded bg-white/5 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-white/50">
+                          Google (externo)
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-1 text-[11px] text-white/30">
+                      {u.lastLoginAt
+                        ? `Último: ${METHOD_LABELS[u.lastLoginMethod ?? ''] ?? u.lastLoginMethod} · ${fmtLastLogin(u.lastLoginAt)}`
+                        : 'Sin accesos registrados'}
+                    </p>
                   </td>
                   <td className="px-4 py-3">
                     {u.admin ? (
@@ -374,7 +412,7 @@ export function UsersAdmin() {
                 {/* Asignar/cambiar contraseña */}
                 {pwdId === u.id && (
                   <tr className="border-b border-white/5 bg-white/[0.02]">
-                    <td colSpan={7} className="px-4 py-4">
+                    <td colSpan={8} className="px-4 py-4">
                       <p className="mb-3 text-xs text-white/40">
                         {u.hasPassword ? 'Cambiar' : 'Asignar'} contraseña de acceso para{' '}
                         <span className="text-white/70">{u.email}</span>. Mínimo 8 caracteres.
@@ -417,7 +455,7 @@ export function UsersAdmin() {
                 {/* Matriz de secciones (solo usuarios no-admin) */}
                 {matrixId === u.id && !u.admin && (
                   <tr className="border-b border-white/5 bg-white/[0.02]">
-                    <td colSpan={7} className="px-4 py-4">
+                    <td colSpan={8} className="px-4 py-4">
                       <p className="mb-3 text-xs text-white/40">
                         Secciones del cotizador visibles para <span className="text-white/70">{u.email}</span>.
                         Con todas marcadas el usuario tiene acceso completo. El cambio aplica en su próximo inicio de sesión.

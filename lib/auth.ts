@@ -1,9 +1,7 @@
 import type { NextAuthOptions } from 'next-auth'
 import Auth0Provider from 'next-auth/providers/auth0'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { findUserByEmail, verifyCredentials } from '@/lib/cotizador/usersStore'
-
-const INTERNAL_DOMAIN = '@urentit.mx'
+import { findUserByEmail, verifyCredentials, resolveLoginUser, INTERNAL_DOMAIN } from '@/lib/cotizador/usersStore'
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -56,7 +54,9 @@ export const authOptions: NextAuthOptions = {
       if (account) {
         let localUser = null
         try {
-          localUser = await findUserByEmail(token.email as string)
+          // Da de alta automáticamente a los internos y registra método/fecha del acceso
+          const method = account.provider === 'credentials' ? 'password' as const : 'google' as const
+          localUser = await resolveLoginUser(token.email as string, token.name as string | null, method)
         } catch (e) {
           console.error('[auth] BD no disponible en jwt:', e)
         }

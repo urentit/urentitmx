@@ -42,7 +42,7 @@ export async function GET() {
     select: {
       id: true, name: true, email: true, admin: true, active: true,
       comision: true, manualServices: true, allowedSections: true, createdAt: true,
-      password: true,
+      password: true, lastLoginAt: true, lastLoginMethod: true,
       _count: { select: { quotes: true } },
     },
   })

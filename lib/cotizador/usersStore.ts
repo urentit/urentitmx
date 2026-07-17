@@ -2,6 +2,10 @@ import { prisma, hasDatabase } from '@/lib/prisma'
 import { parseAllowedSections } from './sections'
 import type { QuoteType } from './types'
 
+export const INTERNAL_DOMAIN = '@urentit.mx'
+
+export type LoginMethod = 'google' | 'password'
+
 export interface AuthUser {
   id:              string   // id numérico de BD como string, o el id de COTIZADOR_USERS
   name:            string
@@ -59,6 +63,62 @@ export async function findUserByEmail(email: string): Promise<AuthUser | null> {
   const u = getEnvUsers().find(x => x.email.toLowerCase() === email.toLowerCase())
   if (!u) return null
   return { ...u, active: true, allowedSections: null }
+}
+
+function toAuthUser(u: {
+  id: number; name: string; email: string; admin: boolean; active: boolean
+  comision: number; manualServices: boolean; allowedSections: unknown
+}): AuthUser {
+  return {
+    id:              String(u.id),
+    name:            u.name,
+    email:           u.email,
+    admin:           u.admin,
+    active:          u.active,
+    comision:        u.comision,
+    manualServices:  u.manualServices,
+    allowedSections: parseAllowedSections(u.allowedSections),
+  }
+}
+
+/**
+ * Resuelve el usuario al iniciar sesión:
+ * - Lo busca en BD; si es interno (@urentit.mx) y no existe, lo da de alta
+ *   automáticamente (así aparece en /cotizador/usuarios y su actividad se
+ *   guarda en el historial).
+ * - Registra fecha y método del acceso (google | password).
+ */
+export async function resolveLoginUser(
+  email: string,
+  name: string | null | undefined,
+  method: LoginMethod,
+): Promise<AuthUser | null> {
+  const normalized = email.toLowerCase()
+  if (!hasDatabase) return findUserByEmail(normalized)
+
+  let u = await prisma.user.findUnique({ where: { email: normalized } })
+
+  if (!u && normalized.endsWith(INTERNAL_DOMAIN)) {
+    u = await prisma.user.create({
+      data: {
+        name:  name?.trim() || normalized.split('@')[0],
+        email: normalized,
+      },
+    })
+  }
+  if (!u) return null
+
+  // Registrar el acceso; si falla no bloquea el login
+  try {
+    await prisma.user.update({
+      where: { id: u.id },
+      data:  { lastLoginAt: new Date(), lastLoginMethod: method },
+    })
+  } catch (e) {
+    console.error('[usersStore] Error registrando último acceso:', e)
+  }
+
+  return toAuthUser(u)
 }
 
 /**
