@@ -3,7 +3,6 @@ import { z } from 'zod'
 import { hash } from 'bcryptjs'
 import { prisma, hasDatabase } from '@/lib/prisma'
 import { getSessionUser, unauthorized, forbidden } from '@/lib/cotizador/apiHelper'
-import { getResendClient, getResendConfig } from '@/lib/resend'
 import { VARS } from '@/lib/cotizador/variables'
 import { ALL_SECTIONS } from '@/lib/cotizador/sections'
 import type { QuoteType } from '@/lib/cotizador/types'
@@ -21,7 +20,6 @@ const createSchema = z.object({
     .array(z.enum(ALL_SECTIONS as [QuoteType, ...QuoteType[]]))
     .nullable()
     .optional(),
-  invitar:        z.boolean().default(true),
 })
 
 function noDatabase() {
@@ -82,37 +80,7 @@ export async function POST(req: NextRequest) {
     // El hash nunca sale de la API
     const { password: _pw, ...createdSafe } = created
 
-    let invited = false
-    if (body.invitar) {
-      try {
-        const resend = getResendClient()
-        const { from } = getResendConfig()
-        await resend.emails.send({
-          from,
-          to: [created.email],
-          subject: 'Acceso al cotizador de U Rent It',
-          html: `
-            <div style="font-family: Arial, sans-serif; color: #111111; line-height: 1.6; max-width: 520px;">
-              <h1 style="color: #0a0a0a;">Bienvenido al cotizador U Rent It</h1>
-              <p>Hola ${created.name},</p>
-              <p>Se te dio acceso al cotizador interno de U Rent It. Para entrar:</p>
-              <ol>
-                <li>Abre <a href="https://urentit.mx/cotizador" style="color: #b8962e;">urentit.mx/cotizador</a></li>
-                ${body.password
-                  ? `<li>Inicia sesión con este correo (<strong>${created.email}</strong>) y la contraseña que te compartirá tu administrador</li>`
-                  : `<li>Inicia sesión con Google usando este correo (<strong>${created.email}</strong>)</li>`}
-              </ol>
-              <p style="color: #666; font-size: 13px;">Si no esperabas este acceso, ignora este correo.</p>
-            </div>
-          `,
-        })
-        invited = true
-      } catch (e) {
-        console.error('[usuarios] Error enviando invitación:', e)
-      }
-    }
-
-    return NextResponse.json({ ok: true, data: createdSafe, invited }, { status: 201 })
+    return NextResponse.json({ ok: true, data: createdSafe }, { status: 201 })
   } catch (err) {
     if (err instanceof z.ZodError)
       return NextResponse.json({ ok: false, errors: err.flatten().fieldErrors }, { status: 422 })

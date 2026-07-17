@@ -4,7 +4,7 @@ import { Fragment, useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Loader2, Plus, ShieldCheck, UserX, UserCheck, Mail, X, LayoutGrid, ChevronDown, KeyRound, Check } from 'lucide-react'
+import { Loader2, Plus, ShieldCheck, UserX, UserCheck, X, LayoutGrid, ChevronDown, KeyRound, Check, Copy } from 'lucide-react'
 import { clsx } from 'clsx'
 import { ALL_SECTIONS, SECTION_LABELS, parseAllowedSections } from '@/lib/cotizador/sections'
 import type { QuoteType } from '@/lib/cotizador/types'
@@ -42,7 +42,6 @@ const createSchema = z.object({
   admin:    z.boolean(),
   comision: z.string(),
   password: z.string().min(8, 'Mínimo 8 caracteres').optional().or(z.literal('')),
-  invitar:  z.boolean(),
 })
 
 type CreateValues = z.infer<typeof createSchema>
@@ -71,10 +70,13 @@ export function UsersAdmin() {
   const [pwdValue, setPwdValue] = useState('')
   // Confirmación visual de guardado (id del usuario recién actualizado)
   const [savedId, setSavedId]   = useState<number | null>(null)
+  // Oferta de copiar la contraseña recién guardada para compartirla
+  const [copyOffer, setCopyOffer] = useState<{ email: string; password: string } | null>(null)
+  const [copied, setCopied]       = useState(false)
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<CreateValues>({
     resolver: zodResolver(createSchema),
-    defaultValues: { name: '', email: '', admin: false, comision: '0.03', password: '', invitar: true },
+    defaultValues: { name: '', email: '', admin: false, comision: '0.03', password: '' },
   })
 
   const load = useCallback(async () => {
@@ -105,14 +107,17 @@ export function UsersAdmin() {
           admin:    values.admin,
           comision: parseFloat(values.comision),
           ...(values.password ? { password: values.password } : {}),
-          invitar:  values.invitar,
         }),
       })
       const json = await res.json()
       if (!res.ok) throw new Error(json.message ?? 'No se pudo crear el usuario')
-      setNotice(json.invited
-        ? `Usuario creado. Se envió invitación a ${values.email}.`
-        : 'Usuario creado.')
+      if (values.password) {
+        // Ofrecer copiar la contraseña para compartirla con la persona
+        setCopyOffer({ email: values.email, password: values.password })
+        setCopied(false)
+      } else {
+        setNotice('Usuario guardado.')
+      }
       reset()
       setShowForm(false)
       load()
@@ -177,7 +182,9 @@ export function UsersAdmin() {
       })
       const json = await res.json()
       if (!res.ok) throw new Error(json.message ?? 'No se pudo guardar la contraseña')
-      setNotice(`Contraseña ${u.hasPassword ? 'actualizada' : 'asignada'} para ${u.email}. Compártela de forma segura; no se volverá a mostrar.`)
+      // Ofrecer copiarla para compartirla con la persona
+      setCopyOffer({ email: u.email, password: pwdValue })
+      setCopied(false)
       setPwdId(null)
       setPwdValue('')
       load()
@@ -185,6 +192,16 @@ export function UsersAdmin() {
       setError(e instanceof Error ? e.message : 'No se pudo guardar la contraseña')
     } finally {
       setBusyId(null)
+    }
+  }
+
+  const copyPassword = async () => {
+    if (!copyOffer) return
+    try {
+      await navigator.clipboard.writeText(copyOffer.password)
+      setCopied(true)
+    } catch {
+      setError('No se pudo copiar al portapapeles. Cópiala manualmente.')
     }
   }
 
@@ -216,6 +233,37 @@ export function UsersAdmin() {
 
       {notice && (
         <p className="mb-4 rounded border border-gold/30 bg-gold/10 px-4 py-3 text-sm text-gold">{notice}</p>
+      )}
+
+      {/* Oferta de copiar la contraseña recién guardada */}
+      {copyOffer && (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded border border-gold/30 bg-gold/10 px-4 py-3">
+          <p className="text-sm text-gold">
+            {copied
+              ? <>Contraseña de <span className="font-semibold">{copyOffer.email}</span> copiada al portapapeles. Compártela de forma segura.</>
+              : <>Usuario <span className="font-semibold">{copyOffer.email}</span> guardado. ¿Quieres copiar su contraseña para compartírsela? No se volverá a mostrar después.</>}
+          </p>
+          <div className="flex shrink-0 items-center gap-2">
+            <button
+              onClick={copyPassword}
+              className={clsx(
+                'flex items-center gap-1.5 rounded px-3 py-2 text-xs font-semibold transition-colors cursor-pointer',
+                copied
+                  ? 'border border-green-400/40 text-green-400'
+                  : 'bg-gold text-black hover:bg-gold-light',
+              )}
+            >
+              {copied ? <Check size={13} /> : <Copy size={13} />}
+              {copied ? 'Copiada' : 'Copiar contraseña'}
+            </button>
+            <button
+              onClick={() => { setCopyOffer(null); setCopied(false) }}
+              className="rounded border border-white/10 px-3 py-2 text-xs text-white/50 transition-colors hover:text-white/80 cursor-pointer"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
       )}
       {error && (
         <p className="mb-4 rounded border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-400">{error}</p>
@@ -259,10 +307,6 @@ export function UsersAdmin() {
               <input type="checkbox" {...register('admin')} className="accent-gold" />
               Administrador
             </label>
-            <label className="flex items-center gap-2 text-sm text-white/60 cursor-pointer">
-              <input type="checkbox" {...register('invitar')} className="accent-gold" />
-              Enviar invitación por correo
-            </label>
           </div>
           <div className="sm:col-span-2 lg:col-span-4">
             <button
@@ -270,8 +314,8 @@ export function UsersAdmin() {
               disabled={saving}
               className="flex items-center gap-2 rounded bg-gold px-5 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-gold-light disabled:opacity-60 cursor-pointer"
             >
-              {saving ? <Loader2 size={15} className="animate-spin" /> : <Mail size={15} />}
-              {saving ? 'Guardando...' : 'Crear usuario'}
+              {saving ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />}
+              {saving ? 'Guardando...' : 'Guardar usuario'}
             </button>
           </div>
         </form>
