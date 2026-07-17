@@ -4,7 +4,7 @@ import { Fragment, useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Loader2, Plus, ShieldCheck, UserX, UserCheck, Mail, X, LayoutGrid, ChevronDown, KeyRound } from 'lucide-react'
+import { Loader2, Plus, ShieldCheck, UserX, UserCheck, Mail, X, LayoutGrid, ChevronDown, KeyRound, Check } from 'lucide-react'
 import { clsx } from 'clsx'
 import { ALL_SECTIONS, SECTION_LABELS, parseAllowedSections } from '@/lib/cotizador/sections'
 import type { QuoteType } from '@/lib/cotizador/types'
@@ -69,6 +69,8 @@ export function UsersAdmin() {
   const [matrixId, setMatrixId] = useState<number | null>(null)
   const [pwdId, setPwdId]       = useState<number | null>(null)
   const [pwdValue, setPwdValue] = useState('')
+  // Confirmación visual de guardado (id del usuario recién actualizado)
+  const [savedId, setSavedId]   = useState<number | null>(null)
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<CreateValues>({
     resolver: zodResolver(createSchema),
@@ -133,6 +135,9 @@ export function UsersAdmin() {
       const json = await res.json()
       if (!res.ok) throw new Error(json.message ?? 'No se pudo actualizar')
       load()
+      // Mostrar "guardado" ~2.5s y limpiar solo si nadie lo reemplazó
+      setSavedId(id)
+      window.setTimeout(() => setSavedId(prev => (prev === id ? null : prev)), 2500)
     } catch (e) {
       setError(e instanceof Error ? e.message : 'No se pudo actualizar')
     } finally {
@@ -456,10 +461,21 @@ export function UsersAdmin() {
                 {matrixId === u.id && !u.admin && (
                   <tr className="border-b border-white/5 bg-white/[0.02]">
                     <td colSpan={8} className="px-4 py-4">
-                      <p className="mb-3 text-xs text-white/40">
-                        Secciones del cotizador visibles para <span className="text-white/70">{u.email}</span>.
-                        Con todas marcadas el usuario tiene acceso completo. El cambio aplica en su próximo inicio de sesión.
-                      </p>
+                      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                        <p className="text-xs text-white/40">
+                          Secciones del cotizador visibles para <span className="text-white/70">{u.email}</span>.
+                          Con todas marcadas el usuario tiene acceso completo. El cambio aplica en su próximo inicio de sesión.
+                        </p>
+                        {busyId === u.id ? (
+                          <span className="flex shrink-0 items-center gap-1.5 text-xs text-white/40">
+                            <Loader2 size={12} className="animate-spin" /> Guardando…
+                          </span>
+                        ) : savedId === u.id ? (
+                          <span className="flex shrink-0 items-center gap-1.5 text-xs font-medium text-green-400">
+                            <Check size={13} /> Cambios guardados
+                          </span>
+                        ) : null}
+                      </div>
                       <div className="grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3 lg:grid-cols-5">
                         {ALL_SECTIONS.map(section => {
                           const allowed = parseAllowedSections(u.allowedSections)
@@ -488,6 +504,13 @@ export function UsersAdmin() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Toast de confirmación de guardado */}
+      {savedId !== null && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded border border-green-400/30 bg-[#0f1a0f] px-4 py-2.5 text-sm font-medium text-green-400 shadow-lg shadow-black/50">
+          <Check size={15} /> Cambios guardados
         </div>
       )}
     </div>
