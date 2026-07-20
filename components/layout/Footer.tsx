@@ -69,15 +69,13 @@ export function Footer() {
             Planes flexibles, seguro incluido y más de 36 marcas disponibles.
           </p>
           <p className="mt-4 font-display text-gold italic text-sm">¡Aspira a más!</p>
-          <a
-            href="https://cotiza.urentit.mx/login"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/cotizador"
             className="mt-5 inline-flex items-center gap-2 rounded border border-white/15 px-4 py-2 text-xs text-white/50 hover:border-gold/40 hover:text-gold transition-colors duration-200"
           >
             <Lock size={12} />
             Cotizador
-          </a>
+          </Link>
         </div>
 
         {/* Col 2 — Navegación */}
