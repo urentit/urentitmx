@@ -32,8 +32,8 @@ export async function POST(req: NextRequest) {
       '48': calculate(input, effectiveUser, 48),
     }
 
-    await saveQuote(user.id, 'auto', input, result)
-    return NextResponse.json({ ok: true, data: result })
+    const folio = await saveQuote(user.id, 'auto', input, result)
+    return NextResponse.json({ ok: true, data: result, folio })
   } catch (err) {
     if (err instanceof z.ZodError)
       return NextResponse.json({ ok: false, errors: err.flatten().fieldErrors }, { status: 422 })

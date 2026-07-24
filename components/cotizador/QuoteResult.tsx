@@ -90,6 +90,7 @@ interface Props {
   modelo:     string
   totalPrice: number
   anticipo:   number
+  folio?:     number | null
 }
 
 const PERIOD_LABELS: Record<string, string> = {
@@ -99,7 +100,7 @@ const PERIOD_LABELS: Record<string, string> = {
   '48': '48 meses',
 }
 
-export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo }: Props) {
+export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo, folio }: Props) {
   const [downloading, setDownloading] = useState(false)
 
   const periods = Object.keys(result).sort()
@@ -110,7 +111,7 @@ export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo }:
       const res = await fetch('/api/cotizador/pdf', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ result, quoteType, modelo, totalPrice, anticipo }),
+        body:    JSON.stringify({ result, quoteType, modelo, totalPrice, anticipo, folio }),
       })
       if (!res.ok) return
       const blob = await res.blob()
@@ -135,7 +136,10 @@ export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo }:
             {modelo || 'Cotización'}
             <span className="ml-2 text-white/40 text-sm font-normal">— {fmt(totalPrice)}</span>
           </h3>
-          <p className="text-xs text-white/40 mt-0.5">Resultados comparativos por plazo</p>
+          <p className="text-xs text-white/40 mt-0.5">
+            {folio != null && <span className="text-gold/80 font-medium">Folio {String(folio).padStart(5, '0')} · </span>}
+            Resultados comparativos por plazo
+          </p>
         </div>
         <button
           onClick={downloadPDF}

@@ -14,6 +14,7 @@ const S = StyleSheet.create({
   logoSub:     { fontSize: 6.5, color: GRAY, marginTop: 2 },
   docTitle:    { fontSize: 12, fontFamily: 'Helvetica-Bold', color: BLACK, textAlign: 'right' },
   docMeta:     { fontSize: 7.5, color: GRAY, marginTop: 2, textAlign: 'right' },
+  docAmount:   { fontSize: 15, fontFamily: 'Helvetica-Bold', color: '#d32f2f', marginTop: 2, textAlign: 'right' },
 
   tableWrap:   { borderWidth: 1, borderColor: LIGHT },
   tHead:       { flexDirection: 'row', backgroundColor: BLACK },
@@ -87,6 +88,7 @@ interface Props {
   modelo:     string
   totalPrice: number
   anticipo?:  number
+  folio?:     number | null
   logoPath?:  string
 }
 
@@ -103,11 +105,15 @@ const QUOTE_TYPE_LABELS: Record<string, string> = {
   'refinanciamiento': 'Refinanciamiento',
 }
 
-export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, logoPath }: Props) {
+export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, folio, logoPath }: Props) {
   const periods    = Object.keys(result).sort()
   const periodData = periods.map(p => result[p as keyof QuoteResponse]!)
   const date       = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' })
-  const quoteNo    = String(Math.floor(Date.now() / 1000) % 99999).padStart(5, '0')
+  // Folio: id de la cotización en BD (mismo que el Historial); fallback a
+  // timestamp solo si no se pudo guardar (sin BD o usuario sin registro)
+  const quoteNo    = folio != null
+    ? String(folio).padStart(5, '0')
+    : String(Math.floor(Date.now() / 1000) % 99999).padStart(5, '0')
   const anticipoPct = anticipo ? Math.round(anticipo * 100) : 25
 
   const mainRows: TableBlockProps['rows'] = [
@@ -145,11 +151,11 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, l
             <Text style={S.logoSub}>Cotización de Arrendamiento Puro</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={S.docMeta}>No. {quoteNo}</Text>
+            <Text style={S.docMeta}>Folio No. {quoteNo}</Text>
             <Text style={S.docMeta}>Fecha: {date}</Text>
             <Text style={[S.docTitle, { marginTop: 4 }]}>{modelo || 'Cotización'}</Text>
-            <Text style={S.docMeta}>Valor del vehículo: {fmt(totalPrice)}</Text>
-            <Text style={S.docMeta}>Tipo: {QUOTE_TYPE_LABELS[quoteType] ?? quoteType}</Text>
+            <Text style={S.docAmount}>{fmt(totalPrice)}</Text>
+            <Text style={S.docMeta}>Valor del vehículo · Tipo: {QUOTE_TYPE_LABELS[quoteType] ?? quoteType}</Text>
           </View>
         </View>
 

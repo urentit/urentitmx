@@ -28,19 +28,20 @@ export function applyComisionOverride(user: SessionUser, override?: number): Ses
   return user
 }
 
-// Guarda la cotización en MySQL. Sin DATABASE_URL (o con usuarios legacy de
-// env var sin id numérico) no hace nada: el cotizador sigue funcionando igual.
+// Guarda la cotización en MySQL y devuelve su id (folio). Sin DATABASE_URL
+// (o con usuarios legacy sin id numérico) devuelve null: el cotizador sigue
+// funcionando igual, solo sin folio de BD.
 export async function saveQuote(
   userId: string,
   quoteType: QuoteType,
   input: QuoteInput,
   response: QuoteResponse,
-) {
-  if (!hasDatabase) return
+): Promise<number | null> {
+  if (!hasDatabase) return null
   const id = Number(userId)
-  if (!Number.isInteger(id) || id <= 0) return
+  if (!Number.isInteger(id) || id <= 0) return null
   try {
-    await prisma.quote.create({
+    const quote = await prisma.quote.create({
       data: {
         userId:   id,
         quoteType,
@@ -48,9 +49,11 @@ export async function saveQuote(
         response: response as object,
       },
     })
+    return quote.id
   } catch (e) {
     // La cotización ya se calculó; no rompemos la respuesta por un fallo de BD
     console.error('[saveQuote] Error guardando cotización:', e)
+    return null
   }
 }
 

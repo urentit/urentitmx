@@ -87,6 +87,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const { comision }   = useCommission()
 
   const [result,    setResult]    = useState<QuoteResponse | null>(null)
+  const [folio,     setFolio]     = useState<number | null>(null)
   const [loading,   setLoading]   = useState(false)
   const [lastInput, setLastInput] = useState<Record<string, unknown>>({})
   const [apiError,  setApiError]  = useState('')
@@ -156,8 +157,10 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
         body:    JSON.stringify(body),
       })
       const json = await res.json()
-      if (json.ok) setResult(json.data)
-      else setApiError(describeError(json, res.status))
+      if (json.ok) {
+        setResult(json.data)
+        setFolio(typeof json.folio === 'number' ? json.folio : null)
+      } else setApiError(describeError(json, res.status))
     } catch {
       setApiError('Error de conexión. Intenta de nuevo.')
     } finally {
@@ -364,6 +367,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
           modelo={String(lastInput.modelo ?? '')}
           totalPrice={Number(lastInput.totalPrice ?? 0)}
           anticipo={Number(lastInput.anticipo ?? 0.25)}
+          folio={folio}
         />
       )}
     </div>

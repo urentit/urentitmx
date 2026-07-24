@@ -25,8 +25,8 @@ export async function POST(req: NextRequest) {
     const effectiveUser = applyComisionOverride(user, body.comisionOverride)
     const input = { ...body, quoteType: 'refinanciamiento' as const }
     const result = { '12': calculate(input, effectiveUser, 12), '24': calculate(input, effectiveUser, 24) }
-    await saveQuote(user.id, 'refinanciamiento', input, result)
-    return NextResponse.json({ ok: true, data: result })
+    const folio = await saveQuote(user.id, 'refinanciamiento', input, result)
+    return NextResponse.json({ ok: true, data: result, folio })
   } catch (err) {
     if (err instanceof z.ZodError)
       return NextResponse.json({ ok: false, errors: err.flatten().fieldErrors }, { status: 422 })
