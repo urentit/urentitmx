@@ -14,7 +14,7 @@ const S = StyleSheet.create({
   logoSub:     { fontSize: 6.5, color: GRAY, marginTop: 2 },
   docTitle:    { fontSize: 12, fontFamily: 'Helvetica-Bold', color: BLACK, textAlign: 'right' },
   docMeta:     { fontSize: 7.5, color: GRAY, marginTop: 2, textAlign: 'right' },
-  docAmount:   { fontSize: 15, fontFamily: 'Helvetica-Bold', color: '#d32f2f', marginTop: 2, textAlign: 'right' },
+  docAmount:   { fontSize: 9, fontFamily: 'Helvetica-Bold', color: BLACK, marginTop: 2, textAlign: 'right', textDecoration: 'underline' },
 
   tableWrap:   { borderWidth: 1, borderColor: LIGHT },
   tHead:       { flexDirection: 'row', backgroundColor: BLACK },
