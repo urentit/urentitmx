@@ -112,6 +112,7 @@ export function calcCore(
       importeDeducir,
       valorVehiculo:   valorComercial,
       totalRentasMasIva,
+      advancePercentage: anticipo,
     },
     eachMonth: {
       valorTotal:    totalCar,

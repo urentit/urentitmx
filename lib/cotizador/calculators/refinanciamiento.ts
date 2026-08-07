@@ -73,6 +73,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 12 | 24): Q
       importeDeducir,
       valorVehiculo:   0,  // valorMercadoFinal = 0 en legacy
       totalRentasMasIva,
+      advancePercentage: anticipo,
     },
     eachMonth: {
       valorTotal:    totalPrice,

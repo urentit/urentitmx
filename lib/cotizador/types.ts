@@ -50,6 +50,9 @@ export interface CostBreakdown {
   importeDeducir: number
   valorVehiculo: number
   totalRentasMasIva: number
+  // Fracción de anticipo efectivamente usada en el cálculo. En usados es el
+  // anticipo ajustado por la brecha vs Autométrica (ej. 5% elegido → 0.27).
+  advancePercentage: number
 }
 
 export interface MonthlyBreakdown {

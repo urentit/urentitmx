@@ -12,8 +12,10 @@ function fmt(n: number) {
 function ResultColumn({ label, result }: { label: string; result: QR }) {
   const { costs: c, eachMonth: e } = result
 
+  const anticipoPct = Math.round((c.advancePercentage ?? 0) * 100)
+
   const rows: Array<{ label: string; value: string; highlight?: boolean }> = [
-    { label: 'Anticipo',                        value: fmt(c.anticipo) },
+    { label: anticipoPct ? `Anticipo al ${anticipoPct}%` : 'Anticipo', value: fmt(c.anticipo) },
     { label: 'Comisión apertura',               value: fmt(c.comisionAp) },
     { label: 'Anticipo total',                  value: fmt(c.anticipoTotal) },
     { label: 'Renta mensual',                   value: fmt(c.mensualidad), highlight: true },

@@ -114,7 +114,9 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, f
   const quoteNo    = folio != null
     ? String(folio).padStart(5, '0')
     : String(Math.floor(Date.now() / 1000) % 99999).padStart(5, '0')
-  const anticipoPct = anticipo ? Math.round(anticipo * 100) : 25
+  // Porcentaje efectivo del cálculo (en usados ya viene ajustado por Autométrica);
+  // fallback al anticipo capturado para cotizaciones viejas sin el campo.
+  const anticipoPct = Math.round((periodData[0]?.costs.advancePercentage ?? anticipo ?? 0.25) * 100)
 
   const mainRows: TableBlockProps['rows'] = [
     { label: `Anticipo al ${anticipoPct}%`,        get: d => fmt(d.costs.anticipo) },
