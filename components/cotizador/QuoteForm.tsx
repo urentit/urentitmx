@@ -133,6 +133,15 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       anticipoFraction = parseFloat(values.anticipo)
     }
 
+    // En usados el valor Autométrica es obligatorio: de él depende el ajuste del anticipo
+    if (isUsado) {
+      const autometrica = parseFloat((values.autometricaValue ?? '').replace(/[,$\s]/g, ''))
+      if (!Number.isFinite(autometrica) || autometrica <= 0) {
+        setApiError('Captura el valor Autométrica: es obligatorio para calcular el anticipo de un vehículo usado.')
+        return
+      }
+    }
+
     setLoading(true)
     setResult(null)
     setApiError('')
@@ -311,10 +320,10 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
           />
         </div>
 
-        {/* Autométrica (usado) */}
+        {/* Autométrica (usado) — obligatorio: define el ajuste del anticipo */}
         {isUsado && (
           <div>
-            <label className={labelCls}>Valor Autométrica</label>
+            <label className={labelCls}>Valor Autométrica *</label>
             <input
               {...register('autometricaValue')}
               inputMode="numeric"

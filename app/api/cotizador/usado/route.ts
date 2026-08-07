@@ -10,7 +10,8 @@ const schema = z.object({
   state:           z.string().min(2),
   anticipo:        z.number().min(0).max(0.45),
   seguro:          z.number().positive().optional(),
-  autometricaValue: z.number().positive().optional(),
+  // Obligatorio en usados: de él depende el ajuste del anticipo (paridad con legacy)
+  autometricaValue: z.number().positive('El valor Autométrica es obligatorio'),
   modelo:           z.string().default(''),
   comisionOverride: z.number().min(0).max(0.03).optional(),
 })
