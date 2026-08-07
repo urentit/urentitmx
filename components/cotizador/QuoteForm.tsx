@@ -18,6 +18,7 @@ const schema = z.object({
   accessoryValue:        z.string().optional(),
   state:                 z.string().min(2, 'Selecciona un estado'),
   anticipo:              z.string().min(1, 'Requerido'),
+  anticipoCustom:        z.string().optional(),
   servicios:             z.string().optional(),
   seguro:                z.string().optional(),
   servicesValue:         z.string().optional(),
@@ -94,11 +95,12 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
 
   const isFlotilla    = quoteType === 'flotilla' || quoteType === 'comision-extra'
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
       cilindraje:            '4',
-      anticipo:              '0.25',
+      anticipo:              '0.20',
+      anticipoCustom:        '',
       servicios:             '0',
       residualValue24:       isFlotilla ? '40' : '20',
       residualValue36:       isFlotilla ? '35' : '30',
@@ -111,12 +113,26 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   })
 
   const states        = getStates(quoteType)
+  const anticipoSel   = watch('anticipo')
   const isUsado       = quoteType === 'usado'
   const isRefin       = quoteType === 'refinanciamiento'
   const isCargaPesada = quoteType === 'carga-pesada'
   const hasCilindraje = WITH_CILINDRAJE.includes(quoteType)
 
   async function onSubmit(values: FormValues) {
+    // Anticipo: preset del select o porcentaje libre capturado a mano (0–45%)
+    let anticipoFraction: number
+    if (values.anticipo === 'custom') {
+      const pct = parseFloat((values.anticipoCustom ?? '').replace(/[%\s]/g, ''))
+      if (!Number.isFinite(pct) || pct < 0 || pct > 45) {
+        setApiError('El anticipo personalizado debe ser un porcentaje entre 0 y 45.')
+        return
+      }
+      anticipoFraction = Math.round(pct * 100) / 10000  // pct% → fracción
+    } else {
+      anticipoFraction = parseFloat(values.anticipo)
+    }
+
     setLoading(true)
     setResult(null)
     setApiError('')
@@ -125,7 +141,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       totalPrice:        parseFloat(values.totalPrice.replace(/[,$\s]/g, '')),
       modelo:            values.modelo ?? '',
       state:             values.state,
-      anticipo:          parseFloat(values.anticipo),
+      anticipo:          anticipoFraction,
       accessory:         values.accessory ?? '',
       accessoryValue:    parseFloat(values.accessoryValue ?? '0') || 0,
       comisionOverride:  comision,
@@ -148,7 +164,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       body.plazos                = ['24', '36', '48']
     }
 
-    setLastInput({ modelo: values.modelo ?? '', totalPrice: body.totalPrice, quoteType, anticipo: parseFloat(values.anticipo) })
+    setLastInput({ modelo: values.modelo ?? '', totalPrice: body.totalPrice, quoteType, anticipo: anticipoFraction })
 
     try {
       const res  = await fetch(getEndpoint(quoteType), {
@@ -227,7 +243,19 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
             {ANTICIPO_OPTS.map(o => (
               <option key={o.value} value={o.value}>{o.label}</option>
             ))}
+            <option value="custom">Personalizado…</option>
           </select>
+          {anticipoSel === 'custom' && (
+            <div className="mt-2">
+              <input
+                {...register('anticipoCustom')}
+                inputMode="decimal"
+                placeholder="Ej. 22"
+                className={inputCls}
+              />
+              <p className="mt-1 text-[11px] text-white/40">Porcentaje de 0 a 45 (ej. 22 = 22%).</p>
+            </div>
+          )}
         </div>
 
         {/* Servicios */}
