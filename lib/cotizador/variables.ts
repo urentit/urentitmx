@@ -53,8 +53,10 @@ export const VARS = {
   // Tenencias/refrendos anuales (estados con tenencia fija)
   TENENCIAS_FIXED: 2000,
 
-  // Verificaciones
-  VERI: 1800,
+  // Verificaciones (2 por año; auto, VIP, usados, flotilla, especial y refinanciamiento)
+  VERI: 2600,
+  // Carga conserva la tarifa anterior
+  VERI_CARGA: 1800,
   VERI_FORANEOS: 3200,
 
   // Estados con tenencia FIJA para todas las secciones; jalisco es fijo solo en section_one (ver calcTenencias)
