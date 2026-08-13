@@ -19,7 +19,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48): Q
   const gps        = calcGps(yrs)
   const tramites   = getPlacaPrice(total, 'section_two', state)
   const tenencias  = calcTenencias(total, yrs, state, 'section_two')
-  const veri       = VERI_C[years] * VARS.VERI
+  const veri       = VERI_C[years] * VARS.VERI_CARGA
 
   return calcCore(
     totalPrice, accessoryValue, anticipo, state, yrs,
