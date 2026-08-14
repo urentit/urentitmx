@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     const body          = schema.parse(await req.json())
     const effectiveUser = applyComisionOverride(user, body.comisionOverride)
     const input = { ...body, quoteType: 'electrico' as const }
-    const result = { '36': calculate(input, effectiveUser, 36), '48': calculate(input, effectiveUser, 48) }
+    const result = { '24': calculate(input, effectiveUser, 24), '36': calculate(input, effectiveUser, 36), '48': calculate(input, effectiveUser, 48) }
     const folio = await saveQuote(user.id, 'electrico', input, result)
     return NextResponse.json({ ok: true, data: result, folio })
   } catch (err) {
