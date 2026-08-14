@@ -22,7 +22,7 @@ interface Meta {
 }
 
 function fmt(n: number) {
-  return n.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 0, maximumFractionDigits: 0 })
+  return n.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
 function fmtDate(iso: string) {
@@ -133,7 +133,7 @@ export function HistorialList() {
                       {typeof r.request?.totalPrice === 'number' ? fmt(r.request.totalPrice) : '—'}
                     </td>
                     <td className="px-4 py-3 text-right tabular-nums text-white/55">
-                      {typeof r.request?.anticipo === 'number' ? `${Math.round(r.request.anticipo * 100)}%` : '—'}
+                      {typeof r.request?.anticipo === 'number' ? `${parseFloat((r.request.anticipo * 100).toFixed(2))}%` : '—'}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-xs tabular-nums text-gold/90">
                       {mensualidades(r.response)}

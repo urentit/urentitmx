@@ -12,7 +12,7 @@ function fmt(n: number) {
 function ResultColumn({ label, result }: { label: string; result: QR }) {
   const { costs: c, eachMonth: e } = result
 
-  const anticipoPct = Math.round((c.advancePercentage ?? 0) * 100)
+  const anticipoPct = parseFloat(((c.advancePercentage ?? 0) * 100).toFixed(2))
 
   const rows: Array<{ label: string; value: string; highlight?: boolean }> = [
     { label: anticipoPct ? `Anticipo al ${anticipoPct}%` : 'Anticipo', value: fmt(c.anticipo) },
