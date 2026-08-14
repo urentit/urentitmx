@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -64,9 +64,9 @@ function getEndpoint(quoteType: QuoteType) {
   return `/api/cotizador/${quoteType}`
 }
 
-// Traduce la respuesta de error de la API a un mensaje Ãºtil para el usuario.
+// Traduce la respuesta de error de la API a un mensaje útil para el usuario.
 function describeError(json: any, status: number): string {
-  if (status === 401) return 'Tu sesiÃ³n expirÃ³. Vuelve a iniciar sesiÃ³n.'
+  if (status === 401) return 'Tu sesión expiró. Vuelve a iniciar sesión.'
   if (json?.errors && typeof json.errors === 'object') {
     const campos = Object.keys(json.errors)
     if (campos.length) return `Revisa estos campos: ${campos.join(', ')}.`
@@ -120,7 +120,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const hasCilindraje = WITH_CILINDRAJE.includes(quoteType)
 
   async function onSubmit(values: FormValues) {
-    // Anticipo: preset del select o porcentaje libre capturado a mano (0â€“45%)
+    // Anticipo: preset del select o porcentaje libre capturado a mano (0–45%)
     let anticipoFraction: number
     if (values.anticipo === 'custom') {
       const pct = parseFloat((values.anticipoCustom ?? '').replace(/[%\s]/g, ''))
@@ -128,16 +128,16 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
         setApiError('El anticipo personalizado debe ser un porcentaje entre 0 y 45.')
         return
       }
-      anticipoFraction = Math.round(pct * 100) / 10000  // pct% â†’ fracciÃ³n
+      anticipoFraction = Math.round(pct * 100) / 10000  // pct% → fracción
     } else {
       anticipoFraction = parseFloat(values.anticipo)
     }
 
-    // En usados el valor AutomÃ©trica es obligatorio: de Ã©l depende el ajuste del anticipo
+    // En usados el valor Autométrica es obligatorio: de él depende el ajuste del anticipo
     if (isUsado) {
       const autometrica = parseFloat((values.autometricaValue ?? '').replace(/[,$\s]/g, ''))
       if (!Number.isFinite(autometrica) || autometrica <= 0) {
-        setApiError('Captura el valor AutomÃ©trica: es obligatorio para calcular el anticipo de un vehÃ­culo usado.')
+        setApiError('Captura el valor Autométrica: es obligatorio para calcular el anticipo de un vehículo usado.')
         return
       }
     }
@@ -187,7 +187,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
         setFolio(typeof json.folio === 'number' ? json.folio : null)
       } else setApiError(describeError(json, res.status))
     } catch {
-      setApiError('Error de conexiÃ³n. Intenta de nuevo.')
+      setApiError('Error de conexión. Intenta de nuevo.')
     } finally {
       setLoading(false)
     }
@@ -201,7 +201,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       >
         {/* Precio */}
         <div>
-          <label className={labelCls}>Valor del vehÃ­culo (con IVA) *</label>
+          <label className={labelCls}>Valor del vehículo (con IVA) *</label>
           <input
             {...register('totalPrice')}
             inputMode="decimal"
@@ -213,7 +213,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
 
         {/* Modelo */}
         <div>
-          <label className={labelCls}>Modelo / descripciÃ³n</label>
+          <label className={labelCls}>Modelo / descripción</label>
           <input
             {...register('modelo')}
             placeholder="Honda Civic 2024"
@@ -237,7 +237,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
         <div>
           <label className={labelCls}>Estado para placas *</label>
           <select {...register('state')} className={selectCls}>
-            <option value="">â€” Seleccionar â€”</option>
+            <option value="">— Seleccionar —</option>
             {states.map(([key, s]) => (
               <option key={key} value={key}>{s.name}</option>
             ))}
@@ -252,7 +252,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
             {ANTICIPO_OPTS.map(o => (
               <option key={o.value} value={o.value}>{o.label}</option>
             ))}
-            <option value="custom">Personalizadoâ€¦</option>
+            <option value="custom">Personalizado…</option>
           </select>
           {anticipoSel === 'custom' && (
             <div className="mt-2">
@@ -270,36 +270,36 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
         {/* Servicios */}
         {!isCargaPesada && !isRefin && (
           <div>
-            <label className={labelCls}>Servicios preventivos (aÃ±os)</label>
+            <label className={labelCls}>Servicios preventivos (años)</label>
             <select {...register('servicios')} className={selectCls}>
               <option value="0">Ninguno</option>
-              <option value="1">1 aÃ±o</option>
-              <option value="2">2 aÃ±os</option>
-              <option value="3">3 aÃ±os</option>
-              <option value="4">4 aÃ±os</option>
+              <option value="1">1 año</option>
+              <option value="2">2 años</option>
+              <option value="3">3 años</option>
+              <option value="4">4 años</option>
             </select>
           </div>
         )}
 
         {/* Seguro manual */}
         <div>
-          <label className={labelCls}>Seguro por aÃ±o</label>
+          <label className={labelCls}>Seguro por año</label>
           <input
             {...register('seguro')}
             inputMode="decimal"
-            placeholder="AutomÃ¡tico"
+            placeholder="Automático"
             className={inputCls}
           />
         </div>
 
-        {/* Valor de cada servicio â€” solo usuarios con manualServices */}
+        {/* Valor de cada servicio — solo usuarios con manualServices */}
         {manualServices && (
           <div>
             <label className={labelCls}>Valor de cada servicio</label>
             <input
               {...register('servicesValue')}
               inputMode="decimal"
-              placeholder="AutomÃ¡tico"
+              placeholder="Automático"
               className={inputCls}
             />
           </div>
@@ -320,10 +320,10 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
           />
         </div>
 
-        {/* AutomÃ©trica (usado) â€” obligatorio: define el ajuste del anticipo */}
+        {/* Autométrica (usado) — obligatorio: define el ajuste del anticipo */}
         {isUsado && (
           <div>
-            <label className={labelCls}>Valor AutomÃ©trica *</label>
+            <label className={labelCls}>Valor Autométrica *</label>
             <input
               {...register('autometricaValue')}
               inputMode="decimal"
@@ -390,9 +390,9 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
             {loading ? (
               <span className="flex items-center gap-2 justify-center">
                 <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-black/30 border-t-black" />
-                Calculandoâ€¦
+                Calculando…
               </span>
-            ) : 'Calcular cotizaciÃ³n'}
+            ) : 'Calcular cotización'}
           </button>
         </div>
       </form>
