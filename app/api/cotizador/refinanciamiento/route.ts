@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getSessionUser, saveQuote, unauthorized, applyComisionOverride, sectionAllowed, sectionForbidden } from '@/lib/cotizador/apiHelper'
 import { calculate } from '@/lib/cotizador/calculators/refinanciamiento'
+import { getEffectiveTasas } from '@/lib/cotizador/ratesStore'
 
 const schema = z.object({
   totalPrice:     z.number().positive(),
@@ -24,7 +25,8 @@ export async function POST(req: NextRequest) {
     const body          = schema.parse(await req.json())
     const effectiveUser = applyComisionOverride(user, body.comisionOverride)
     const input = { ...body, quoteType: 'refinanciamiento' as const }
-    const result = { '12': calculate(input, effectiveUser, 12), '24': calculate(input, effectiveUser, 24) }
+    const tasas = await getEffectiveTasas('refinanciamiento')
+    const result = { '12': calculate(input, effectiveUser, 12, tasas), '24': calculate(input, effectiveUser, 24, tasas) }
     const folio = await saveQuote(user.id, 'refinanciamiento', input, result)
     return NextResponse.json({ ok: true, data: result, folio })
   } catch (err) {

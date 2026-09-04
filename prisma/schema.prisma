@@ -31,6 +31,20 @@ model User {
   quotes          Quote[]
 }
 
+// Tasa anual (%) configurada por administradores, por cotizador y plazo en meses.
+// Si no existe fila para (quoteType, months) se usa la tasa por defecto del código
+// (lib/cotizador/rates.ts). Aplica a todos los usuarios al cotizar.
+model RateSetting {
+  id        Int      @id @default(autoincrement())
+  quoteType String
+  months    Int
+  tasa      Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([quoteType, months])
+}
+
 model Quote {
   id        Int      @id @default(autoincrement())
   userId    Int

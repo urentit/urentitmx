@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getSessionUser, saveQuote, unauthorized, applyComisionOverride, sectionAllowed, sectionForbidden } from '@/lib/cotizador/apiHelper'
 import { calculate } from '@/lib/cotizador/calculators/comisionExtra'
+import { getEffectiveTasas } from '@/lib/cotizador/ratesStore'
 
 const schema = z.object({
   totalPrice:            z.number().positive(),
@@ -33,11 +34,12 @@ export async function POST(req: NextRequest) {
     const body          = schema.parse(await req.json())
     const effectiveUser = applyComisionOverride(user, body.comisionOverride)
     const input = { ...body, quoteType: 'comision-extra' as const }
+    const tasas = await getEffectiveTasas('comision-extra')
 
     const result: Record<string, unknown> = {}
     for (const p of body.plazos) {
       const years = Number(p) as 24 | 36 | 48
-      result[p] = calculate(input, effectiveUser, years)
+      result[p] = calculate(input, effectiveUser, years, tasas)
     }
 
     const folio = await saveQuote(user.id, 'comision-extra', input, result as any)

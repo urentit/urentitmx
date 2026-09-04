@@ -2,12 +2,13 @@ import { VARS } from '../variables'
 import { getPlacaPrice } from '../placas'
 import { calcGps, calcTenencias, calcCore } from '../engine'
 import type { QuoteInput, QuoteUser, QuoteResult } from '../types'
+import type { TasaMap } from '../rates'
 
 const RESIDUAL = { 36: 0.20, 48: 0.15 }
 const TASA     = { 36: VARS.TASARENTING, 48: VARS.TASARENTING2 }
 const VERI_C   = { 36: 6, 48: 8 }
 
-export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48): QuoteResult {
+export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48, tasas?: TasaMap): QuoteResult {
   const { totalPrice, accessoryValue = 0, accessory = '', state,
           anticipo, seguro: seguroManual, autometricaValue } = input
 
@@ -34,7 +35,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48): Q
 
   return calcCore(
     totalPrice, accessoryValue, anticopoAjustado, state, yrs,
-    RESIDUAL[years], TASA[years], seguro, serviciosP, gps, tramites, tenencias, veri,
+    RESIDUAL[years], tasas?.[years] ?? TASA[years], seguro, serviciosP, gps, tramites, tenencias, veri,
     user, accessory, 'section_one',
   )
 }

@@ -1,10 +1,11 @@
 import { calculate as calcFlotilla } from './flotilla'
 import type { QuoteInput, QuoteUser, QuoteResult } from '../types'
+import type { TasaMap } from '../rates'
 
 const COMISION_EXTRA_PCT = 0.0275
 
-export function calculate(input: QuoteInput, user: QuoteUser, years: 24 | 36 | 48): QuoteResult {
-  const base = calcFlotilla(input, user, years)
+export function calculate(input: QuoteInput, user: QuoteUser, years: 24 | 36 | 48, tasas?: TasaMap): QuoteResult {
+  const base = calcFlotilla(input, user, years, tasas)
 
   const total           = input.totalPrice + (input.accessoryValue ?? 0)
   const valorAFinanciar = total * (1 - input.anticipo)

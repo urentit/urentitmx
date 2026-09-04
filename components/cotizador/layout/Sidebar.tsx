@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import {
   Car, Truck, Package, Zap, Map, History, RotateCcw,
-  Star, Users, ClipboardList, X, BadgeDollarSign, UserCog,
+  Star, Users, ClipboardList, X, BadgeDollarSign, UserCog, Percent,
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { parseAllowedSections, canAccessSection } from '@/lib/cotizador/sections'
@@ -42,7 +42,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     !item.section || canAccessSection(isAdmin, allowed, item.section),
   )
   const items = isAdmin
-    ? [...visible, { href: '/cotizador/usuarios', label: 'Usuarios', icon: UserCog }]
+    ? [
+        ...visible,
+        { href: '/cotizador/tasas',    label: 'Tasas',    icon: Percent },
+        { href: '/cotizador/usuarios', label: 'Usuarios', icon: UserCog },
+      ]
     : visible
 
   return (

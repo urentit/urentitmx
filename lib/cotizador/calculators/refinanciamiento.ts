@@ -2,6 +2,7 @@ import { VARS } from '../variables'
 import { getPlacaName } from '../placas'
 import { pmt } from '../engine'
 import type { QuoteInput, QuoteUser, QuoteResult } from '../types'
+import type { TasaMap } from '../rates'
 
 const RESIDUAL = { 12: 0.09,             24: 0.03 }
 const TASA     = { 12: VARS.TASARENTING, 24: VARS.TASARENTING2 }
@@ -11,7 +12,7 @@ const VERI_C   = { 12: 2,               24: 4 }
 // Mapeamos: estos estados string usan tenencia fija, el resto usa 3.5% del precio.
 const FIXED_STATES = ['no', 'morelos', 'hidalgo', 'puebla', 'jalisco']
 
-export function calculate(input: QuoteInput, user: QuoteUser, years: 12 | 24): QuoteResult {
+export function calculate(input: QuoteInput, user: QuoteUser, years: 12 | 24, tasas?: TasaMap): QuoteResult {
   const {
     totalPrice, accessoryValue = 0, accessory = '', state,
     anticipo, servicios = 0, seguro: seguroManual, servicesValue,
@@ -45,7 +46,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 12 | 24): Q
   const suma = seguro + serviciosP + gps + tramites + tenencias + veri
 
   const residual    = RESIDUAL[years]
-  const tasaMensual = (TASA[years] / 100) / 12
+  const tasaMensual = ((tasas?.[years] ?? TASA[years]) / 100) / 12
 
   const anticipoCalc  = Math.round((total * anticipo) / VARS.IVA * 100) / 100
   const comisionAp    = Math.round(((total / VARS.IVA) - anticipoCalc) * user.comision * 100) / 100

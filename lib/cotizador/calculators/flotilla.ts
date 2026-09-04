@@ -2,10 +2,11 @@ import { VARS } from '../variables'
 import { getPlacaPrice } from '../placas'
 import { calcGps, calcSeguroAuto, calcServiciosPreventivos, calcTenencias, calcCore } from '../engine'
 import type { QuoteInput, QuoteUser, QuoteResult } from '../types'
+import type { TasaMap } from '../rates'
 
 const TASA = { 24: VARS.TASARENTING, 36: VARS.TASARENTING, 48: VARS.TASARENTING2 }
 
-export function calculate(input: QuoteInput, user: QuoteUser, years: 24 | 36 | 48): QuoteResult {
+export function calculate(input: QuoteInput, user: QuoteUser, years: 24 | 36 | 48, tasas?: TasaMap): QuoteResult {
   const {
     totalPrice, accessoryValue = 0, accessory = '', state,
     anticipo, servicios = 0, seguro: seguroManual, servicesValue,
@@ -34,7 +35,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 24 | 36 | 4
 
   return calcCore(
     totalPrice, accessoryValue, anticipo, state, yrs,
-    varData1, TASA[years], seguro, serviciosP, gps, tramites, tenencias, veri,
+    varData1, tasas?.[years] ?? TASA[years], seguro, serviciosP, gps, tramites, tenencias, veri,
     user, accessory, 'section_one',
   )
 }
