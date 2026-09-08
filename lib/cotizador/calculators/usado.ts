@@ -15,7 +15,11 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48, ta
   const total = totalPrice + accessoryValue
   const yrs   = years / 12
 
-  // Anticipo ajustado: diferencia entre precio comercial y Autométrica
+  // Anticipo ajustado SOLO hacia arriba: si el precio excede el valor Autométrica,
+  // el cliente cubre la brecha en el anticipo (la arrendadora financia hasta el
+  // valor libro). Con Autométrica >= precio se respeta el porcentaje elegido —
+  // el legacy PHP ajustaba también a la baja (podía dar 0% o negativo), pero
+  // ventas espera el porcentaje que captura (validado 2026-09-08).
   let anticopoAjustado = anticipo
   if (autometricaValue && autometricaValue < total) {
     const diferencia = (total - autometricaValue) / total
