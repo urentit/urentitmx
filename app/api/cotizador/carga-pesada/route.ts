@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     const effectiveUser = applyComisionOverride(user, body.comisionOverride)
     const input = { ...body, quoteType: 'carga-pesada' as const }
     const tasas = await getEffectiveTasas('carga-pesada')
-    const result = { '36': calculate(input, effectiveUser, 36, tasas), '48': calculate(input, effectiveUser, 48, tasas) }
+    const result = { '36': calculate(input, effectiveUser, 36, tasas), '48': calculate(input, effectiveUser, 48, tasas), '60': calculate(input, effectiveUser, 60, tasas) }
     const folio = await saveQuote(user.id, 'carga-pesada', input, result)
     return NextResponse.json({ ok: true, data: result, folio })
   } catch (err) {
