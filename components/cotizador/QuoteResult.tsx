@@ -100,6 +100,7 @@ const PERIOD_LABELS: Record<string, string> = {
   '24': '24 meses',
   '36': '36 meses',
   '48': '48 meses',
+  '60': '60 meses',
 }
 
 export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo, folio }: Props) {

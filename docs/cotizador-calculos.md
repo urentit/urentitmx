@@ -11,6 +11,7 @@
 |---|---|---|
 | `TASARENTING` | 28 % | Tasa anual estándar (plazos 24 m y 36 m) |
 | `TASARENTING2` | 27 % | Tasa anual estándar (plazo 48 m) |
+| `TASARENTING3` | 26 % | Tasa anual plazo 60 m (solo Carga) |
 | `TASARENTINGVIP` | 26 % | Tasa anual VIP (36 m) |
 | `TASARENTINGVIP2` | 25 % | Tasa anual VIP (48 m) |
 
@@ -322,10 +323,10 @@ Idéntico a **Auto** en todo, excepto la tasa anual:
 
 | Parámetro | Valor |
 |---|---|
-| Plazos | 36 y 48 meses |
-| Residual | 15 % (36 m) · 10 % (48 m) |
-| Tasa anual | 28 % (36 m) · 27 % (48 m) |
-| Verificaciones | 6 (36 m) · 8 (48 m) × $1,800 |
+| Plazos | 36, 48 y 60 meses |
+| Residual | 15 % (36 m) · 10 % (48 m) · 5 % (60 m) |
+| Tasa anual | 28 % (36 m) · 27 % (48 m) · 26 % (60 m) |
+| Verificaciones | 6 (36 m) · 8 (48 m) · 10 (60 m) × $1,800 |
 | Seguro | `calcSeguroCarga` (rangos carga: 9/6/4 %) |
 | Servicios | `calcServiciosPreventivos` |
 | GPS | `calcGps` estándar |
@@ -557,7 +558,7 @@ importe_deducir = ROUND(
 |---|---|---|---|---|---|---|---|
 | Auto | 35/30 % | 28/27 % | auto (6/5/4%) | preventivos ×2 | section_one | section_one | 6/8 × $1,800 |
 | VIP | 35/30 % | **26/25 %** | auto (6/5/4%) | preventivos ×2 | section_one | section_one | 6/8 × $1,800 |
-| Carga | 15/10 % | 28/27 % | **carga (9/6/4%)** | preventivos ×2 | section_two | section_two | 6/8 × $1,800 |
+| Carga | 15/10/5 % | 28/27/26 % | **carga (9/6/4%)** | preventivos ×2 | section_two | section_two | 6/8/10 × $1,800 |
 | Carga Pesada | 15/10 % | 28/27 % | **4.5/6.5% fijo** | **0** | **$4,000 fijo** | **0** | **0** |
 | Eléctrico | 35/30 % | 28/27 % | **4% fijo** | **eléctricos** | section_three | section_three | **0** |
 | Foráneo | 35/30 % | 28/27 % | auto (6/5/4%) | preventivos ×2 | section_two | section_two | 6/8 × **$3,200** |

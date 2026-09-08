@@ -11,7 +11,7 @@ export type TasaMap = Record<number, number>
 export const RATE_PLAZOS: Record<QuoteType, number[]> = {
   'auto':             [36, 48],
   'vip':              [36, 48],
-  'carga':            [36, 48],
+  'carga':            [36, 48, 60],
   'carga-pesada':     [36, 48],
   'electrico':        [24, 36, 48],
   'foraneo':          [36, 48],
@@ -29,7 +29,7 @@ export const RATE_PLAZOS: Record<QuoteType, number[]> = {
 export const DEFAULT_RATES: Record<QuoteType, TasaMap> = {
   'auto':             { 36: VARS.TASARENTING, 48: VARS.TASARENTING2 },
   'vip':              { 36: VARS.TASARENTINGVIP, 48: VARS.TASARENTINGVIP2 },
-  'carga':            { 36: VARS.TASARENTING, 48: VARS.TASARENTING2 },
+  'carga':            { 36: VARS.TASARENTING, 48: VARS.TASARENTING2, 60: VARS.TASARENTING3 },
   'carga-pesada':     { 36: VARS.TASARENTING, 48: VARS.TASARENTING2 },
   'electrico':        { 24: VARS.TASARENTING, 36: VARS.TASARENTING, 48: VARS.TASARENTING2 },
   'foraneo':          { 36: VARS.TASARENTING, 48: VARS.TASARENTING2 },

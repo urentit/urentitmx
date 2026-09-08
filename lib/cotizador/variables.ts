@@ -2,6 +2,7 @@ export const VARS = {
   // Tasas de renting
   TASARENTING: 28,       // 36 meses
   TASARENTING2: 27,      // 48 meses
+  TASARENTING3: 26,      // 60 meses (carga)
   TASARENTINGVIP: 26,    // VIP 36 meses
   TASARENTINGVIP2: 25,   // VIP 48 meses
 

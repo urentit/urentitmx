@@ -76,6 +76,7 @@ export interface QuoteResult {
 export interface QuoteResponse {
   '36'?: QuoteResult
   '48'?: QuoteResult
+  '60'?: QuoteResult
   '24'?: QuoteResult
   '12'?: QuoteResult
 }

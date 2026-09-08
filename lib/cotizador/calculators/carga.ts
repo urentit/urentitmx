@@ -4,11 +4,11 @@ import { calcGps, calcSeguroCarga, calcServiciosPreventivos, calcTenencias, calc
 import type { QuoteInput, QuoteUser, QuoteResult } from '../types'
 import type { TasaMap } from '../rates'
 
-const RESIDUAL = { 36: 0.15, 48: 0.10 }
-const TASA     = { 36: VARS.TASARENTING, 48: VARS.TASARENTING2 }
-const VERI_C   = { 36: 6, 48: 8 }
+const RESIDUAL = { 36: 0.15, 48: 0.10, 60: 0.05 }
+const TASA     = { 36: VARS.TASARENTING, 48: VARS.TASARENTING2, 60: VARS.TASARENTING3 }
+const VERI_C   = { 36: 6, 48: 8, 60: 10 }
 
-export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48, tasas?: TasaMap): QuoteResult {
+export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48 | 60, tasas?: TasaMap): QuoteResult {
   const { totalPrice, accessoryValue = 0, accessory = '', state,
           anticipo, servicios = 0, seguro: seguroManual, servicesValue } = input
 
