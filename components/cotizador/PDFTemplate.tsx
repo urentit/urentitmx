@@ -97,6 +97,7 @@ const QUOTE_TYPE_LABELS: Record<string, string> = {
   'vip':              'VIP / Lujo',
   'carga':            'Carga',
   'carga-pesada':     'Carga Pesada',
+  'carga-pesada-especial': 'Carga pesada especial',
   'electrico':        'Eléctrico',
   'foraneo':          'Foráneo',
   'usado':            'Vehículo Usado',

@@ -359,6 +359,24 @@ Características especiales:
 
 ---
 
+### 5.4.1 Carga pesada especial
+
+Idéntico a **Carga Pesada** más la misma comisión adicional del Cotizador especial
+(`VARS.COMISION_EXTRA_PCT` = 2.75 % sobre el valor a financiar, distribuida en las rentas):
+
+```
+base            = calcCargaPesada(input, user, meses)
+valor_financiar = total × (1 - anticipo)
+comision_total  = valor_financiar × 0.0275
+renta_extra     = comision_total / meses          ← meses = 36 | 48 | 60
+
+mensualidad     = ROUND(base.mensualidad + renta_extra, 2)
+total_rentas    = ROUND(mensualidad × meses, 2)
+importe_deducir se recalcula con la nueva mensualidad (× 0.56)
+```
+
+---
+
 ### 5.5 Eléctrico
 
 | Parámetro | Valor |
@@ -560,6 +578,7 @@ importe_deducir = ROUND(
 | VIP | 35/30 % | **26/25 %** | auto (6/5/4%) | preventivos ×2 | section_one | section_one | 6/8 × $1,800 |
 | Carga | 15/10/5 % | 28/27/26 % | **carga (9/6/4%)** | preventivos ×2 | section_two | section_two | 6/8/10 × $1,800 |
 | Carga Pesada | 15/10/5 % | 28/27/26 % | **4.5/6.5% fijo** | **0** | **$4,000 fijo** | **0** | **0** |
+| Carga pesada especial | 15/10/5 % | 28/27/26 % | **4.5/6.5% fijo** | **0** | **$4,000 fijo** | **0** | **+ 2.75% s/financiado** |
 | Eléctrico | 35/30 % | 28/27 % | **4% fijo** | **eléctricos** | section_three | section_three | **0** |
 | Foráneo | 35/30 % | 28/27 % | auto (6/5/4%) | preventivos ×2 | section_two | section_two | 6/8 × **$3,200** |
 | Usado | 20/15 % | 28/27 % | **4% sobre Autométrica** | **0** | section_one | section_one | 6/8 × $1,800 |

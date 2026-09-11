@@ -12,6 +12,10 @@ export const VARS = {
   // Comisión de apertura base
   CPA: 0.03,
 
+  // Comisión adicional sobre el valor a financiar, distribuida en las rentas.
+  // Compartida por el Cotizador especial y Carga Pesada especial.
+  COMISION_EXTRA_PCT: 0.0275,
+
   // Tope máximo de comisión (aplica al override en tiempo de cotización y al
   // alta/edición de usuarios). El selector de comisión solo ofrece 0–3%.
   MAX_COMISION: 0.03,

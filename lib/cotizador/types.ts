@@ -2,6 +2,7 @@ export type QuoteType =
   | 'auto'
   | 'carga'
   | 'carga-pesada'
+  | 'carga-pesada-especial'
   | 'electrico'
   | 'foraneo'
   | 'usado'

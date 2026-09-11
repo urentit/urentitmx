@@ -17,6 +17,7 @@ const nav: Array<{ href: string; label: string; icon: any; section?: QuoteType }
   { href: '/cotizador/vip',              label: 'VIP / Lujo',        icon: Star,            section: 'vip' },
   { href: '/cotizador/carga',            label: 'Carga',             icon: Truck,           section: 'carga' },
   { href: '/cotizador/carga-pesada',     label: 'Carga Pesada',      icon: Package,         section: 'carga-pesada' },
+  { href: '/cotizador/carga-pesada-especial', label: 'Carga pesada especial', icon: Package, section: 'carga-pesada-especial' },
   { href: '/cotizador/electrico',        label: 'Eléctrico',         icon: Zap,             section: 'electrico' },
   { href: '/cotizador/foraneo',          label: 'Foráneo',           icon: Map,             section: 'foraneo' },
   { href: '/cotizador/usado',            label: 'Vehículo Usado',    icon: RotateCcw,       section: 'usado' },

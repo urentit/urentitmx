@@ -55,7 +55,7 @@ const CILINDRAJE_OPTS = [
 
 function getStates(quoteType: QuoteType) {
   if (quoteType === 'electrico') return Object.entries(SECTION_THREE)
-  if (quoteType === 'carga' || quoteType === 'carga-pesada' || quoteType === 'foraneo')
+  if (quoteType === 'carga' || quoteType === 'carga-pesada' || quoteType === 'carga-pesada-especial' || quoteType === 'foraneo')
     return Object.entries(SECTION_TWO)
   return Object.entries(SECTION_ONE)
 }
@@ -80,7 +80,7 @@ const selectCls = 'w-full rounded border border-white/10 bg-[#1c1c1c] px-3 py-2.
 const labelCls  = 'mb-1.5 block text-xs font-medium text-white/60 uppercase tracking-wide'
 
 // Tipos que muestran el campo cilindraje
-const WITH_CILINDRAJE: QuoteType[] = ['auto', 'vip', 'carga', 'carga-pesada', 'foraneo', 'flotilla', 'comision-extra', 'refinanciamiento']
+const WITH_CILINDRAJE: QuoteType[] = ['auto', 'vip', 'carga', 'carga-pesada', 'carga-pesada-especial', 'foraneo', 'flotilla', 'comision-extra', 'refinanciamiento']
 
 export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const { data: session } = useSession()
@@ -116,7 +116,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const anticipoSel   = watch('anticipo')
   const isUsado       = quoteType === 'usado'
   const isRefin       = quoteType === 'refinanciamiento'
-  const isCargaPesada = quoteType === 'carga-pesada'
+  const isCargaPesada = quoteType === 'carga-pesada' || quoteType === 'carga-pesada-especial'
   const hasCilindraje = WITH_CILINDRAJE.includes(quoteType)
 
   async function onSubmit(values: FormValues) {
