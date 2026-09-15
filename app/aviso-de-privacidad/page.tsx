@@ -27,7 +27,7 @@ export default function AvisoPrivacidadPage() {
         <h1 className="font-display text-3xl sm:text-4xl text-white font-bold mb-2">
           Aviso de <span className="text-gold italic">Privacidad</span>
         </h1>
-        <p className="text-white/40 font-sans text-sm mb-10">Última actualización: marzo 2025</p>
+        <p className="text-white/40 font-sans text-sm mb-10">Última actualización: 14 de septiembre de 2026</p>
 
         <div className="prose prose-invert prose-sm max-w-none space-y-8 font-sans text-white/60 leading-relaxed">
 
