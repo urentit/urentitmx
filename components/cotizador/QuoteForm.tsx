@@ -172,6 +172,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       body.includeVerificaciones = values.includeVerificaciones
       body.plazos                = ['24', '36', '48']
     }
+    if (isRefin) body.includeVerificaciones = values.includeVerificaciones
 
     setLastInput({ modelo: values.modelo ?? '', totalPrice: body.totalPrice, quoteType, anticipo: anticipoFraction })
 
@@ -369,6 +370,23 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
               </div>
             </div>
           </>
+        )}
+
+        {/* Refinanciamiento: verificaciones opcionales (híbridos/eléctricos no las requieren) */}
+        {isRefin && (
+          <div className="sm:col-span-2 lg:col-span-3">
+            <p className={labelCls}>Incluir en renta:</p>
+            <div className="flex flex-wrap gap-5 mt-1">
+              <label className="flex items-center gap-2 text-sm text-white/70 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  {...register('includeVerificaciones')}
+                  className="accent-gold w-4 h-4"
+                />
+                Verificaciones
+              </label>
+            </div>
+          </div>
         )}
 
         {/* Error de API */}

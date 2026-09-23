@@ -16,6 +16,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 12 | 24, ta
   const {
     totalPrice, accessoryValue = 0, accessory = '', state,
     anticipo, servicios = 0, seguro: seguroManual, servicesValue,
+    includeVerificaciones = true,
   } = input
 
   const total = totalPrice + accessoryValue
@@ -41,7 +42,8 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 12 | 24, ta
     ? VARS.TENENCIAS_FIXED * yrs
     : 0.035 * total * yrs
 
-  const veri = VERI_C[years] * VARS.VERI
+  // Verificaciones opcionales: híbridos/eléctricos están exentos
+  const veri = includeVerificaciones ? VERI_C[years] * VARS.VERI : 0
 
   const suma = seguro + serviciosP + gps + tramites + tenencias + veri
 

@@ -13,6 +13,7 @@ const schema = z.object({
   servicios:      z.number().min(0).max(4).default(0),
   seguro:         z.number().positive().optional(),
   modelo:           z.string().default(''),
+  includeVerificaciones: z.boolean().default(true),
   comisionOverride: z.number().min(0).max(0.03).optional(),
 })
 

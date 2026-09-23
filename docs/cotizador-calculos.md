@@ -502,7 +502,9 @@ Este tipo es **completamente diferente** a los demás. Plazos de 12 y 24 meses.
 |---|---|---|
 | Residual | **9 %** | **3 %** |
 | Tasa anual | 28 % | 27 % |
-| Verificaciones | 2 × $1,800 | 4 × $1,800 |
+| Verificaciones | 2 × $1,800 · **conmutable** (`includeVerificaciones`) | 4 × $1,800 · **conmutable** (`includeVerificaciones`) |
+
+Las verificaciones se pueden desactivar desde el formulario (casilla "Verificaciones", igual que en Flotilla) para cotizar híbridos y eléctricos, que están exentos. Por defecto se incluyen.
 
 #### GPS de refinanciamiento (diferente al estándar)
 
@@ -584,7 +586,7 @@ importe_deducir = ROUND(
 | Usado | 20/15 % | 28/27 % | **4% sobre Autométrica** | **0** | section_one | section_one | 6/8 × $1,800 |
 | Flotilla | **dinámico** | 28/27 % | auto (opcional) | preventivos ×2 | section_one | section_one (opcional) | 4/6/8 × $1,800 (opcional) |
 | Comisión Extra | **dinámico** | 28/27 % | auto (opcional) | preventivos ×2 | section_one | section_one (opcional) | **+ 2% s/financiado** |
-| Refinanciamiento | **9/3 %** | 28/27 % | auto (6/5/4%) | ×1 (no ×2) | **$0** | lista especial | 2/4 × $1,800 |
+| Refinanciamiento | **9/3 %** | 28/27 % | auto (6/5/4%) | ×1 (no ×2) | **$0** | lista especial | 2/4 × $1,800 (opcional) |
 
 ---
 
