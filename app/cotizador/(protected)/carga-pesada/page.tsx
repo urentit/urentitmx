@@ -6,8 +6,7 @@ export default async function CargaPesadaPage() {
 
   return (
     <div>
-      <h2 className="font-sans mb-1 text-lg font-semibold text-white">Carga Pesada</h2>
-      <p className="mb-6 text-sm text-white/40">Sin servicios preventivos ni tenencias. Seguro especial.</p>
+      <h2 className="font-sans mb-6 text-lg font-semibold text-white">Carga Pesada</h2>
       <QuoteForm quoteType="carga-pesada" />
     </div>
   )

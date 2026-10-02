@@ -9,7 +9,7 @@ function fmt(n: number) {
   return n.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 })
 }
 
-function ResultColumn({ label, result }: { label: string; result: QR }) {
+function ResultColumn({ label, result, showPlacas }: { label: string; result: QR; showPlacas: boolean }) {
   const { costs: c, eachMonth: e } = result
 
   const anticipoPct = parseFloat(((c.advancePercentage ?? 0) * 100).toFixed(2))
@@ -75,10 +75,12 @@ function ResultColumn({ label, result }: { label: string; result: QR }) {
                 <td className="px-4 py-1.5 text-right text-white/65 tabular-nums">{v}</td>
               </tr>
             ))}
-            <tr className="border-t border-white/10">
-              <td className="px-4 py-1.5 text-white/45">Estado (placas)</td>
-              <td className="px-4 py-1.5 text-right text-white/65">{e.placas}</td>
-            </tr>
+            {showPlacas && (
+              <tr className="border-t border-white/10">
+                <td className="px-4 py-1.5 text-white/45">Estado (placas)</td>
+                <td className="px-4 py-1.5 text-right text-white/65">{e.placas}</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </details>
@@ -164,6 +166,7 @@ export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo, f
               key={period}
               label={PERIOD_LABELS[period] ?? `${period} meses`}
               result={r}
+              showPlacas={quoteType !== 'carga-pesada-especial'}
             />
           )
         })}

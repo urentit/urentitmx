@@ -4,9 +4,12 @@ import type { QuoteInput, QuoteUser, QuoteResult } from '../types'
 import type { TasaMap } from '../rates'
 
 // Carga Pesada + la misma comisión adicional del Cotizador especial:
-// VARS.COMISION_EXTRA_PCT sobre el valor a financiar, distribuida en las rentas.
+// VARS.COMISION_EXTRA_PCT (5 %) sobre el valor a financiar, distribuida en las rentas.
+// Estas unidades no llevan entidad de placas: el estado no se captura y el
+// desglose reporta "No aplica". En Carga Pesada el estado no afecta montos
+// (tenencias = 0 y trámites fijos), así que el cálculo no cambia.
 export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48 | 60, tasas?: TasaMap): QuoteResult {
-  const base = calcCargaPesada(input, user, years, tasas)
+  const base = calcCargaPesada({ ...input, state: input.state || '' }, user, years, tasas)
 
   const total           = input.totalPrice + (input.accessoryValue ?? 0)
   const valorAFinanciar = total * (1 - input.anticipo)
@@ -28,6 +31,10 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48 | 6
       mensualidad,
       totalRentasMasIva,
       importeDeducir,
+    },
+    eachMonth: {
+      ...base.eachMonth,
+      placas: 'No aplica',
     },
   }
 }

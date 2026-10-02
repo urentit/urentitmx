@@ -6,8 +6,7 @@ export default async function VipPage() {
 
   return (
     <div>
-      <h2 className="font-sans mb-1 text-lg font-semibold text-white">VIP / Lujo</h2>
-      <p className="mb-6 text-sm text-white/40">Tasas preferenciales para vehículos premium.</p>
+      <h2 className="font-sans mb-6 text-lg font-semibold text-white">VIP / Lujo</h2>
       <QuoteForm quoteType="vip" />
     </div>
   )

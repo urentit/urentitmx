@@ -362,12 +362,17 @@ Características especiales:
 ### 5.4.1 Carga pesada especial
 
 Idéntico a **Carga Pesada** más la misma comisión adicional del Cotizador especial
-(`VARS.COMISION_EXTRA_PCT` = 2.75 % sobre el valor a financiar, distribuida en las rentas):
+(`VARS.COMISION_EXTRA_PCT` = **5 %** sobre el valor a financiar, distribuida en las rentas).
+
+**Sin entidad de placas:** estas unidades no requieren el campo de estado. El formulario
+no lo muestra, la API lo acepta vacío y el desglose reporta `placas = "No aplica"`
+(tampoco aparece en el PDF). Como en Carga Pesada el estado no afecta montos
+(tenencias = 0, trámites fijos), el cálculo no cambia.
 
 ```
 base            = calcCargaPesada(input, user, meses)
 valor_financiar = total × (1 - anticipo)
-comision_total  = valor_financiar × 0.0275
+comision_total  = valor_financiar × 0.05
 renta_extra     = comision_total / meses          ← meses = 36 | 48 | 60
 
 mensualidad     = ROUND(base.mensualidad + renta_extra, 2)
@@ -465,13 +470,13 @@ La flotilla permite que el vendedor active/desactive cada componente individualm
 
 ### 5.9 Comisión Extra
 
-Parte de la base de **Flotilla** y agrega una comisión adicional del 2 % sobre el valor a financiar, distribuida en las rentas:
+Parte de la base de **Flotilla** y agrega una comisión adicional del **5 %** (`VARS.COMISION_EXTRA_PCT`) sobre el valor a financiar, distribuida en las rentas:
 
 ```
 base            = calcFlotilla(input, user, years)  ← cotización normal flotilla
 
 valor_financiar = total × (1 - anticipo)
-comision_total  = valor_financiar × 0.02
+comision_total  = valor_financiar × 0.05
 renta_extra     = comision_total / meses             ← meses = 24 | 36 | 48
 
 mensualidad     = ROUND(base.mensualidad + renta_extra, 2)
@@ -580,12 +585,12 @@ importe_deducir = ROUND(
 | VIP | 35/30 % | **26/25 %** | auto (6/5/4%) | preventivos ×2 | section_one | section_one | 6/8 × $1,800 |
 | Carga | 15/10/5 % | 28/27/26 % | **carga (9/6/4%)** | preventivos ×2 | section_two | section_two | 6/8/10 × $1,800 |
 | Carga Pesada | 15/10/5 % | 28/27/26 % | **4.5/6.5% fijo** | **0** | **$4,000 fijo** | **0** | **0** |
-| Carga pesada especial | 15/10/5 % | 28/27/26 % | **4.5/6.5% fijo** | **0** | **$4,000 fijo** | **0** | **+ 2.75% s/financiado** |
+| Carga pesada especial | 15/10/5 % | 28/27/26 % | **4.5/6.5% fijo** | **0** | **$4,000 fijo** (sin entidad de placas) | **0** | **+ 5% s/financiado** |
 | Eléctrico | 35/30 % | 28/27 % | **4% fijo** | **eléctricos** | section_three | section_three | **0** |
 | Foráneo | 35/30 % | 28/27 % | auto (6/5/4%) | preventivos ×2 | section_two | section_two | 6/8 × **$3,200** |
 | Usado | 20/15 % | 28/27 % | **4% sobre Autométrica** | **0** | section_one | section_one | 6/8 × $1,800 |
 | Flotilla | **dinámico** | 28/27 % | auto (opcional) | preventivos ×2 | section_one | section_one (opcional) | 4/6/8 × $1,800 (opcional) |
-| Comisión Extra | **dinámico** | 28/27 % | auto (opcional) | preventivos ×2 | section_one | section_one (opcional) | **+ 2% s/financiado** |
+| Comisión Extra | **dinámico** | 28/27 % | auto (opcional) | preventivos ×2 | section_one | section_one (opcional) | **+ 5% s/financiado** |
 | Refinanciamiento | **9/3 %** | 28/27 % | auto (6/5/4%) | ×1 (no ×2) | **$0** | lista especial | 2/4 × $1,800 (opcional) |
 
 ---

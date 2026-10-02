@@ -6,8 +6,7 @@ export default async function ForaneoPage() {
 
   return (
     <div>
-      <h2 className="font-sans mb-1 text-lg font-semibold text-white">Foráneo</h2>
-      <p className="mb-6 text-sm text-white/40">Verificaciones con tarifa foránea ($3,200 c/u).</p>
+      <h2 className="font-sans mb-6 text-lg font-semibold text-white">Foráneo</h2>
       <QuoteForm quoteType="foraneo" />
     </div>
   )

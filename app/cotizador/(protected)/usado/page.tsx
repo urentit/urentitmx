@@ -6,8 +6,7 @@ export default async function UsadoPage() {
 
   return (
     <div>
-      <h2 className="font-sans mb-1 text-lg font-semibold text-white">Vehículo Usado</h2>
-      <p className="mb-6 text-sm text-white/40">Anticipo ajustado por delta Autométrica. Sin servicios preventivos.</p>
+      <h2 className="font-sans mb-6 text-lg font-semibold text-white">Vehículo Usado</h2>
       <QuoteForm quoteType="usado" />
     </div>
   )

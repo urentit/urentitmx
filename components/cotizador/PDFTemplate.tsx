@@ -128,7 +128,10 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, f
     { label: 'Total rentas + IVA',                 get: d => fmt(d.costs.totalRentasMasIva) },
     { label: 'Valor comercial al vencimiento',     get: d => fmt(d.costs.valorVehiculo) },
     { label: 'Importe a deducir (ISR+IVA+PTU)',    get: d => fmt(d.costs.importeDeducir) },
-    { label: 'Entidad placas',                     get: d => d.eachMonth.placas },
+    // Carga pesada especial no lleva entidad de placas
+    ...(quoteType !== 'carga-pesada-especial'
+      ? [{ label: 'Entidad placas',               get: (d: QuoteResult) => d.eachMonth.placas }]
+      : []),
   ]
 
   const breakRows: TableBlockProps['rows'] = [

@@ -9,7 +9,8 @@ const schema = z.object({
   accessoryValue: z.number().min(0).default(0),
   accessory:      z.string().default(''),
   cilindraje:     z.enum(['4', '6', '8']).optional(),
-  state:          z.string().min(2),
+  // Sin entidad de placas: estas unidades no la requieren, el estado es opcional.
+  state:          z.string().default(''),
   anticipo:       z.number().min(0).max(0.45),
   seguro:         z.number().positive().optional(),
   modelo:           z.string().default(''),

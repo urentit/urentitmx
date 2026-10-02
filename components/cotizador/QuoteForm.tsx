@@ -16,7 +16,8 @@ const schema = z.object({
   cilindraje:            z.enum(['4', '6', '8']).optional(),
   accessory:             z.string().optional(),
   accessoryValue:        z.string().optional(),
-  state:                 z.string().min(2, 'Selecciona un estado'),
+  // Obligatorio salvo en Carga pesada especial (se valida en onSubmit)
+  state:                 z.string().optional(),
   anticipo:              z.string().min(1, 'Requerido'),
   anticipoCustom:        z.string().optional(),
   servicios:             z.string().optional(),
@@ -95,7 +96,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
 
   const isFlotilla    = quoteType === 'flotilla' || quoteType === 'comision-extra'
 
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormValues>({
+  const { register, handleSubmit, watch, setError, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
       cilindraje:            '4',
@@ -117,9 +118,16 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const isUsado       = quoteType === 'usado'
   const isRefin       = quoteType === 'refinanciamiento'
   const isCargaPesada = quoteType === 'carga-pesada' || quoteType === 'carga-pesada-especial'
+  // Carga pesada especial no lleva entidad de placas: sin campo de estado
+  const hasState      = quoteType !== 'carga-pesada-especial'
   const hasCilindraje = WITH_CILINDRAJE.includes(quoteType)
 
   async function onSubmit(values: FormValues) {
+    if (hasState && (!values.state || values.state.length < 2)) {
+      setError('state', { type: 'manual', message: 'Selecciona un estado' })
+      return
+    }
+
     // Anticipo: preset del select o porcentaje libre capturado a mano (0–45%)
     let anticipoFraction: number
     if (values.anticipo === 'custom') {
@@ -149,7 +157,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
     const body: Record<string, unknown> = {
       totalPrice:        parseFloat(values.totalPrice.replace(/[,$\s]/g, '')),
       modelo:            values.modelo ?? '',
-      state:             values.state,
+      state:             hasState ? values.state : '',
       anticipo:          anticipoFraction,
       accessory:         values.accessory ?? '',
       accessoryValue:    parseFloat(values.accessoryValue ?? '0') || 0,
@@ -234,17 +242,19 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
           </div>
         )}
 
-        {/* Estado */}
-        <div>
-          <label className={labelCls}>Estado para placas *</label>
-          <select {...register('state')} className={selectCls}>
-            <option value="">— Seleccionar —</option>
-            {states.map(([key, s]) => (
-              <option key={key} value={key}>{s.name}</option>
-            ))}
-          </select>
-          {errors.state && <p className="mt-1 text-xs text-red-400">{errors.state.message}</p>}
-        </div>
+        {/* Estado — no aplica en Carga pesada especial */}
+        {hasState && (
+          <div>
+            <label className={labelCls}>Estado para placas *</label>
+            <select {...register('state')} className={selectCls}>
+              <option value="">— Seleccionar —</option>
+              {states.map(([key, s]) => (
+                <option key={key} value={key}>{s.name}</option>
+              ))}
+            </select>
+            {errors.state && <p className="mt-1 text-xs text-red-400">{errors.state.message}</p>}
+          </div>
+        )}
 
         {/* Anticipo */}
         <div>

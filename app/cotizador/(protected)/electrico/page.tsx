@@ -6,8 +6,7 @@ export default async function ElectricoPage() {
 
   return (
     <div>
-      <h2 className="font-sans mb-1 text-lg font-semibold text-white">Eléctrico</h2>
-      <p className="mb-6 text-sm text-white/40">Seguro 4% fijo. Servicios preventivos especializados.</p>
+      <h2 className="font-sans mb-6 text-lg font-semibold text-white">Eléctrico</h2>
       <QuoteForm quoteType="electrico" />
     </div>
   )
