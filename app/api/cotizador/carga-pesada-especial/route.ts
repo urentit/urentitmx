@@ -13,6 +13,7 @@ const schema = z.object({
   state:          z.string().default(''),
   anticipo:       z.number().min(0).max(0.45),
   seguro:         z.number().positive().optional(),
+  includeInsurance: z.boolean().default(true),
   modelo:           z.string().default(''),
   comisionOverride: z.number().min(0).max(0.03).optional(),
 })

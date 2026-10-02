@@ -119,7 +119,8 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const isRefin       = quoteType === 'refinanciamiento'
   const isCargaPesada = quoteType === 'carga-pesada' || quoteType === 'carga-pesada-especial'
   // Carga pesada especial no lleva entidad de placas: sin campo de estado
-  const hasState      = quoteType !== 'carga-pesada-especial'
+  const isCargaPesadaEsp = quoteType === 'carga-pesada-especial'
+  const hasState      = !isCargaPesadaEsp
   const hasCilindraje = WITH_CILINDRAJE.includes(quoteType)
 
   async function onSubmit(values: FormValues) {
@@ -181,6 +182,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       body.plazos                = ['24', '36', '48']
     }
     if (isRefin) body.includeVerificaciones = values.includeVerificaciones
+    if (isCargaPesadaEsp) body.includeInsurance = values.includeInsurance
 
     setLastInput({ modelo: values.modelo ?? '', totalPrice: body.totalPrice, quoteType, anticipo: anticipoFraction })
 
@@ -394,6 +396,23 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
                   className="accent-gold w-4 h-4"
                 />
                 Verificaciones
+              </label>
+            </div>
+          </div>
+        )}
+
+        {/* Carga pesada especial: seguro opcional */}
+        {isCargaPesadaEsp && (
+          <div className="sm:col-span-2 lg:col-span-3">
+            <p className={labelCls}>Incluir en renta:</p>
+            <div className="flex flex-wrap gap-5 mt-1">
+              <label className="flex items-center gap-2 text-sm text-white/70 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  {...register('includeInsurance')}
+                  className="accent-gold w-4 h-4"
+                />
+                Seguro
               </label>
             </div>
           </div>

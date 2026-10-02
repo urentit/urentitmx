@@ -369,6 +369,10 @@ no lo muestra, la API lo acepta vacío y el desglose reporta `placas = "No aplic
 (tampoco aparece en el PDF). Como en Carga Pesada el estado no afecta montos
 (tenencias = 0, trámites fijos), el cálculo no cambia.
 
+**Seguro conmutable:** el formulario muestra "Incluir en renta: Seguro" (marcado por
+defecto). Si se desmarca (`includeInsurance = false`), el seguro vale 0, incluso si se
+capturó un seguro manual.
+
 ```
 base            = calcCargaPesada(input, user, meses)
 valor_financiar = total × (1 - anticipo)

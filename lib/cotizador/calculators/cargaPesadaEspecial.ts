@@ -8,8 +8,13 @@ import type { TasaMap } from '../rates'
 // Estas unidades no llevan entidad de placas: el estado no se captura y el
 // desglose reporta "No aplica". En Carga Pesada el estado no afecta montos
 // (tenencias = 0 y trámites fijos), así que el cálculo no cambia.
+// Seguro conmutable (includeInsurance): si se desmarca, el seguro va en 0.
 export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48 | 60, tasas?: TasaMap): QuoteResult {
-  const base = calcCargaPesada({ ...input, state: input.state || '' }, user, years, tasas)
+  const includeInsurance = input.includeInsurance ?? true
+  const base = calcCargaPesada(
+    { ...input, state: input.state || '', seguro: includeInsurance ? input.seguro : 0 },
+    user, years, tasas,
+  )
 
   const total           = input.totalPrice + (input.accessoryValue ?? 0)
   const valorAFinanciar = total * (1 - input.anticipo)
