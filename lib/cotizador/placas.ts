@@ -7,8 +7,8 @@ export interface PlacaEntry {
 
 export type PlacasSection = Record<string, PlacaEntry>
 
-// Opción "Sin placas" (clave `no`). Vive en section_one y también se ofrece
-// en Carga pesada, donde el estado no afecta montos.
+// Opción "Sin placas" (clave `no`). Vive en section_one y también la usa
+// Carga pesada (checkbox "No aplican placas"), donde el estado no afecta montos.
 export const SIN_PLACAS: PlacaEntry = { name: 'Sin placas', price: 4000, tenencia_percentage: 0.035 }
 
 export const SECTION_ONE: PlacasSection = {

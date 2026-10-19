@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { SECTION_ONE, SECTION_TWO, SECTION_THREE, SIN_PLACAS, type PlacaEntry } from '@/lib/cotizador/placas'
+import { SECTION_ONE, SECTION_TWO, SECTION_THREE } from '@/lib/cotizador/placas'
 import type { QuoteType, QuoteResponse } from '@/lib/cotizador/types'
 import { useCommission } from '@/lib/cotizador/commissionContext'
 import { QuoteResult } from './QuoteResult'
@@ -28,6 +28,8 @@ const schema = z.object({
   residualValue36:       z.string().optional(),
   residualValue48:       z.string().optional(),
   includeInsurance:      z.boolean().optional(),
+  // Carga pesada: marca que no aplican placas (se envía state = 'no')
+  sinPlacas:             z.boolean().optional(),
   includeGps:            z.boolean().optional(),
   includeTenencias:      z.boolean().optional(),
   includeVerificaciones: z.boolean().optional(),
@@ -56,11 +58,7 @@ const CILINDRAJE_OPTS = [
 
 function getStates(quoteType: QuoteType) {
   if (quoteType === 'electrico') return Object.entries(SECTION_THREE)
-  // Carga pesada: además de los estados de section_two ofrece "Sin placas"
-  // (el estado no afecta montos en este cotizador: tenencias 0 y trámites fijos)
-  if (quoteType === 'carga-pesada')
-    return [['no', SIN_PLACAS] as [string, PlacaEntry], ...Object.entries(SECTION_TWO)]
-  if (quoteType === 'carga' || quoteType === 'carga-pesada-especial' || quoteType === 'foraneo')
+  if (quoteType === 'carga' || quoteType === 'carga-pesada' || quoteType === 'carga-pesada-especial' || quoteType === 'foraneo')
     return Object.entries(SECTION_TWO)
   return Object.entries(SECTION_ONE)
 }
@@ -111,6 +109,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       residualValue36:       isFlotilla ? '35' : '30',
       residualValue48:       isFlotilla ? '30' : '25',
       includeInsurance:      true,
+      sinPlacas:             false,
       includeGps:            true,
       includeTenencias:      true,
       includeVerificaciones: true,
@@ -124,7 +123,10 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const isCargaPesada = quoteType === 'carga-pesada' || quoteType === 'carga-pesada-especial'
   // Carga pesada especial no lleva entidad de placas: sin campo de estado
   const isCargaPesadaEsp = quoteType === 'carga-pesada-especial'
-  const hasState      = !isCargaPesadaEsp
+  // Carga pesada: checkbox "No aplican placas" sustituye al selector de estado
+  const canSinPlacas  = quoteType === 'carga-pesada'
+  const sinPlacasSel  = canSinPlacas && !!watch('sinPlacas')
+  const hasState      = !isCargaPesadaEsp && !sinPlacasSel
   const hasCilindraje = WITH_CILINDRAJE.includes(quoteType)
 
   async function onSubmit(values: FormValues) {
@@ -162,7 +164,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
     const body: Record<string, unknown> = {
       totalPrice:        parseFloat(values.totalPrice.replace(/[,$\s]/g, '')),
       modelo:            values.modelo ?? '',
-      state:             hasState ? values.state : '',
+      state:             hasState ? values.state : sinPlacasSel ? 'no' : '',
       anticipo:          anticipoFraction,
       accessory:         values.accessory ?? '',
       accessoryValue:    parseFloat(values.accessoryValue ?? '0') || 0,
@@ -248,17 +250,29 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
           </div>
         )}
 
-        {/* Estado — no aplica en Carga pesada especial */}
-        {hasState && (
+        {/* Estado — no aplica en Carga pesada especial; en Carga pesada puede marcarse "No aplican placas" */}
+        {(hasState || canSinPlacas) && (
           <div>
-            <label className={labelCls}>Estado para placas *</label>
-            <select {...register('state')} className={selectCls}>
-              <option value="">— Seleccionar —</option>
-              {states.map(([key, s]) => (
-                <option key={key} value={key}>{s.name}</option>
-              ))}
-            </select>
-            {errors.state && <p className="mt-1 text-xs text-red-400">{errors.state.message}</p>}
+            <label className={labelCls}>Estado para placas{hasState ? ' *' : ''}</label>
+            {hasState && (
+              <select {...register('state')} className={selectCls}>
+                <option value="">— Seleccionar —</option>
+                {states.map(([key, s]) => (
+                  <option key={key} value={key}>{s.name}</option>
+                ))}
+              </select>
+            )}
+            {hasState && errors.state && <p className="mt-1 text-xs text-red-400">{errors.state.message}</p>}
+            {canSinPlacas && (
+              <label className={`flex items-center gap-2 text-sm text-white/70 cursor-pointer select-none ${hasState ? 'mt-2' : 'mt-1'}`}>
+                <input
+                  type="checkbox"
+                  {...register('sinPlacas')}
+                  className="accent-gold w-4 h-4"
+                />
+                No aplican placas
+              </label>
+            )}
           </div>
         )}
 
