@@ -356,6 +356,8 @@ Características especiales:
 - Sin servicios preventivos (el cliente los gestiona directamente)
 - Sin tenencias ni verificaciones (régimen especial de peso vehicular)
 - Trámites fijos, no dependen del estado
+- El selector de estado ofrece **Sin placas** (`no`) además de los estados de section_two;
+  como el estado no afecta montos, solo cambia la leyenda "Estado (placas)" en el desglose y el PDF
 
 ---
 

@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { SECTION_ONE, SECTION_TWO, SECTION_THREE } from '@/lib/cotizador/placas'
+import { SECTION_ONE, SECTION_TWO, SECTION_THREE, SIN_PLACAS, type PlacaEntry } from '@/lib/cotizador/placas'
 import type { QuoteType, QuoteResponse } from '@/lib/cotizador/types'
 import { useCommission } from '@/lib/cotizador/commissionContext'
 import { QuoteResult } from './QuoteResult'
@@ -56,7 +56,11 @@ const CILINDRAJE_OPTS = [
 
 function getStates(quoteType: QuoteType) {
   if (quoteType === 'electrico') return Object.entries(SECTION_THREE)
-  if (quoteType === 'carga' || quoteType === 'carga-pesada' || quoteType === 'carga-pesada-especial' || quoteType === 'foraneo')
+  // Carga pesada: además de los estados de section_two ofrece "Sin placas"
+  // (el estado no afecta montos en este cotizador: tenencias 0 y trámites fijos)
+  if (quoteType === 'carga-pesada')
+    return [['no', SIN_PLACAS] as [string, PlacaEntry], ...Object.entries(SECTION_TWO)]
+  if (quoteType === 'carga' || quoteType === 'carga-pesada-especial' || quoteType === 'foraneo')
     return Object.entries(SECTION_TWO)
   return Object.entries(SECTION_ONE)
 }

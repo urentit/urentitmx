@@ -7,8 +7,12 @@ export interface PlacaEntry {
 
 export type PlacasSection = Record<string, PlacaEntry>
 
+// Opción "Sin placas" (clave `no`). Vive en section_one y también se ofrece
+// en Carga pesada, donde el estado no afecta montos.
+export const SIN_PLACAS: PlacaEntry = { name: 'Sin placas', price: 4000, tenencia_percentage: 0.035 }
+
 export const SECTION_ONE: PlacasSection = {
-  no: { name: 'Sin placas', price: 4000, tenencia_percentage: 0.035 },
+  no: SIN_PLACAS,
   cdmx: { name: 'CDMX', price: 8500, tenencia_percentage: 0.035 },
   morelos: {
     name: 'Morelos',
@@ -63,5 +67,6 @@ export function getPlacaPrice(price: number, section: 'section_one' | 'section_t
 }
 
 export function getPlacaName(section: 'section_one' | 'section_two' | 'section_three', state: string): string {
+  if (state === 'no') return SIN_PLACAS.name
   return getSection(section)[state]?.name ?? state
 }
