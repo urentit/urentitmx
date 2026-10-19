@@ -1,6 +1,13 @@
-// Helper centralizado para eventos GA4
-// Todos los componentes deben usar estas funciones en lugar de llamar gtag/dataLayer directamente
+// Helper centralizado para eventos de analítica.
+// El cotizador aislado no carga GTM/GA4; si en el futuro se agrega un tag,
+// estos eventos llegan al dataLayer sin cambiar los componentes.
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+    dataLayer?: Record<string, unknown>[]
+  }
+}
 
 export function trackEvent(
   eventName: string,
@@ -10,25 +17,13 @@ export function trackEvent(
   if (typeof window.gtag === 'function') {
     window.gtag('event', eventName, params)
   } else {
-    // Fallback a dataLayer para GTM
     window.dataLayer = window.dataLayer || []
     window.dataLayer.push({ event: eventName, ...params })
   }
 }
 
-// Eventos tipados para mayor consistencia
 export const analytics = {
-  // CTAs principales
-  ctaClick:       (label: string) => trackEvent('cta_click',             { cta_label: label }),
-  whatsappClick:  (source: string) => trackEvent('whatsapp_click',       { source }),
-
-  // Cotizador
-  cotizadorSubmit:(type: string)  => trackEvent('cotizador_submit',      { quote_type: type }),
-  cotizadorPDF:   (type: string)  => trackEvent('cotizador_pdf_download',{ quote_type: type }),
-  cotizadorWA:    (type: string)  => trackEvent('cotizador_whatsapp',    { quote_type: type }),
-
-  // Contenido
-  videoPlay:      (title: string) => trackEvent('video_play',            { video_title: title }),
-  formSubmit:     (form: string)  => trackEvent('form_submit',           { form_name: form }),
-  referralSubmit: ()              => trackEvent('referral_form_submit'),
+  cotizadorSubmit: (type: string) => trackEvent('cotizador_submit',       { quote_type: type }),
+  cotizadorPDF:    (type: string) => trackEvent('cotizador_pdf_download', { quote_type: type }),
+  cotizadorWA:     (type: string) => trackEvent('cotizador_whatsapp',     { quote_type: type }),
 }

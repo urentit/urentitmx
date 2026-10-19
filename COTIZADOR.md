@@ -1,6 +1,8 @@
 # Cotizador de Arrendamiento — Documentación
 
-Herramienta interna migrada de `cotiza.urentit.mx` (Laravel/PHP) al mismo repo de `urentit.mx` (Next.js 14), bajo la ruta protegida `/cotizador`.
+Herramienta interna migrada de `cotiza.urentit.mx` (Laravel/PHP) a Next.js 14, bajo la ruta protegida `/cotizador`.
+
+**Rama `cotizador-standalone`:** el cotizador vive aislado del sitio público (`urentit.mx`) para desplegarse como proyecto independiente en Vercel e integrarse a la nueva página web. Los pasos de despliegue están en [README.md](README.md).
 
 ---
 
@@ -8,10 +10,10 @@ Herramienta interna migrada de `cotiza.urentit.mx` (Laravel/PHP) al mismo repo d
 
 | Entorno | URL |
 |---|---|
-| Pruebas (Vercel) | `https://urentitmx-two.vercel.app/cotizador/login` |
-| Producción (futuro) | `https://urentit.mx/cotizador/login` |
+| Producción actual (dentro del sitio) | `https://urentit.mx/cotizador/login` |
+| Proyecto aislado (Vercel, por crear) | `https://<dominio-del-cotizador>/cotizador/login` |
 
-La ruta `/cotizador` sin login redirige automáticamente a `/cotizador/login`.
+La raíz `/` redirige a `/cotizador`; sin sesión, `/cotizador` redirige automáticamente a `/cotizador/login`.
 
 ---
 
@@ -210,18 +212,6 @@ Los archivos de referencia son:
 
 ---
 
-## Cotizador público (homepage)
-
-Además del cotizador interno, hay un estimador simplificado en la homepage visible para todos:
-
-- **Componente:** [components/sections/CotizadorPublico.tsx](components/sections/CotizadorPublico.tsx)
-- **API:** `POST /api/cotizador/publico` (sin autenticación)
-- Solo calcula cotizaciones tipo "auto"
-- Muestra mensualidad a 36 y 48 meses
-- CTA a WhatsApp con el resultado pre-cargado
-
----
-
 ## Historial de cotizaciones
 
 Actualmente el historial está pendiente de implementación. La página `/cotizador/historial` muestra un placeholder.
@@ -254,11 +244,14 @@ npm install --strict-ssl false
 
 ---
 
-## Despliegue a producción (checklist)
+## Despliegue del proyecto aislado (checklist)
 
-Cuando se migre de entorno de pruebas a `urentit.mx`:
+Ver [README.md](README.md) para el detalle. Resumen:
 
-- [ ] Actualizar `NEXTAUTH_URL` en Vercel a `https://urentit.mx`
-- [ ] Hacer redeploy: `NODE_TLS_REJECT_UNAUTHORIZED=0 vercel --prod`
-- [ ] Verificar login en `https://urentit.mx/cotizador/login`
-- [ ] Verificar que rutas públicas (/, /referidos) no se vean afectadas
+- [ ] Crear proyecto nuevo en Vercel desde este repo, rama `cotizador-standalone` como rama de producción
+- [ ] Copiar variables de entorno (`.env.example`) desde el proyecto `urentitmx` de Vercel
+- [ ] `NEXTAUTH_URL` = dominio del cotizador (p. ej. `https://cotiza.urentit.mx`)
+- [ ] Auth0 → Allowed Callback URLs: agregar `https://<dominio-del-cotizador>/api/auth/callback/auth0`; Allowed Logout URLs: `https://<dominio-del-cotizador>/cotizador/login`
+- [ ] Cloudflare → DNS CNAME del subdominio a `cname.vercel-dns.com` (proxy desactivado / "DNS only" mientras Vercel emite el certificado)
+- [ ] Verificar login con Google y con contraseña, cotizar y descargar PDF
+- [ ] Cuando la nueva página esté lista, retirar `/cotizador` del repo del sitio

@@ -37,22 +37,11 @@ const config: Config = {
       backgroundImage: {
         'gold-gradient': 'linear-gradient(135deg, #e1be4a 0%, #f0d878 50%, #b8962e 100%)',
         'dark-gradient': 'linear-gradient(180deg, #0a0a0a 0%, #111111 100%)',
-        'hero-overlay': 'linear-gradient(to right, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.4) 100%)',
       },
       animation: {
-        'marquee': 'marquee 30s linear infinite',
-        'marquee-reverse': 'marquee-reverse 30s linear infinite',
         'fade-up': 'fadeUp 0.6s ease forwards',
       },
       keyframes: {
-        marquee: {
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(-50%)' },
-        },
-        'marquee-reverse': {
-          '0%': { transform: 'translateX(-50%)' },
-          '100%': { transform: 'translateX(0%)' },
-        },
         fadeUp: {
           '0%': { opacity: '0', transform: 'translateY(24px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },

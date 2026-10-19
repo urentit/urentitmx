@@ -1,14 +1,8 @@
 import type { MetadataRoute } from 'next'
 
+// Herramienta interna: no se indexa nada.
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [
-      {
-        userAgent: '*',
-        allow: '/',
-        disallow: ['/api/', '/cotizador/'],
-      },
-    ],
-    sitemap: ['https://urentit.mx/sitemap.xml', 'https://urentit.mx/feed.xml'],
+    rules: [{ userAgent: '*', disallow: '/' }],
   }
 }

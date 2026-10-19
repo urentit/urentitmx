@@ -106,12 +106,14 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       {/* Sitio público */}
       <div className="border-t border-white/10 p-4">
-        <Link
-          href="/"
+        <a
+          href="https://urentit.mx"
+          target="_blank"
+          rel="noopener noreferrer"
           className="block text-center text-xs text-white/30 hover:text-white/60 transition-colors"
         >
-          ← Volver al sitio
-        </Link>
+          ← Ir al sitio urentit.mx
+        </a>
       </div>
     </aside>
   )
