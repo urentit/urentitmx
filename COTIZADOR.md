@@ -17,12 +17,9 @@ La raíz `/` redirige a `/cotizador`; sin sesión, `/cotizador` redirige automá
 
 ---
 
-## Credenciales iniciales
+## Credenciales
 
-| Campo | Valor |
-|---|---|
-| Correo | `ti@urentit.mx` |
-| Contraseña | `Urentit2024!` |
+Las credenciales no se documentan en el repositorio. Un administrador crea los accesos en `/cotizador/usuarios`.
 
 ---
 
@@ -102,7 +99,7 @@ NODE_TLS_REJECT_UNAUTHORIZED=0 vercel --prod
     "id": "1",
     "name": "Admin",
     "email": "ti@urentit.mx",
-    "password": "$2b$12$IZ2fhKQN9OZs03d9ihKeUOMlST./QZDxeVAHF2B4oD1gkaLoEhv8W",
+    "password": "$2b$12$HASH_GENERADO_AQUI",
     "admin": true,
     "comision": 0.03,
     "manualServices": true
