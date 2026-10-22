@@ -356,6 +356,9 @@ Características especiales:
 - Sin servicios preventivos (el cliente los gestiona directamente)
 - Sin tenencias ni verificaciones (régimen especial de peso vehicular)
 - Trámites fijos, no dependen del estado
+- Checkbox **"No aplican placas"**: al marcarlo se oculta el selector de estado y se envía
+  `state = "no"`; como el estado no afecta montos, solo cambia la leyenda "Estado (placas)"
+  a "Sin placas" en el desglose y el PDF
 
 ---
 
