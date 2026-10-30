@@ -44,7 +44,7 @@
 | `TENENCIAS_FIXED` | 2,000 | Tenencia fija anual (estados exentos) |
 | `VERI` | 1,800 | Costo por verificación (estándar) |
 | `VERI_FORANEOS` | 3,200 | Costo por verificación (foráneos) |
-| `TENENCIA_FIXED_STATES` | `['no', 'morelos', 'hidalgo', 'puebla']` | Estados con tenencia fija $2,000/año en todas las secciones |
+| `TENENCIA_FIXED_STATES` | `['no', 'morelos', 'hidalgo', 'puebla', 'cdmx_hibrido_electrico', 'estado_mexico_hibrido_electrico']` | Estados con tenencia fija $2,000/año en todas las secciones |
 
 ---
 
@@ -62,6 +62,10 @@
 | Jalisco | $13,750 | fija $2,000/año | **Solo en section_one**; en carga usa 3.5 % |
 | Puebla | $8,750 | fija $2,000/año | Estado fijo |
 | Querétaro | $12,760 | 3.5 % del precio | — |
+| CDMX híbrido o eléctrico | $8,500 | fija $2,000/año (refrendo) | **Solo Cotizador especial** |
+| Estado de México híbrido o eléctrico | $9,300 | fija $2,000/año (refrendo) | **Solo Cotizador especial** |
+
+En el Cotizador especial el campo "Cilindraje" se reemplaza por "Tipo de motor" (gasolina, híbrido o eléctrico). Es informativo: se guarda en el historial pero no cambia el cálculo.
 
 ¹ Rangos Morelos section_one: ≤$999,999=$8,500 · $1M–$1.9M=$9,500 · $2M–$2.9M=$11,500 · $3M–$3.9M=$13,000 · >$4M=$14,500
 
@@ -173,7 +177,7 @@ servicios = servicesValue × 2 × años
 ### 3.6 Tenencias / Refrendos (`calcTenencias`)
 
 ```
-1. Si estado ∈ TENENCIA_FIXED_STATES ['no','morelos','hidalgo','puebla']:
+1. Si estado ∈ TENENCIA_FIXED_STATES ['no','morelos','hidalgo','puebla','cdmx_hibrido_electrico','estado_mexico_hibrido_electrico']:
    tenencias = 2,000 × años
 
 2. Si sección = section_one Y estado = 'jalisco':
