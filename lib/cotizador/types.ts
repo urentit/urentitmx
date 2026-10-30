@@ -11,6 +11,8 @@ export type QuoteType =
   | 'comision-extra'
   | 'refinanciamiento'
 
+export type TipoMotor = 'gasolina' | 'hibrido' | 'electrico'
+
 export type PlacaSection = 'section_one' | 'section_two' | 'section_three'
 
 export interface QuoteUser {
@@ -23,6 +25,8 @@ export interface QuoteInput {
   accessory?: string
   accessoryValue?: number
   cilindraje?: '4' | '6' | '8'
+  // Cotizador especial: tipo de motor (informativo, se guarda en el historial)
+  tipoMotor?: TipoMotor
   state: string
   anticipo: number
   servicios?: number

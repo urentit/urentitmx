@@ -31,7 +31,14 @@ export const SECTION_ONE: PlacasSection = {
   jalisco:       { name: 'Jalisco',          price: 13750, tenencia_percentage: 0.035 },
   puebla:        { name: 'Puebla',           price: 8750, tenencia_percentage: 0 },
   queretaro:     { name: 'Querétaro',        price: 12760, tenencia_percentage: 0.035 },
+  // Solo Cotizador especial: mismos trámites que CDMX / Estado de México, pero en lugar
+  // del % de tenencia cobran refrendo fijo como Morelos o Hidalgo (ver TENENCIA_FIXED_STATES).
+  cdmx_hibrido_electrico:          { name: 'CDMX híbrido o eléctrico',             price: 8500, tenencia_percentage: 0 },
+  estado_mexico_hibrido_electrico: { name: 'Estado de México híbrido o eléctrico', price: 9300, tenencia_percentage: 0 },
 }
+
+// Opciones de placas que solo se ofrecen en el Cotizador especial (comision-extra)
+export const PLACAS_SOLO_ESPECIAL = ['cdmx_hibrido_electrico', 'estado_mexico_hibrido_electrico']
 
 export const SECTION_TWO: PlacasSection = {
   cdmx:          { name: 'CDMX',             price: 11000, tenencia_percentage: 0.042 },

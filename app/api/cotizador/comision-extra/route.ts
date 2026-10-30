@@ -14,6 +14,7 @@ const schema = z.object({
   seguro:                z.number().positive().optional(),
   servicesValue:         z.number().positive().optional(),
   modelo:                z.string().default(''),
+  tipoMotor:             z.enum(['gasolina', 'hibrido', 'electrico']).optional(),
   residualValue24:       z.number().min(0).max(100).optional(),
   residualValue36:       z.number().min(0).max(100).optional(),
   residualValue48:       z.number().min(0).max(100).optional(),

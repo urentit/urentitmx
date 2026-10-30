@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { SECTION_ONE, SECTION_TWO, SECTION_THREE } from '@/lib/cotizador/placas'
+import { SECTION_ONE, SECTION_TWO, SECTION_THREE, PLACAS_SOLO_ESPECIAL } from '@/lib/cotizador/placas'
 import type { QuoteType, QuoteResponse } from '@/lib/cotizador/types'
 import { useCommission } from '@/lib/cotizador/commissionContext'
 import { QuoteResult } from './QuoteResult'
@@ -14,6 +14,7 @@ const schema = z.object({
   totalPrice:            z.string().min(1, 'Requerido'),
   modelo:                z.string().optional(),
   cilindraje:            z.enum(['4', '6', '8']).optional(),
+  tipoMotor:             z.enum(['gasolina', 'hibrido', 'electrico']).optional(),
   accessory:             z.string().optional(),
   accessoryValue:        z.string().optional(),
   // Obligatorio salvo en Carga pesada especial (se valida en onSubmit)
@@ -56,11 +57,20 @@ const CILINDRAJE_OPTS = [
   { value: '8', label: '8 Cilindros' },
 ]
 
+// Cotizador especial: tipo de motor en lugar de cilindraje
+const TIPO_MOTOR_OPTS = [
+  { value: 'gasolina',  label: 'Gasolina' },
+  { value: 'hibrido',   label: 'Híbrido' },
+  { value: 'electrico', label: 'Eléctrico' },
+]
+
 function getStates(quoteType: QuoteType) {
   if (quoteType === 'electrico') return Object.entries(SECTION_THREE)
   if (quoteType === 'carga' || quoteType === 'carga-pesada' || quoteType === 'carga-pesada-especial' || quoteType === 'foraneo')
     return Object.entries(SECTION_TWO)
-  return Object.entries(SECTION_ONE)
+  // Las placas CDMX / Edo. Méx. híbrido o eléctrico solo existen en el Cotizador especial
+  if (quoteType === 'comision-extra') return Object.entries(SECTION_ONE)
+  return Object.entries(SECTION_ONE).filter(([key]) => !PLACAS_SOLO_ESPECIAL.includes(key))
 }
 
 function getEndpoint(quoteType: QuoteType) {
@@ -83,7 +93,7 @@ const selectCls = 'w-full rounded border border-white/10 bg-[#1c1c1c] px-3 py-2.
 const labelCls  = 'mb-1.5 block text-xs font-medium text-white/60 uppercase tracking-wide'
 
 // Tipos que muestran el campo cilindraje
-const WITH_CILINDRAJE: QuoteType[] = ['auto', 'vip', 'carga', 'carga-pesada', 'carga-pesada-especial', 'foraneo', 'flotilla', 'comision-extra', 'refinanciamiento']
+const WITH_CILINDRAJE: QuoteType[] = ['auto', 'vip', 'carga', 'carga-pesada', 'carga-pesada-especial', 'foraneo', 'flotilla', 'refinanciamiento']
 
 export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const { data: session } = useSession()
@@ -102,6 +112,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
     resolver: zodResolver(schema),
     defaultValues: {
       cilindraje:            '4',
+      tipoMotor:             'gasolina',
       anticipo:              '0.20',
       anticipoCustom:        '',
       servicios:             '0',
@@ -128,6 +139,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const sinPlacasSel  = canSinPlacas && !!watch('sinPlacas')
   const hasState      = !isCargaPesadaEsp && !sinPlacasSel
   const hasCilindraje = WITH_CILINDRAJE.includes(quoteType)
+  const hasTipoMotor  = quoteType === 'comision-extra'
 
   async function onSubmit(values: FormValues) {
     if (hasState && (!values.state || values.state.length < 2)) {
@@ -172,6 +184,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
     }
 
     if (hasCilindraje && values.cilindraje) body.cilindraje = values.cilindraje
+    if (hasTipoMotor && values.tipoMotor)   body.tipoMotor  = values.tipoMotor
     if (!isRefin && !isCargaPesada)         body.servicios  = parseInt(values.servicios ?? '0') || 0
     if (values.seguro)                      body.seguro        = parseFloat(values.seguro)
     if (values.servicesValue)               body.servicesValue = parseFloat(values.servicesValue)
@@ -244,6 +257,18 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
             <label className={labelCls}>Cilindraje</label>
             <select {...register('cilindraje')} className={selectCls}>
               {CILINDRAJE_OPTS.map(o => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Tipo de motor (solo Cotizador especial) */}
+        {hasTipoMotor && (
+          <div>
+            <label className={labelCls}>Tipo de motor</label>
+            <select {...register('tipoMotor')} className={selectCls}>
+              {TIPO_MOTOR_OPTS.map(o => (
                 <option key={o.value} value={o.value}>{o.label}</option>
               ))}
             </select>
