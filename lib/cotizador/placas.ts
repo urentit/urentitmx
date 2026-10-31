@@ -35,10 +35,12 @@ export const SECTION_ONE: PlacasSection = {
   // del % de tenencia cobran refrendo fijo como Morelos o Hidalgo (ver TENENCIA_FIXED_STATES).
   cdmx_hibrido_electrico:          { name: 'CDMX híbrido o eléctrico',             price: 8500, tenencia_percentage: 0 },
   estado_mexico_hibrido_electrico: { name: 'Estado de México híbrido o eléctrico', price: 9300, tenencia_percentage: 0 },
+  // Querétaro exenta de tenencia a híbridos (incl. MHEV) y eléctricos; solo pagan derechos/refrendo
+  queretaro_hibrido_electrico:     { name: 'Querétaro híbrido o eléctrico',        price: 12760, tenencia_percentage: 0 },
 }
 
 // Opciones de placas que solo se ofrecen en el Cotizador especial (comision-extra)
-export const PLACAS_SOLO_ESPECIAL = ['cdmx_hibrido_electrico', 'estado_mexico_hibrido_electrico']
+export const PLACAS_SOLO_ESPECIAL = ['cdmx_hibrido_electrico', 'estado_mexico_hibrido_electrico', 'queretaro_hibrido_electrico']
 
 export const SECTION_TWO: PlacasSection = {
   cdmx:          { name: 'CDMX',             price: 11000, tenencia_percentage: 0.042 },
