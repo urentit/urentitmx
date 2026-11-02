@@ -1,5 +1,6 @@
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer'
-import type { QuoteResponse, QuoteResult, QuoteType } from '@/lib/cotizador/types'
+import type { QuoteResponse, QuoteResult, QuoteType, TipoMotor } from '@/lib/cotizador/types'
+import { TIPO_MOTOR_LABELS } from '@/lib/cotizador/placas'
 
 const GOLD  = '#e1be4a'
 const BLACK = '#0a0a0a'
@@ -14,6 +15,10 @@ const S = StyleSheet.create({
   logoSub:     { fontSize: 6.5, color: GRAY, marginTop: 2 },
   docTitle:    { fontSize: 12, fontFamily: 'Helvetica-Bold', color: BLACK, textAlign: 'right' },
   docMeta:     { fontSize: 7.5, color: GRAY, marginTop: 2, textAlign: 'right' },
+  asesor:      { alignItems: 'flex-end', marginBottom: 6, paddingBottom: 5, borderBottomWidth: 1, borderBottomColor: LIGHT },
+  asesorLabel: { fontSize: 6.5, color: GRAY, textTransform: 'uppercase', letterSpacing: 0.8 },
+  asesorName:  { fontSize: 8.5, fontFamily: 'Helvetica-Bold', color: BLACK, marginTop: 1 },
+  asesorMail:  { fontSize: 7.5, color: '#7a6200', marginTop: 1 },
   docAmount:   { fontSize: 9, fontFamily: 'Helvetica-Bold', color: BLACK, marginTop: 2, textAlign: 'right', textDecoration: 'underline' },
 
   tableWrap:   { borderWidth: 1, borderColor: LIGHT },
@@ -90,6 +95,8 @@ interface Props {
   anticipo?:  number
   folio?:     number | null
   logoPath?:  string
+  tipoMotor?: TipoMotor
+  asesor?:    { name?: string; email?: string }
 }
 
 const QUOTE_TYPE_LABELS: Record<string, string> = {
@@ -106,7 +113,7 @@ const QUOTE_TYPE_LABELS: Record<string, string> = {
   'refinanciamiento': 'Refinanciamiento',
 }
 
-export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, folio, logoPath }: Props) {
+export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, folio, logoPath, tipoMotor, asesor }: Props) {
   const periods    = Object.keys(result).sort()
   const periodData = periods.map(p => result[p as keyof QuoteResponse]!)
   const date       = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' })
@@ -157,11 +164,21 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, f
             <Text style={S.logoSub}>Cotización de Arrendamiento Puro</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
+            {(asesor?.name || asesor?.email) && (
+              <View style={S.asesor}>
+                <Text style={S.asesorLabel}>Cotizó</Text>
+                {asesor.name  && <Text style={S.asesorName}>{asesor.name}</Text>}
+                {asesor.email && <Text style={S.asesorMail}>{asesor.email}</Text>}
+              </View>
+            )}
             <Text style={S.docMeta}>Folio No. {quoteNo}</Text>
             <Text style={S.docMeta}>Fecha: {date}</Text>
             <Text style={[S.docTitle, { marginTop: 4 }]}>{modelo || 'Cotización'}</Text>
             <Text style={S.docAmount}>{fmt(totalPrice)}</Text>
-            <Text style={S.docMeta}>Valor del vehículo · Tipo: {QUOTE_TYPE_LABELS[quoteType] ?? quoteType}</Text>
+            <Text style={S.docMeta}>
+              Valor del vehículo · Tipo: {QUOTE_TYPE_LABELS[quoteType] ?? quoteType}
+              {tipoMotor ? ` · Motor: ${TIPO_MOTOR_LABELS[tipoMotor]}` : ''}
+            </Text>
           </View>
         </View>
 

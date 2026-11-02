@@ -29,7 +29,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 24 | 36 | 4
   const serviciosP = calcServiciosPreventivos(total, yrs, servicios, user.manualServices ? servicesValue : undefined)
   const gps        = includeGps ? calcGps(yrs) : 0
   const tramites   = getPlacaPrice(total, 'section_one', state)
-  const tenencias  = includeTenencias ? calcTenencias(total, yrs, state, 'section_one') : 0
+  const tenencias  = includeTenencias ? calcTenencias(total, yrs, state, 'section_one', input.tipoMotor) : 0
   const veriCount  = years === 24 ? 4 : years === 36 ? 6 : 8
   const veri       = includeVerificaciones ? veriCount * VARS.VERI : 0
 

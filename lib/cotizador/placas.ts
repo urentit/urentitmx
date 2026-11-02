@@ -1,3 +1,5 @@
+import type { TipoMotor } from './types'
+
 export interface PlacaEntry {
   name: string
   price: number
@@ -6,6 +8,12 @@ export interface PlacaEntry {
 }
 
 export type PlacasSection = Record<string, PlacaEntry>
+
+export const TIPO_MOTOR_LABELS: Record<TipoMotor, string> = {
+  gasolina:  'Gasolina',
+  hibrido:   'Híbrido',
+  electrico: 'Eléctrico',
+}
 
 // Opción "Sin placas" (clave `no`). Vive en section_one y también la usa
 // Carga pesada (checkbox "No aplican placas"), donde el estado no afecta montos.
@@ -31,16 +39,7 @@ export const SECTION_ONE: PlacasSection = {
   jalisco:       { name: 'Jalisco',          price: 13750, tenencia_percentage: 0.035 },
   puebla:        { name: 'Puebla',           price: 8750, tenencia_percentage: 0 },
   queretaro:     { name: 'Querétaro',        price: 12760, tenencia_percentage: 0.035 },
-  // Solo Cotizador especial: mismos trámites que CDMX / Estado de México, pero en lugar
-  // del % de tenencia cobran refrendo fijo como Morelos o Hidalgo (ver TENENCIA_FIXED_STATES).
-  cdmx_hibrido_electrico:          { name: 'CDMX híbrido o eléctrico',             price: 8500, tenencia_percentage: 0 },
-  estado_mexico_hibrido_electrico: { name: 'Estado de México híbrido o eléctrico', price: 9300, tenencia_percentage: 0 },
-  // Querétaro exenta de tenencia a híbridos (incl. MHEV) y eléctricos; solo pagan derechos/refrendo
-  queretaro_hibrido_electrico:     { name: 'Querétaro híbrido o eléctrico',        price: 12760, tenencia_percentage: 0 },
 }
-
-// Opciones de placas que solo se ofrecen en el Cotizador especial (comision-extra)
-export const PLACAS_SOLO_ESPECIAL = ['cdmx_hibrido_electrico', 'estado_mexico_hibrido_electrico', 'queretaro_hibrido_electrico']
 
 export const SECTION_TWO: PlacasSection = {
   cdmx:          { name: 'CDMX',             price: 11000, tenencia_percentage: 0.042 },

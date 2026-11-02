@@ -34,7 +34,7 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 36 | 48, ta
   const serviciosP = 0
   const gps        = calcGps(yrs)
   const tramites   = getPlacaPrice(total, 'section_one', state)
-  const tenencias  = calcTenencias(total, yrs, state, 'section_one')
+  const tenencias  = calcTenencias(total, yrs, state, 'section_one', input.tipoMotor)
   const veri       = VERI_C[years] * VARS.VERI
 
   return calcCore(

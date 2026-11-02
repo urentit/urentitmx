@@ -9,6 +9,7 @@ const schema = z.object({
   accessoryValue:      z.number().min(0).default(0),
   accessory:           z.string().default(''),
   state:               z.string().min(2),
+  tipoMotor:           z.enum(['gasolina', 'hibrido', 'electrico']).default('gasolina'),
   anticipo:            z.number().min(0).max(0.45),
   servicios:           z.number().min(0).max(4).default(0),
   seguro:              z.number().positive().optional(),

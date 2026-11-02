@@ -65,5 +65,9 @@ export const VARS = {
   VERI_FORANEOS: 3200,
 
   // Estados con tenencia FIJA para todas las secciones; jalisco es fijo solo en section_one (ver calcTenencias)
-  TENENCIA_FIXED_STATES: ['no', 'morelos', 'hidalgo', 'puebla', 'cdmx_hibrido_electrico', 'estado_mexico_hibrido_electrico', 'queretaro_hibrido_electrico'] as string[],
+  TENENCIA_FIXED_STATES: ['no', 'morelos', 'hidalgo', 'puebla'] as string[],
+
+  // Estados que exentan de tenencia a híbridos (incl. MHEV) y eléctricos: en lugar del %
+  // se cobra refrendo fijo (TENENCIAS_FIXED). Aplica a placas de autos (section_one).
+  ESTADOS_EXENCION_HIBRIDOS: ['cdmx', 'estado_mexico', 'queretaro'] as string[],
 } as const
