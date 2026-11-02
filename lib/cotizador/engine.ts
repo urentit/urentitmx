@@ -1,6 +1,6 @@
 import { VARS } from './variables'
 import { getPlacaPrice, getPlacaName, getSection } from './placas'
-import type { QuoteUser, QuoteResult } from './types'
+import type { QuoteUser, QuoteResult, TipoMotor } from './types'
 
 // Port de FinancialClass::PMT — idéntico al cálculo de Excel/PHP
 export function pmt(rate: number, nper: number, pv: number, fv = 0): number {
@@ -39,13 +39,19 @@ export function calcServiciosPreventivos(
   return (VARS.SERVICES_BASE + VARS.VAR_DATA * totalPrice) * 2 * efectivos
 }
 
+// Híbridos y eléctricos con placas de CDMX, Edo. Méx. o Querétaro no pagan tenencia, solo refrendo
+export function exentoPorMotor(state: string, tipoMotor: TipoMotor = 'gasolina'): boolean {
+  return tipoMotor !== 'gasolina' && VARS.ESTADOS_EXENCION_HIBRIDOS.includes(state)
+}
+
 export function calcTenencias(
   totalPrice: number,
   years: number,
   state: string,
   section: 'section_one' | 'section_two' | 'section_three' = 'section_one',
+  tipoMotor: TipoMotor = 'gasolina',
 ): number {
-  if (VARS.TENENCIA_FIXED_STATES.includes(state)) {
+  if (VARS.TENENCIA_FIXED_STATES.includes(state) || exentoPorMotor(state, tipoMotor)) {
     return VARS.TENENCIAS_FIXED * years
   }
   // Jalisco usa tenencia fija solo en autos (section_one); en carga/foráneo usa porcentaje

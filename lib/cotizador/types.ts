@@ -25,7 +25,7 @@ export interface QuoteInput {
   accessory?: string
   accessoryValue?: number
   cilindraje?: '4' | '6' | '8'
-  // Cotizador especial: tipo de motor (informativo, se guarda en el historial)
+  // Híbrido/eléctrico con placas de un estado en ESTADOS_EXENCION_HIBRIDOS paga refrendo, no tenencia
   tipoMotor?: TipoMotor
   state: string
   anticipo: number

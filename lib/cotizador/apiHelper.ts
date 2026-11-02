@@ -12,6 +12,8 @@ export async function getSessionUser() {
   const u = session.user as any
   return {
     id:              String(u.id ?? ''),
+    name:            String(u.name ?? ''),
+    email:           String(u.email ?? ''),
     admin:           Boolean(u.admin),
     comision:        Number(u.comision ?? 0.03),
     manualServices:  Boolean(u.manualServices),

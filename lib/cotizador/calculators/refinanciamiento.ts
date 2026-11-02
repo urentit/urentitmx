@@ -1,6 +1,6 @@
 import { VARS } from '../variables'
 import { getPlacaName } from '../placas'
-import { pmt } from '../engine'
+import { pmt, exentoPorMotor } from '../engine'
 import type { QuoteInput, QuoteUser, QuoteResult } from '../types'
 import type { TasaMap } from '../rates'
 
@@ -38,7 +38,8 @@ export function calculate(input: QuoteInput, user: QuoteUser, years: 12 | 24, ta
   const tramites = 0
 
   // Tenencias: fijas para estados equivalentes a state==1 del legacy; 3.5% para el resto
-  const tenencias = FIXED_STATES.includes(state)
+  // Híbridos/eléctricos de CDMX, Edo. Méx. o Querétaro también pagan solo refrendo
+  const tenencias = FIXED_STATES.includes(state) || exentoPorMotor(state, input.tipoMotor)
     ? VARS.TENENCIAS_FIXED * yrs
     : 0.035 * total * yrs
 

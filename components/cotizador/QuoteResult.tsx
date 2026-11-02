@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { Download } from 'lucide-react'
-import type { QuoteResponse, QuoteResult as QR, QuoteType } from '@/lib/cotizador/types'
+import type { QuoteResponse, QuoteResult as QR, QuoteType, TipoMotor } from '@/lib/cotizador/types'
+import { TIPO_MOTOR_LABELS } from '@/lib/cotizador/placas'
 import { analytics } from '@/lib/analytics'
 
 function fmt(n: number) {
@@ -94,6 +95,7 @@ interface Props {
   modelo:     string
   totalPrice: number
   anticipo:   number
+  tipoMotor?: TipoMotor
   folio?:     number | null
 }
 
@@ -105,7 +107,7 @@ const PERIOD_LABELS: Record<string, string> = {
   '60': '60 meses',
 }
 
-export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo, folio }: Props) {
+export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo, tipoMotor, folio }: Props) {
   const [downloading, setDownloading] = useState(false)
 
   const periods = Object.keys(result).sort()
@@ -116,7 +118,7 @@ export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo, f
       const res = await fetch('/api/cotizador/pdf', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ result, quoteType, modelo, totalPrice, anticipo, folio }),
+        body:    JSON.stringify({ result, quoteType, modelo, totalPrice, anticipo, tipoMotor, folio }),
       })
       if (!res.ok) return
       const blob = await res.blob()
@@ -143,6 +145,7 @@ export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo, f
           </h3>
           <p className="text-xs text-white/40 mt-0.5">
             {folio != null && <span className="text-gold/80 font-medium">Folio {String(folio).padStart(5, '0')} · </span>}
+            {tipoMotor && <span>Motor {TIPO_MOTOR_LABELS[tipoMotor].toLowerCase()} · </span>}
             Resultados comparativos por plazo
           </p>
         </div>

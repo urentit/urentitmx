@@ -5,8 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { SECTION_ONE, SECTION_TWO, SECTION_THREE, PLACAS_SOLO_ESPECIAL } from '@/lib/cotizador/placas'
-import type { QuoteType, QuoteResponse } from '@/lib/cotizador/types'
+import { SECTION_ONE, SECTION_TWO, SECTION_THREE, TIPO_MOTOR_LABELS } from '@/lib/cotizador/placas'
+import { exentoPorMotor } from '@/lib/cotizador/engine'
+import type { QuoteType, QuoteResponse, TipoMotor } from '@/lib/cotizador/types'
 import { useCommission } from '@/lib/cotizador/commissionContext'
 import { QuoteResult } from './QuoteResult'
 
@@ -57,20 +58,14 @@ const CILINDRAJE_OPTS = [
   { value: '8', label: '8 Cilindros' },
 ]
 
-// Cotizador especial: tipo de motor en lugar de cilindraje
-const TIPO_MOTOR_OPTS = [
-  { value: 'gasolina',  label: 'Gasolina' },
-  { value: 'hibrido',   label: 'Híbrido' },
-  { value: 'electrico', label: 'Eléctrico' },
-]
+// Tipo de motor: híbridos y eléctricos de CDMX / Edo. Méx. / Querétaro pagan refrendo, no tenencia
+const TIPO_MOTOR_OPTS = Object.entries(TIPO_MOTOR_LABELS).map(([value, label]) => ({ value, label }))
 
 function getStates(quoteType: QuoteType) {
   if (quoteType === 'electrico') return Object.entries(SECTION_THREE)
   if (quoteType === 'carga' || quoteType === 'carga-pesada' || quoteType === 'carga-pesada-especial' || quoteType === 'foraneo')
     return Object.entries(SECTION_TWO)
-  // Las placas CDMX / Edo. Méx. híbrido o eléctrico solo existen en el Cotizador especial
-  if (quoteType === 'comision-extra') return Object.entries(SECTION_ONE)
-  return Object.entries(SECTION_ONE).filter(([key]) => !PLACAS_SOLO_ESPECIAL.includes(key))
+  return Object.entries(SECTION_ONE)
 }
 
 function getEndpoint(quoteType: QuoteType) {
@@ -94,6 +89,9 @@ const labelCls  = 'mb-1.5 block text-xs font-medium text-white/60 uppercase trac
 
 // Tipos que muestran el campo cilindraje
 const WITH_CILINDRAJE: QuoteType[] = ['auto', 'vip', 'carga', 'carga-pesada', 'carga-pesada-especial', 'foraneo', 'flotilla', 'refinanciamiento']
+
+// Tipos con placas de autos (section_one) donde el tipo de motor define tenencia vs refrendo
+const WITH_TIPO_MOTOR: QuoteType[] = ['auto', 'vip', 'usado', 'flotilla', 'comision-extra', 'refinanciamiento']
 
 export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const { data: session } = useSession()
@@ -138,8 +136,11 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const canSinPlacas  = quoteType === 'carga-pesada'
   const sinPlacasSel  = canSinPlacas && !!watch('sinPlacas')
   const hasState      = !isCargaPesadaEsp && !sinPlacasSel
-  const hasCilindraje = WITH_CILINDRAJE.includes(quoteType)
-  const hasTipoMotor  = quoteType === 'comision-extra'
+  const hasTipoMotor  = WITH_TIPO_MOTOR.includes(quoteType)
+  const tipoMotorSel  = hasTipoMotor ? (watch('tipoMotor') ?? 'gasolina') : 'gasolina'
+  // Un eléctrico no tiene cilindros: se oculta el campo
+  const hasCilindraje = WITH_CILINDRAJE.includes(quoteType) && tipoMotorSel !== 'electrico'
+  const refrendoPorMotor = hasState && exentoPorMotor(watch('state') ?? '', tipoMotorSel)
 
   async function onSubmit(values: FormValues) {
     if (hasState && (!values.state || values.state.length < 2)) {
@@ -203,7 +204,10 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
     if (isRefin) body.includeVerificaciones = values.includeVerificaciones
     if (isCargaPesadaEsp) body.includeInsurance = values.includeInsurance
 
-    setLastInput({ modelo: values.modelo ?? '', totalPrice: body.totalPrice, quoteType, anticipo: anticipoFraction })
+    setLastInput({
+      modelo: values.modelo ?? '', totalPrice: body.totalPrice, quoteType, anticipo: anticipoFraction,
+      tipoMotor: hasTipoMotor ? values.tipoMotor : undefined,
+    })
 
     try {
       const res  = await fetch(getEndpoint(quoteType), {
@@ -251,24 +255,24 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
           />
         </div>
 
-        {/* Cilindraje */}
-        {hasCilindraje && (
+        {/* Tipo de motor (cotizadores de autos) */}
+        {hasTipoMotor && (
           <div>
-            <label className={labelCls}>Cilindraje</label>
-            <select {...register('cilindraje')} className={selectCls}>
-              {CILINDRAJE_OPTS.map(o => (
+            <label className={labelCls}>Tipo de motor</label>
+            <select {...register('tipoMotor')} className={selectCls}>
+              {TIPO_MOTOR_OPTS.map(o => (
                 <option key={o.value} value={o.value}>{o.label}</option>
               ))}
             </select>
           </div>
         )}
 
-        {/* Tipo de motor (solo Cotizador especial) */}
-        {hasTipoMotor && (
+        {/* Cilindraje */}
+        {hasCilindraje && (
           <div>
-            <label className={labelCls}>Tipo de motor</label>
-            <select {...register('tipoMotor')} className={selectCls}>
-              {TIPO_MOTOR_OPTS.map(o => (
+            <label className={labelCls}>Cilindraje</label>
+            <select {...register('cilindraje')} className={selectCls}>
+              {CILINDRAJE_OPTS.map(o => (
                 <option key={o.value} value={o.value}>{o.label}</option>
               ))}
             </select>
@@ -288,6 +292,11 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
               </select>
             )}
             {hasState && errors.state && <p className="mt-1 text-xs text-red-400">{errors.state.message}</p>}
+            {refrendoPorMotor && (
+              <p className="mt-1 text-[11px] text-gold/80">
+                {TIPO_MOTOR_LABELS[tipoMotorSel]}: no paga tenencia, se cobra solo refrendo.
+              </p>
+            )}
             {canSinPlacas && (
               <label className={`flex items-center gap-2 text-sm text-white/70 cursor-pointer select-none ${hasState ? 'mt-2' : 'mt-1'}`}>
                 <input
@@ -494,6 +503,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
           modelo={String(lastInput.modelo ?? '')}
           totalPrice={Number(lastInput.totalPrice ?? 0)}
           anticipo={Number(lastInput.anticipo ?? 0.25)}
+          tipoMotor={lastInput.tipoMotor as TipoMotor | undefined}
           folio={folio}
         />
       )}

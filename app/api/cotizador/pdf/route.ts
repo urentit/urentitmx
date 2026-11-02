@@ -9,12 +9,16 @@ export async function POST(req: NextRequest) {
   const user = await getSessionUser()
   if (!user) return unauthorized()
 
-  const { result, quoteType, modelo, totalPrice, anticipo, folio } = await req.json()
+  const { result, quoteType, modelo, totalPrice, anticipo, tipoMotor, folio } = await req.json()
 
   const logoPath = path.join(process.cwd(), 'public', 'img', 'logos', 'logo-urentit.png')
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const element = createElement(PDFTemplate, { result, quoteType, modelo, totalPrice, anticipo, folio, logoPath }) as any
+  const element = createElement(PDFTemplate, {
+    result, quoteType, modelo, totalPrice, anticipo, tipoMotor, folio, logoPath,
+    // Quien cotiza: se toma de la sesión (no del cliente) para que no se pueda alterar
+    asesor: { name: user.name, email: user.email },
+  }) as any
 
   const buffer = await renderToBuffer(element)
 
