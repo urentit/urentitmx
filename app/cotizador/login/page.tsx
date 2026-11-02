@@ -51,7 +51,8 @@ export default function LoginPage() {
             Inicia sesión con tu cuenta corporativa
           </p>
           <button
-            onClick={() => signIn('auth0', { callbackUrl: '/cotizador' })}
+            // connection salta la pantalla de Auth0 y va directo a Google
+            onClick={() => signIn('auth0', { callbackUrl: '/cotizador' }, { connection: 'google-oauth2' })}
             className="flex w-full cursor-pointer items-center justify-center gap-3 rounded border border-white/10 bg-white/5 py-2.5 text-sm text-white transition-colors hover:bg-white/10"
           >
             <GoogleIcon />
