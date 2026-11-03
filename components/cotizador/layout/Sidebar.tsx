@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import {
   Car, Truck, Package, Zap, Map, History, RotateCcw,
-  Star, Users, ClipboardList, X, BadgeDollarSign, UserCog, Percent,
+  Star, Users, ClipboardList, X, BadgeDollarSign, UserCog, Percent, Crown,
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { parseAllowedSections, canAccessSection } from '@/lib/cotizador/sections'
@@ -23,6 +23,7 @@ const nav: Array<{ href: string; label: string; icon: any; section?: QuoteType }
   { href: '/cotizador/usado',            label: 'Vehículo Usado',    icon: RotateCcw,       section: 'usado' },
   { href: '/cotizador/flotilla',          label: 'Flotilla',                  icon: Users,           section: 'flotilla' },
   { href: '/cotizador/comision-extra',   label: 'Cotizador especial',        icon: BadgeDollarSign, section: 'comision-extra' },
+  { href: '/cotizador/especial-premium', label: 'Cotizador especial premium', icon: Crown,         section: 'especial-premium' },
   { href: '/cotizador/refinanciamiento', label: 'Refinanciamiento',          icon: ClipboardList,   section: 'refinanciamiento' },
   { href: '/cotizador/historial',        label: 'Historial',         icon: History },
 ]

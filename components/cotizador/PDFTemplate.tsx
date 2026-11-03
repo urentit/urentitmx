@@ -97,6 +97,7 @@ interface Props {
   logoPath?:  string
   tipoMotor?: TipoMotor
   asesor?:    { name?: string; email?: string }
+  createdAt?: Date
 }
 
 const QUOTE_TYPE_LABELS: Record<string, string> = {
@@ -110,13 +111,17 @@ const QUOTE_TYPE_LABELS: Record<string, string> = {
   'usado':            'Vehículo Usado',
   'flotilla':         'Flotilla',
   'comision-extra':   'Cotizador especial',
+  'especial-premium': 'Cotizador especial premium',
   'refinanciamiento': 'Refinanciamiento',
 }
 
-export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, folio, logoPath, tipoMotor, asesor }: Props) {
+export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, folio, logoPath, tipoMotor, asesor, createdAt }: Props) {
   const periods    = Object.keys(result).sort()
   const periodData = periods.map(p => result[p as keyof QuoteResponse]!)
-  const date       = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' })
+  // Fecha en que se cotizó; hora de México porque el servidor corre en UTC
+  const date       = (createdAt ?? new Date()).toLocaleDateString('es-MX', {
+    day: '2-digit', month: 'long', year: 'numeric', timeZone: 'America/Mexico_City',
+  })
   // Folio: id de la cotización en BD (mismo que el Historial); fallback a
   // timestamp solo si no se pudo guardar (sin BD o usuario sin registro)
   const quoteNo    = folio != null
@@ -150,6 +155,10 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, f
     { label: 'Trámites iniciales. Libres de IVA',   get: d => fmt(d.eachMonth.tramitesL) },
     { label: 'Tenencias o Refrendos. Libres de IVA',get: d => fmt(d.eachMonth.tenencias) },
     { label: 'Verificaciones. Libres de IVA',       get: d => fmt(d.eachMonth.veri) },
+    // Solo Cotizador especial premium con auto sustituto contratado
+    ...(periodData.some(d => d.eachMonth.autoSustituto)
+      ? [{ label: 'Auto sustituto. Cuota mensual',  get: (d: QuoteResult) => fmt(d.eachMonth.autoSustituto ?? 0) }]
+      : []),
   ]
 
   return (

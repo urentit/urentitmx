@@ -69,6 +69,7 @@ function ResultColumn({ label, result, showPlacas }: { label: string; result: QR
               ['Trámites iniciales',       fmt(e.tramitesL)],
               ['Tenencias / Refrendos',    fmt(e.tenencias)],
               ['Verificaciones',           fmt(e.veri)],
+              ...(e.autoSustituto ? [['Auto sustituto (mensual)', fmt(e.autoSustituto)]] : []),
               ...(e.accessoryValue > 0 ? [[`Accesorio: ${e.accessory}`, fmt(e.accessoryValue)]] : []),
             ].map(([l, v]) => (
               <tr key={l} className="border-b border-white/5 last:border-0">
@@ -109,18 +110,25 @@ const PERIOD_LABELS: Record<string, string> = {
 
 export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo, tipoMotor, folio }: Props) {
   const [downloading, setDownloading] = useState(false)
+  const [pdfError,    setPdfError]    = useState('')
 
   const periods = Object.keys(result).sort()
 
   async function downloadPDF() {
     setDownloading(true)
+    setPdfError('')
     try {
+      // El servidor arma el PDF desde la cotización guardada; solo viaja el folio
       const res = await fetch('/api/cotizador/pdf', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ result, quoteType, modelo, totalPrice, anticipo, tipoMotor, folio }),
+        body:    JSON.stringify({ folio }),
       })
-      if (!res.ok) return
+      if (!res.ok) {
+        const data = await res.json().catch(() => null)
+        setPdfError(data?.message ?? 'No se pudo generar el PDF')
+        return
+      }
       const blob = await res.blob()
       const url  = URL.createObjectURL(blob)
       const a    = document.createElement('a')
@@ -158,6 +166,7 @@ export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo, t
           {downloading ? 'Generando…' : 'Descargar PDF'}
         </button>
       </div>
+      {pdfError && <p className="-mt-2 mb-4 text-right text-xs text-red-400">{pdfError}</p>}
 
       {/* Columnas por plazo */}
       <div className={`grid grid-cols-1 gap-4 ${periods.length >= 3 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2'}`}>

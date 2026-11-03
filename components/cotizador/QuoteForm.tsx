@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { SECTION_ONE, SECTION_TWO, SECTION_THREE, TIPO_MOTOR_LABELS } from '@/lib/cotizador/placas'
 import { exentoPorMotor } from '@/lib/cotizador/engine'
+import { getAutoSustitutoCuota, AUTO_SUSTITUTO_MIN } from '@/lib/cotizador/autoSustituto'
 import type { QuoteType, QuoteResponse, TipoMotor } from '@/lib/cotizador/types'
 import { useCommission } from '@/lib/cotizador/commissionContext'
 import { QuoteResult } from './QuoteResult'
@@ -35,6 +36,7 @@ const schema = z.object({
   includeGps:            z.boolean().optional(),
   includeTenencias:      z.boolean().optional(),
   includeVerificaciones: z.boolean().optional(),
+  includeAutoSustituto:  z.boolean().optional(),
 })
 
 type FormValues = z.infer<typeof schema>
@@ -91,7 +93,7 @@ const labelCls  = 'mb-1.5 block text-xs font-medium text-white/60 uppercase trac
 const WITH_CILINDRAJE: QuoteType[] = ['auto', 'vip', 'carga', 'carga-pesada', 'carga-pesada-especial', 'foraneo', 'flotilla', 'refinanciamiento']
 
 // Tipos con placas de autos (section_one) donde el tipo de motor define tenencia vs refrendo
-const WITH_TIPO_MOTOR: QuoteType[] = ['auto', 'vip', 'usado', 'flotilla', 'comision-extra', 'refinanciamiento']
+const WITH_TIPO_MOTOR: QuoteType[] = ['auto', 'vip', 'usado', 'flotilla', 'comision-extra', 'especial-premium', 'refinanciamiento']
 
 export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const { data: session } = useSession()
@@ -104,7 +106,8 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const [lastInput, setLastInput] = useState<Record<string, unknown>>({})
   const [apiError,  setApiError]  = useState('')
 
-  const isFlotilla    = quoteType === 'flotilla' || quoteType === 'comision-extra'
+  const isFlotilla    = quoteType === 'flotilla' || quoteType === 'comision-extra' || quoteType === 'especial-premium'
+  const isPremium     = quoteType === 'especial-premium'
 
   const { register, handleSubmit, watch, setError, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -122,6 +125,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       includeGps:            true,
       includeTenencias:      true,
       includeVerificaciones: true,
+      includeAutoSustituto:  false,
     },
   })
 
@@ -140,6 +144,10 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const tipoMotorSel  = hasTipoMotor ? (watch('tipoMotor') ?? 'gasolina') : 'gasolina'
   // Un eléctrico no tiene cilindros: se oculta el campo
   const hasCilindraje = WITH_CILINDRAJE.includes(quoteType) && tipoMotorSel !== 'electrico'
+  // Premium: la cuota del auto sustituto depende del valor capturado
+  const cuotaSustituto = isPremium
+    ? getAutoSustitutoCuota(parseFloat((watch('totalPrice') ?? '').replace(/[,$\s]/g, '')))
+    : null
   const refrendoPorMotor = hasState && exentoPorMotor(watch('state') ?? '', tipoMotorSel)
 
   async function onSubmit(values: FormValues) {
@@ -168,6 +176,11 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
         setApiError('Captura el valor Autométrica: es obligatorio para calcular el anticipo de un vehículo usado.')
         return
       }
+    }
+
+    if (isPremium && values.includeAutoSustituto && cuotaSustituto == null) {
+      setApiError(`El auto sustituto solo aplica a vehículos desde $${AUTO_SUSTITUTO_MIN.toLocaleString('es-MX')}.`)
+      return
     }
 
     setLoading(true)
@@ -201,6 +214,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
       body.includeVerificaciones = values.includeVerificaciones
       body.plazos                = ['24', '36', '48']
     }
+    if (isPremium) body.includeAutoSustituto = !!values.includeAutoSustituto
     if (isRefin) body.includeVerificaciones = values.includeVerificaciones
     if (isCargaPesadaEsp) body.includeInsurance = values.includeInsurance
 
@@ -431,6 +445,21 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
                     {label}
                   </label>
                 ))}
+                {isPremium && (
+                  <label className="flex items-center gap-2 text-sm text-white/70 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      {...register('includeAutoSustituto')}
+                      className="accent-gold w-4 h-4"
+                    />
+                    Auto sustituto
+                    <span className="text-xs text-white/40">
+                      {cuotaSustituto != null
+                        ? `(+$${cuotaSustituto}/mes)`
+                        : `(desde $${AUTO_SUSTITUTO_MIN.toLocaleString('es-MX')})`}
+                    </span>
+                  </label>
+                )}
               </div>
             </div>
           </>
