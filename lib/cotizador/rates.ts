@@ -19,6 +19,7 @@ export const RATE_PLAZOS: Record<QuoteType, number[]> = {
   'usado':            [36, 48],
   'flotilla':         [24, 36, 48],
   'comision-extra':   [24, 36, 48],
+  'especial-premium': [24, 36, 48],
   'refinanciamiento': [12, 24],
 }
 
@@ -38,5 +39,6 @@ export const DEFAULT_RATES: Record<QuoteType, TasaMap> = {
   'usado':            { 36: VARS.TASARENTING, 48: VARS.TASARENTING2 },
   'flotilla':         { 24: VARS.TASARENTING, 36: VARS.TASARENTING, 48: VARS.TASARENTING2 },
   'comision-extra':   { 24: VARS.TASARENTING, 36: VARS.TASARENTING, 48: VARS.TASARENTING2 },
+  'especial-premium': { 24: VARS.TASARENTING, 36: VARS.TASARENTING, 48: VARS.TASARENTING2 },
   'refinanciamiento': { 12: VARS.TASARENTING, 24: VARS.TASARENTING2 },
 }

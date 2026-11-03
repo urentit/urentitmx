@@ -111,6 +111,7 @@ const QUOTE_TYPE_LABELS: Record<string, string> = {
   'usado':            'Vehículo Usado',
   'flotilla':         'Flotilla',
   'comision-extra':   'Cotizador especial',
+  'especial-premium': 'Cotizador especial premium',
   'refinanciamiento': 'Refinanciamiento',
 }
 
@@ -154,6 +155,10 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, f
     { label: 'Trámites iniciales. Libres de IVA',   get: d => fmt(d.eachMonth.tramitesL) },
     { label: 'Tenencias o Refrendos. Libres de IVA',get: d => fmt(d.eachMonth.tenencias) },
     { label: 'Verificaciones. Libres de IVA',       get: d => fmt(d.eachMonth.veri) },
+    // Solo Cotizador especial premium con auto sustituto contratado
+    ...(periodData.some(d => d.eachMonth.autoSustituto)
+      ? [{ label: 'Auto sustituto. Cuota mensual',  get: (d: QuoteResult) => fmt(d.eachMonth.autoSustituto ?? 0) }]
+      : []),
   ]
 
   return (

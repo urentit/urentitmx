@@ -64,7 +64,7 @@
 | Puebla | $8,750 | fija $2,000/año | Estado fijo |
 | Querétaro | $12,760 | 3.5 % del precio | — |
 
-**Tipo de motor** (Autos, VIP, Usado, Flotilla, Cotizador especial y Refinanciamiento): gasolina, híbrido o eléctrico. Si es híbrido (incluye MHEV) o eléctrico y las placas son de CDMX, Estado de México o Querétaro, no se cobra el % de tenencia sino refrendo fijo ($2,000/año, igual que Morelos o Hidalgo); los trámites iniciales no cambian. En los demás estados el tipo de motor no altera el cálculo. En el Cotizador especial el tipo de motor sustituye al cilindraje; en los demás el cilindraje se oculta si el motor es eléctrico.
+**Tipo de motor** (Autos, VIP, Usado, Flotilla, Cotizador especial, Especial premium y Refinanciamiento): gasolina, híbrido o eléctrico. Si es híbrido (incluye MHEV) o eléctrico y las placas son de CDMX, Estado de México o Querétaro, no se cobra el % de tenencia sino refrendo fijo ($2,000/año, igual que Morelos o Hidalgo); los trámites iniciales no cambian. En los demás estados el tipo de motor no altera el cálculo. En el Cotizador especial el tipo de motor sustituye al cilindraje; en los demás el cilindraje se oculta si el motor es eléctrico.
 
 ¹ Rangos Morelos section_one: ≤$999,999=$8,500 · $1M–$1.9M=$9,500 · $2M–$2.9M=$11,500 · $3M–$3.9M=$13,000 · >$4M=$14,500
 
@@ -510,6 +510,30 @@ base_deduccion  = anticipo_calc + finalCost + totalRentasMasIva (nuevo)
 importe_deducir = ROUND(base × 0.56, 2)
 ```
 
+### 5.9.1 Cotizador especial premium
+
+Idéntico al **Cotizador especial** (Flotilla + 5 % s/financiado) más el checkbox opcional
+**"Auto sustituto"** (`includeAutoSustituto`, desmarcado por defecto). La cuota mensual
+depende del valor del vehículo con IVA (`totalPrice`, sin accesorios) — `lib/cotizador/autoSustituto.ts`:
+
+| Valor del vehículo | Auto sustituto |
+|---|---|
+| < $400,000 | No aplica (el formulario bloquea el envío si está marcado) |
+| $400,000 – $800,000 | $250/mes |
+| $800,000.01 – $1,500,000 | $370/mes |
+| > $1,500,000 | $450/mes |
+
+La cuota se suma directo a la renta (no se financia ni genera intereses):
+
+```
+base            = calcComisionExtra(input, user, meses)
+mensualidad     = ROUND(base.mensualidad + cuota_auto_sustituto, 2)
+total_rentas    = ROUND(mensualidad × meses, 2)
+importe_deducir se recalcula con la nueva mensualidad (× 0.56)
+```
+
+En el desglose y el PDF aparece la línea "Auto sustituto" con la cuota mensual.
+
 ---
 
 ### 5.10 Refinanciamiento
@@ -604,6 +628,7 @@ importe_deducir = ROUND(
 | Usado | 20/15 % | 28/27 % | **4% sobre Autométrica** | **0** | section_one | section_one | 6/8 × $1,800 |
 | Flotilla | **dinámico** | 28/27 % | auto (opcional) | preventivos ×2 | section_one | section_one (opcional) | 4/6/8 × $1,800 (opcional) |
 | Comisión Extra | **dinámico** | 28/27 % | auto (opcional) | preventivos ×2 | section_one | section_one (opcional) | **+ 5% s/financiado** |
+| Especial premium | **dinámico** | 28/27 % | auto (opcional) | preventivos ×2 | section_one | section_one (opcional) | **+ 5% s/financiado + auto sustituto (opcional)** |
 | Refinanciamiento | **9/3 %** | 28/27 % | auto (6/5/4%) | ×1 (no ×2) | **$0** | lista especial | 2/4 × $1,800 (opcional) |
 
 ---

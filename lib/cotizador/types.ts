@@ -9,6 +9,7 @@ export type QuoteType =
   | 'vip'
   | 'flotilla'
   | 'comision-extra'
+  | 'especial-premium'
   | 'refinanciamiento'
 
 export type TipoMotor = 'gasolina' | 'hibrido' | 'electrico'
@@ -44,6 +45,8 @@ export interface QuoteInput {
   includeGps?: boolean
   includeTenencias?: boolean
   includeVerificaciones?: boolean
+  // Cotizador especial premium: auto sustituto con cuota mensual por rango de valor
+  includeAutoSustituto?: boolean
 }
 
 export interface CostBreakdown {
@@ -71,6 +74,8 @@ export interface MonthlyBreakdown {
   placas: string
   accessory: string
   accessoryValue: number
+  // Cuota mensual de auto sustituto (solo Cotizador especial premium)
+  autoSustituto?: number
 }
 
 export interface QuoteResult {

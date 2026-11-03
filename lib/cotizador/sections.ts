@@ -12,6 +12,7 @@ export const ALL_SECTIONS: QuoteType[] = [
   'usado',
   'flotilla',
   'comision-extra',
+  'especial-premium',
   'refinanciamiento',
 ]
 
@@ -26,6 +27,7 @@ export const SECTION_LABELS: Record<QuoteType, string> = {
   'usado':            'Vehículo Usado',
   'flotilla':         'Flotilla',
   'comision-extra':   'Cotizador especial',
+  'especial-premium': 'Cotizador especial premium',
   'refinanciamiento': 'Refinanciamiento',
 }
 
