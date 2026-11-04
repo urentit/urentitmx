@@ -69,7 +69,7 @@ function ResultColumn({ label, result, showPlacas }: { label: string; result: QR
               ['Trámites iniciales',       fmt(e.tramitesL)],
               ['Tenencias / Refrendos',    fmt(e.tenencias)],
               ['Verificaciones',           fmt(e.veri)],
-              ...(e.autoSustituto ? [['Auto sustituto (mensual)', fmt(e.autoSustituto)]] : []),
+              ...(e.autoSustituto ? [['Auto sustituto',          fmt(e.autoSustituto)]] : []),
               ...(e.accessoryValue > 0 ? [[`Accesorio: ${e.accessory}`, fmt(e.accessoryValue)]] : []),
             ].map(([l, v]) => (
               <tr key={l} className="border-b border-white/5 last:border-0">

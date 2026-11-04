@@ -74,7 +74,7 @@ export interface MonthlyBreakdown {
   placas: string
   accessory: string
   accessoryValue: number
-  // Cuota mensual de auto sustituto (solo Cotizador especial premium)
+  // Auto sustituto financiado: cuota × IVA × meses (solo Cotizador especial premium)
   autoSustituto?: number
 }
 

@@ -5,8 +5,8 @@ import type { TasaMap } from '../rates'
 
 const COMISION_EXTRA_PCT = VARS.COMISION_EXTRA_PCT
 
-export function calculate(input: QuoteInput, user: QuoteUser, years: 24 | 36 | 48, tasas?: TasaMap): QuoteResult {
-  const base = calcFlotilla(input, user, years, tasas)
+export function calculate(input: QuoteInput, user: QuoteUser, years: 24 | 36 | 48, tasas?: TasaMap, autoSustituto = 0): QuoteResult {
+  const base = calcFlotilla(input, user, years, tasas, autoSustituto)
 
   const total           = input.totalPrice + (input.accessoryValue ?? 0)
   const valorAFinanciar = total * (1 - input.anticipo)
