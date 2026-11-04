@@ -80,6 +80,8 @@ export function calcCore(
   user: QuoteUser,
   accessory: string,
   section: 'section_one' | 'section_two' | 'section_three',
+  // Auto sustituto (solo Especial premium): total del plazo con IVA, se financia
+  autoSustituto = 0,
 ): QuoteResult {
   const totalCar   = totalPrice
   const total      = totalPrice + accessoryValue
@@ -88,7 +90,7 @@ export function calcCore(
   const comisionAp    = Math.round(((total / VARS.IVA) - anticipoCalc) * user.comision * 100) / 100
   const anticipoTotal = anticipoCalc + comisionAp
 
-  const suma = seguro + servicios + gps + tramitesLibres + tenencias + veriCost
+  const suma = seguro + servicios + gps + tramitesLibres + tenencias + veriCost + autoSustituto
 
   const tasa_mensual = (tasa / 100) / 12
   const pago = (pmt(
@@ -131,6 +133,7 @@ export function calcCore(
       placas:        getPlacaName(section, state),
       accessory,
       accessoryValue,
+      ...(autoSustituto > 0 ? { autoSustituto } : {}),
     },
   }
 }

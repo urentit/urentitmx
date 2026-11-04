@@ -157,7 +157,7 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, f
     { label: 'Verificaciones. Libres de IVA',       get: d => fmt(d.eachMonth.veri) },
     // Solo Cotizador especial premium con auto sustituto contratado
     ...(periodData.some(d => d.eachMonth.autoSustituto)
-      ? [{ label: 'Auto sustituto. Cuota mensual',  get: (d: QuoteResult) => fmt(d.eachMonth.autoSustituto ?? 0) }]
+      ? [{ label: 'Auto sustituto. IVA Incluido',   get: (d: QuoteResult) => fmt(d.eachMonth.autoSustituto ?? 0) }]
       : []),
   ]
 

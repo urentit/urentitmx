@@ -519,20 +519,22 @@ depende del valor del vehículo con IVA (`totalPrice`, sin accesorios) — `lib/
 | Valor del vehículo | Auto sustituto |
 |---|---|
 | < $400,000 | No aplica (el formulario bloquea el envío si está marcado) |
-| $400,000 – $800,000 | $250/mes |
-| $800,000.01 – $1,500,000 | $370/mes |
-| > $1,500,000 | $450/mes |
+| $400,000 – $800,000 | $250/mes + IVA |
+| $800,000.01 – $1,500,000 | $370/mes + IVA |
+| > $1,500,000 | $450/mes + IVA |
 
-La cuota se suma directo a la renta (no se financia ni genera intereses):
+La cuota **se financia** (indicación de David, 2026-11-04): entra a la suma de costos
+integrados del PMT igual que el GPS, así que genera intereses a la tasa del plazo:
 
 ```
-base            = calcComisionExtra(input, user, meses)
-mensualidad     = ROUND(base.mensualidad + cuota_auto_sustituto, 2)
-total_rentas    = ROUND(mensualidad × meses, 2)
-importe_deducir se recalcula con la nueva mensualidad (× 0.56)
+auto_sustituto  = ROUND(cuota × 1.16 × meses, 2)
+suma            = seguro + servicios + gps + trámites + tenencias + veri + auto_sustituto
+→ calcCore / calcFlotilla / Cotizador especial (+5 %) sin otros cambios
 ```
 
-En el desglose y el PDF aparece la línea "Auto sustituto" con la cuota mensual.
+Ejemplo ($1,000,000 · 20 % anticipo · CDMX): la renta sube $487.41 (24 m), $550.96 (36 m)
+y $608.85 (48 m). En el desglose y el PDF aparece la línea "Auto sustituto. IVA Incluido"
+con el total del plazo (36 m: $15,451.20).
 
 ---
 

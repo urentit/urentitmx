@@ -455,7 +455,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
                     Auto sustituto
                     <span className="text-xs text-white/40">
                       {cuotaSustituto != null
-                        ? `(+$${cuotaSustituto}/mes)`
+                        ? `($${cuotaSustituto}/mes + IVA, financiado)`
                         : `(desde $${AUTO_SUSTITUTO_MIN.toLocaleString('es-MX')})`}
                     </span>
                   </label>
