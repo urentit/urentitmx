@@ -132,9 +132,9 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, f
   const anticipoPct = parseFloat(((periodData[0]?.costs.advancePercentage ?? anticipo ?? 0.25) * 100).toFixed(2))
 
   const mainRows: TableBlockProps['rows'] = [
-    { label: `Anticipo al ${anticipoPct}%`,        get: d => fmt(d.costs.anticipo) },
+    { label: `Pago inicial al ${anticipoPct}%`,    get: d => fmt(d.costs.anticipo) },
     { label: 'Comisión de apertura',               get: d => fmt(d.costs.comisionAp) },
-    { label: 'Anticipo total',                     get: d => fmt(d.costs.anticipoTotal) },
+    { label: 'Pago inicial total',               get: d => fmt(d.costs.anticipoTotal) },
     { label: 'Renta mensual (+IVA)',               get: d => fmt(d.costs.mensualidad), bold: true },
     { label: 'Valor residual / Compra final',      get: d => fmt(d.costs.finalCost) },
     { label: 'Total rentas + IVA',                 get: d => fmt(d.costs.totalRentasMasIva) },

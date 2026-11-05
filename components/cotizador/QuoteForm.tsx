@@ -161,7 +161,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
     if (values.anticipo === 'custom') {
       const pct = parseFloat((values.anticipoCustom ?? '').replace(/[%\s]/g, ''))
       if (!Number.isFinite(pct) || pct < 0 || pct > 45) {
-        setApiError('El anticipo personalizado debe ser un porcentaje entre 0 y 45.')
+        setApiError('El pago inicial personalizado debe ser un porcentaje entre 0 y 45.')
         return
       }
       anticipoFraction = Math.round(pct * 100) / 10000  // pct% → fracción
@@ -173,7 +173,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
     if (isUsado) {
       const autometrica = parseFloat((values.autometricaValue ?? '').replace(/[,$\s]/g, ''))
       if (!Number.isFinite(autometrica) || autometrica <= 0) {
-        setApiError('Captura el valor Autométrica: es obligatorio para calcular el anticipo de un vehículo usado.')
+        setApiError('Captura el valor Autométrica: es obligatorio para calcular el pago inicial de un vehículo usado.')
         return
       }
     }
@@ -326,7 +326,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
 
         {/* Anticipo */}
         <div>
-          <label className={labelCls}>% Anticipo *</label>
+          <label className={labelCls}>% Pago inicial *</label>
           <select {...register('anticipo')} className={selectCls}>
             {ANTICIPO_OPTS.map(o => (
               <option key={o.value} value={o.value}>{o.label}</option>
