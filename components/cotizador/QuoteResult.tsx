@@ -16,9 +16,9 @@ function ResultColumn({ label, result, showPlacas }: { label: string; result: QR
   const anticipoPct = parseFloat(((c.advancePercentage ?? 0) * 100).toFixed(2))
 
   const rows: Array<{ label: string; value: string; highlight?: boolean }> = [
-    { label: anticipoPct ? `Anticipo al ${anticipoPct}%` : 'Anticipo', value: fmt(c.anticipo) },
+    { label: anticipoPct ? `Pago inicial al ${anticipoPct}%` : 'Pago inicial', value: fmt(c.anticipo) },
     { label: 'Comisión apertura',               value: fmt(c.comisionAp) },
-    { label: 'Anticipo total',                  value: fmt(c.anticipoTotal) },
+    { label: 'Pago inicial total',             value: fmt(c.anticipoTotal) },
     { label: 'Renta mensual',                   value: fmt(c.mensualidad), highlight: true },
     { label: 'Valor residual',                  value: fmt(c.finalCost) },
     { label: 'Total rentas + IVA',              value: fmt(c.totalRentasMasIva) },

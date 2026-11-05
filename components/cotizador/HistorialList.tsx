@@ -110,7 +110,7 @@ export function HistorialList() {
                   <th className="px-4 py-3 font-medium">Tipo</th>
                   <th className="px-4 py-3 font-medium">Modelo</th>
                   <th className="px-4 py-3 font-medium text-right">Valor</th>
-                  <th className="px-4 py-3 font-medium text-right">Anticipo</th>
+                  <th className="px-4 py-3 font-medium text-right">Pago inicial</th>
                   <th className="px-4 py-3 font-medium">Renta mensual</th>
                 </tr>
               </thead>
