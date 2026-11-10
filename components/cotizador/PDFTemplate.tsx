@@ -1,6 +1,7 @@
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer'
 import type { QuoteResponse, QuoteResult, QuoteType, TipoMotor } from '@/lib/cotizador/types'
 import { TIPO_MOTOR_LABELS } from '@/lib/cotizador/placas'
+import { RENOVACION_TIPO, CONDICIONES_RENOVACION } from '@/lib/cotizador/renovacion'
 
 const GOLD  = '#e1be4a'
 const BLACK = '#0a0a0a'
@@ -112,6 +113,7 @@ const QUOTE_TYPE_LABELS: Record<string, string> = {
   'flotilla':         'Flotilla',
   'comision-extra':   'Cotizador especial',
   'especial-premium': 'Cotizador especial premium',
+  'cuantitativo': 'Cotizador cuantitativo',
   'refinanciamiento': 'Refinanciamiento',
 }
 
@@ -136,7 +138,10 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, f
     { label: 'Comisión de apertura',               get: d => fmt(d.costs.comisionAp) },
     { label: 'Pago inicial total',               get: d => fmt(d.costs.anticipoTotal) },
     { label: 'Renta mensual (+IVA)',               get: d => fmt(d.costs.mensualidad), bold: true },
-    { label: 'Valor residual / Compra final',      get: d => fmt(d.costs.finalCost) },
+    // Cotizador cuantitativo: el residual es forzoso y no se muestra
+    ...(quoteType === RENOVACION_TIPO
+      ? []
+      : [{ label: 'Valor residual / Compra final', get: (d: QuoteResult) => fmt(d.costs.finalCost) }]),
     { label: 'Total rentas + IVA',                 get: d => fmt(d.costs.totalRentasMasIva) },
     { label: 'Valor comercial al vencimiento',     get: d => fmt(d.costs.valorVehiculo) },
     { label: 'Importe a deducir (ISR+IVA+PTU)',    get: d => fmt(d.costs.importeDeducir) },
@@ -227,13 +232,22 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, f
           {[
             'No hay etiqueta fiscal. El coche está a nombre de la arrendadora.',
             'Deducción total (en IVA e ISR) de todas las rentas.',
-            'Utilidad final en la diferencia de compra y venta.',
+            // En renovación el cliente no compra el vehículo al final
+            ...(quoteType === RENOVACION_TIPO ? [] : ['Utilidad final en la diferencia de compra y venta.']),
             'El Arrendamiento incluye: Seguro Platinum, Servicios, Localizador GPS, Verificaciones, Trámites iniciales.',
             'Flujo mensual constante y fijo.',
             'Gastos deducibles TODOS los meses del año. Buena práctica fiscal, sobre todo ahora con la Contabilidad en Línea.',
           ].map((item, i) => (
             <Text key={i} style={S.consBullet}>{'- ' + item}</Text>
           ))}
+          {quoteType === RENOVACION_TIPO && (
+            <>
+              <Text style={[S.consTitle, { marginTop: 4 }]}>*Condiciones de renovación:</Text>
+              {CONDICIONES_RENOVACION.map((item, i) => (
+                <Text key={`r${i}`} style={S.consBullet}>{'- ' + item}</Text>
+              ))}
+            </>
+          )}
           <Text style={S.disclaimer}>
             La presente propuesta de RENTING es únicamente informativa, requiere de su aprobación y puede ser modificada
             en cualquier momento. Tiene vigencia del mes en Curso.
@@ -241,8 +255,9 @@ export function PDFTemplate({ result, quoteType, modelo, totalPrice, anticipo, f
         </View>
 
         {/* ── Firma ── */}
-        <View style={{ marginTop: 16, alignItems: 'center' }}>
-          <View style={S.signLine} />
+        {/* Renovación: las condiciones extra ocupan espacio; firma compacta para que quepa en una hoja */}
+        <View style={{ marginTop: quoteType === RENOVACION_TIPO ? 0 : 16, alignItems: 'center' }}>
+          <View style={[S.signLine, quoteType === RENOVACION_TIPO ? { marginTop: 10 } : {}]} />
           <Text style={S.signLabel}>Nombre y Firma de Autorización</Text>
         </View>
 

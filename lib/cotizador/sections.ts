@@ -13,6 +13,7 @@ export const ALL_SECTIONS: QuoteType[] = [
   'flotilla',
   'comision-extra',
   'especial-premium',
+  'cuantitativo',
   'refinanciamiento',
 ]
 
@@ -28,6 +29,7 @@ export const SECTION_LABELS: Record<QuoteType, string> = {
   'flotilla':         'Flotilla',
   'comision-extra':   'Cotizador especial',
   'especial-premium': 'Cotizador especial premium',
+  'cuantitativo': 'Cotizador cuantitativo',
   'refinanciamiento': 'Refinanciamiento',
 }
 

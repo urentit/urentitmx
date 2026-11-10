@@ -10,6 +10,7 @@ export type QuoteType =
   | 'flotilla'
   | 'comision-extra'
   | 'especial-premium'
+  | 'cuantitativo'
   | 'refinanciamiento'
 
 export type TipoMotor = 'gasolina' | 'hibrido' | 'electrico'
