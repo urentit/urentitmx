@@ -5,12 +5,13 @@ import { Download } from 'lucide-react'
 import type { QuoteResponse, QuoteResult as QR, QuoteType, TipoMotor } from '@/lib/cotizador/types'
 import { TIPO_MOTOR_LABELS } from '@/lib/cotizador/placas'
 import { analytics } from '@/lib/analytics'
+import { RENOVACION_TIPO, CONDICIONES_RENOVACION } from '@/lib/cotizador/renovacion'
 
 function fmt(n: number) {
   return n.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 })
 }
 
-function ResultColumn({ label, result, showPlacas }: { label: string; result: QR; showPlacas: boolean }) {
+function ResultColumn({ label, result, showPlacas, hideResidual }: { label: string; result: QR; showPlacas: boolean; hideResidual?: boolean }) {
   const { costs: c, eachMonth: e } = result
 
   const anticipoPct = parseFloat(((c.advancePercentage ?? 0) * 100).toFixed(2))
@@ -20,7 +21,8 @@ function ResultColumn({ label, result, showPlacas }: { label: string; result: QR
     { label: 'Comisión apertura',               value: fmt(c.comisionAp) },
     { label: 'Pago inicial total',             value: fmt(c.anticipoTotal) },
     { label: 'Renta mensual',                   value: fmt(c.mensualidad), highlight: true },
-    { label: 'Valor residual',                  value: fmt(c.finalCost) },
+    // Cotizador cuantitativo: el residual es forzoso y no se muestra
+    ...(hideResidual ? [] : [{ label: 'Valor residual', value: fmt(c.finalCost) }]),
     { label: 'Total rentas + IVA',              value: fmt(c.totalRentasMasIva) },
     { label: 'Valor comercial al vencimiento',  value: fmt(c.valorVehiculo) },
     { label: 'Importe a deducir',               value: fmt(c.importeDeducir) },
@@ -179,10 +181,20 @@ export function QuoteResult({ result, quoteType, modelo, totalPrice, anticipo, t
               label={PERIOD_LABELS[period] ?? `${period} meses`}
               result={r}
               showPlacas={quoteType !== 'carga-pesada-especial'}
+              hideResidual={quoteType === RENOVACION_TIPO}
             />
           )
         })}
       </div>
+
+      {quoteType === RENOVACION_TIPO && (
+        <div className="mt-4 rounded border border-gold/20 bg-gold/[0.04] px-4 py-3">
+          <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-gold/80">Condiciones de renovación</p>
+          <ul className="list-disc space-y-1 pl-5 text-xs text-white/60">
+            {CONDICIONES_RENOVACION.map(c => <li key={c}>{c}</li>)}
+          </ul>
+        </div>
+      )}
     </div>
   )
 }

@@ -9,6 +9,7 @@ import { SECTION_ONE, SECTION_TWO, SECTION_THREE, TIPO_MOTOR_LABELS } from '@/li
 import { exentoPorMotor } from '@/lib/cotizador/engine'
 import { getAutoSustitutoCuota, AUTO_SUSTITUTO_MIN } from '@/lib/cotizador/autoSustituto'
 import type { QuoteType, QuoteResponse, TipoMotor } from '@/lib/cotizador/types'
+import { RENOVACION_TIPO } from '@/lib/cotizador/renovacion'
 import { useCommission } from '@/lib/cotizador/commissionContext'
 import { QuoteResult } from './QuoteResult'
 
@@ -93,7 +94,7 @@ const labelCls  = 'mb-1.5 block text-xs font-medium text-white/60 uppercase trac
 const WITH_CILINDRAJE: QuoteType[] = ['auto', 'vip', 'carga', 'carga-pesada', 'carga-pesada-especial', 'foraneo', 'flotilla', 'refinanciamiento']
 
 // Tipos con placas de autos (section_one) donde el tipo de motor define tenencia vs refrendo
-const WITH_TIPO_MOTOR: QuoteType[] = ['auto', 'vip', 'usado', 'flotilla', 'comision-extra', 'especial-premium', 'refinanciamiento']
+const WITH_TIPO_MOTOR: QuoteType[] = ['auto', 'vip', 'usado', 'flotilla', 'comision-extra', 'especial-premium', 'cuantitativo', 'refinanciamiento']
 
 export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const { data: session } = useSession()
@@ -106,8 +107,10 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
   const [lastInput, setLastInput] = useState<Record<string, unknown>>({})
   const [apiError,  setApiError]  = useState('')
 
-  const isFlotilla    = quoteType === 'flotilla' || quoteType === 'comision-extra' || quoteType === 'especial-premium'
-  const isPremium     = quoteType === 'especial-premium'
+  // Cotizador cuantitativo: misma plantilla que especial premium, residual forzoso (no se captura)
+  const isRenovacion  = quoteType === RENOVACION_TIPO
+  const isPremium     = quoteType === 'especial-premium' || isRenovacion
+  const isFlotilla    = quoteType === 'flotilla' || quoteType === 'comision-extra' || isPremium
 
   const { register, handleSubmit, watch, setError, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -204,10 +207,12 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
     if (values.servicesValue)               body.servicesValue = parseFloat(values.servicesValue)
     if (isUsado && values.autometricaValue)
       body.autometricaValue = parseFloat(values.autometricaValue.replace(/[,$\s]/g, ''))
-    if (isFlotilla) {
+    if (isFlotilla && !isRenovacion) {
       body.residualValue24       = parseFloat(values.residualValue24 ?? (isFlotilla ? '40' : '20')) || (isFlotilla ? 40 : 20)
       body.residualValue36       = parseFloat(values.residualValue36 ?? (isFlotilla ? '35' : '30')) || (isFlotilla ? 35 : 30)
       body.residualValue48       = parseFloat(values.residualValue48 ?? (isFlotilla ? '30' : '25')) || (isFlotilla ? 30 : 25)
+    }
+    if (isFlotilla) {
       body.includeInsurance      = values.includeInsurance
       body.includeGps            = values.includeGps
       body.includeTenencias      = values.includeTenencias
@@ -415,6 +420,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
         {/* Flotilla: residuales y opcionales */}
         {isFlotilla && (
           <>
+            {!isRenovacion && (<>
             <div>
               <label className={labelCls}>Residual 24m (%)</label>
               <input {...register('residualValue24')} inputMode="decimal" placeholder={isFlotilla ? '40' : '20'} className={inputCls} />
@@ -427,6 +433,7 @@ export function QuoteForm({ quoteType }: { quoteType: QuoteType }) {
               <label className={labelCls}>Residual 48m (%)</label>
               <input {...register('residualValue48')} inputMode="decimal" placeholder={isFlotilla ? '30' : '25'} className={inputCls} />
             </div>
+            </>)}
             <div className="sm:col-span-2 lg:col-span-3">
               <p className={labelCls}>Incluir en renta:</p>
               <div className="flex flex-wrap gap-5 mt-1">

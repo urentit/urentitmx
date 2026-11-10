@@ -536,6 +536,27 @@ Ejemplo ($1,000,000 · 20 % anticipo · CDMX): la renta sube $487.41 (24 m), $55
 y $608.85 (48 m). En el desglose y el PDF aparece la línea "Auto sustituto. IVA Incluido"
 con el total del plazo (36 m: $15,451.20).
 
+### 5.9.2 Cotizador cuantitativo
+
+Indicación de David (2026-11-09). Idéntico al **Cotizador especial premium** (incluido el
+auto sustituto opcional), pero con **valor residual forzoso de 1 %** en 24, 36 y 48 meses
+(`lib/cotizador/calculators/cuantitativo.ts`). Los residuales no se capturan en el
+formulario y el API los ignora.
+
+Al término del contrato el cliente regresa el vehículo y recibe uno nuevo del mismo valor
+sin volver a dar pago inicial. Por eso:
+
+- El renglón "Valor residual" no aparece ni en pantalla ni en el PDF.
+- En el PDF se omite "Utilidad final en la diferencia de compra y venta" y se agregan las
+  condiciones de renovación (`lib/cotizador/renovacion.ts`): devolución en buenas
+  condiciones mecánicas y estéticas, máximo 20,000 km/año (excedente con cargo), y sujeto a
+  disponibilidad del mismo modelo/precio o de otro de valor igual o menor; si no, el
+  cliente paga la diferencia para conservar la misma renta.
+
+Ejemplo ($600,000 · 20 % · CDMX): residual $5,172.41 en todos los plazos; renta
+$30,453.49 (24 m), $25,179.68 (36 m), $22,728.60 (48 m) vs $24,088.05 / $22,008.84 /
+$20,961.25 del especial premium con residuales 40/35/30.
+
 ---
 
 ### 5.10 Refinanciamiento
